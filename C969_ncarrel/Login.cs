@@ -21,49 +21,46 @@ namespace C969_ncarrel
 
 		private void buttonLogin_Click(object sender, EventArgs e)
 		{
-			MySqlConnection con = Connection.connection;
+			MySqlConnection connection = Connection.connection;
 			verify = new Database.Login();
 			bool login;
-
-			if (currentCulture.TwoLetterISOLanguageName == "de")
-            {
-				if (con.State == ConnectionState.Open)
+			if (connection.State == ConnectionState.Open)
+			{
+				switch (currentCulture.TwoLetterISOLanguageName)
 				{
-					login = verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
-					if (login == true)
-					{
-						MessageBox.Show("Login bewährt");
-						this.Hide();
-						Homepage homepage = new Homepage();
-						homepage.Show();
-					}
-					else
-					{
-						MessageBox.Show("Benutzername oder Password nicht korrekt!");
-					}
+					case ("de"):
+						login = verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
+						if (login)
+						{
+							MessageBox.Show("Login bewährt");
+							this.Hide();
+							Homepage homepage = new Homepage();
+							homepage.Show();
+						}
+						else
+						{
+							MessageBox.Show("Benutzername oder Password nicht korrekt!");
+						}
+						break;
+					default:
+						login = verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
+						if (login == true)
+						{
+							MessageBox.Show("Login success");
+							this.Hide();
+							Homepage homepage = new Homepage();
+							homepage.Show();
+						}
+						else
+						{
+							MessageBox.Show("Username or password is incorrect!");
+						}
+						break;
 				}
-				else
-					MessageBox.Show("No active MySQL server connection found at localhost:3306");
 			}
 			else
 			{
-				if (con.State == ConnectionState.Open)
-				{
-					login = verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
-					if (login == true)
-					{
-						MessageBox.Show("Login success");
-						this.Hide();
-						Homepage homepage = new Homepage();
-						homepage.Show();
-					}
-					else
-					{
-						MessageBox.Show("Username or password is incorrect!");
-					}
-				}
-				else
-					MessageBox.Show("No active MySQL server connection found at localhost:3306");
+				MessageBox.Show("No active MySQL server connection found at localhost:3306");
 			}
 		}
 	}

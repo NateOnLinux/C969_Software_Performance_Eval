@@ -28,19 +28,19 @@ namespace C969_ncarrel.Database
         public DateTime lastUpdate;
         public string lastUpdateBy;
         
-        public bool conflictCheck(DateTime start, DateTime end)
+        public bool ConflictCheck(DateTime start, DateTime end)
         {
             //using start and end, check that no other appointments occupy the time slot. If another appointment occupies the time slot, return false and show error dialogue
             return true;
         }
         
-        public int create(int appointmentId, Appointment newAppointment)
+        public int Create(int appointmentId, Appointment newAppointment)
         {
             // using appointment data, add or update appointment entries
             return appointmentId;
         }
 
-        public void delete(int appointmentId)
+        public void Delete(int appointmentId)
         {
             //using the appointmentID parameter, "DELETE FROM appointment WHERE appointmentId = " + appointmentID + ";";
         }
@@ -74,17 +74,17 @@ namespace C969_ncarrel.Database
     public class ListCustomers : Connection //separate from Customer? Couldn't find a good solution to include customer object here
     {
         public BindingList<Customer> customers = new BindingList<Customer>();
-        public void update(int customerId, Customer newData, Customer oldData)
+        public void Update(int customerId, Customer newData, Customer oldData)
         {
 
         }
-        public int create(Customer newCustomer)
+        public int Create(Customer newCustomer)
         {
             // create a new Customer and add it to the list
             int result = 0; //placeholder
             return result;
         }
-        public void delete(int customerId)
+        public void Delete(int customerId)
         {
 
         }

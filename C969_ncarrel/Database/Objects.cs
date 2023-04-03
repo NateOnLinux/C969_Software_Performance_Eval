@@ -66,14 +66,15 @@ namespace C969_ncarrel.Database
     public class Customer //need customer objects to manip customer data
     {
         public int customerId;
-        public int customerName;
+        public string customerName;
         public int addressId;
         public string active;
         public Address address;
     }
-    public class ListCustomers : Connection //separate from Customer? Couldn't find a good solution to include customer object here
+    public class CustomerData : Connection //separate from Customer? Couldn't find a good solution to include customer object here
     {
-        public BindingList<Customer> customers = new BindingList<Customer>();
+        public QueryDB customerSearch = new QueryDB();
+        public BindingList<Customer> result;
         public void Update(int customerId, Customer newData, Customer oldData)
         {
 
@@ -88,23 +89,53 @@ namespace C969_ncarrel.Database
         {
 
         }
+        public BindingList<Customer> GetCustomers()
+        {
+            result = new BindingList<Customer>();
+            string sqlString = "SELECT a.customerId, a.customerName, a.active, b.addressId, b.address, b.address2, c.cityId, b.postalCode, b.phone, c.city, d.countryId, d.country FROM (customer a LEFT JOIN address b ON a.addressId = b.addressId LEFT JOIN city c ON b.cityId = c.cityId LEFT JOIN country d ON c.countryId = d.countryId)";
+            var incomingData = customerSearch.Query(sqlString);
+            foreach (var incomingCollumn in incomingData)
+            {
+                var customer = new Customer();
+                var address = new Address();
+                var city = new City();
+
+                customer.customerId = int.Parse(incomingCollumn[0]);
+                customer.customerName = incomingCollumn[1];
+                customer.active = incomingCollumn[2];
+                customer.addressId = address.addressId = int.Parse(incomingCollumn[3]);
+                address.address = incomingCollumn[4];
+                address.address2 = incomingCollumn[5];
+                address.cityId = city.cityId = int.Parse(incomingCollumn[6]);
+                address.postalCode = incomingCollumn[7];
+                address.phone = incomingCollumn[8];
+                city.city = incomingCollumn[9];
+                city.countryId = int.Parse(incomingCollumn[10]);
+                city.country = incomingCollumn[11];
+
+                address.city = city;
+                customer.address = address;
+
+                result.Add(customer);
+            }
+            return result;
+        }
     }
 
-    public class QueryDB : Connection // General method to query the MySql database using MySql.Data.MySqlClient. This might be used to populate dgv objects. Perhaps this belongs in its own file?
+    public class QueryDB : Connection // General method to query the MySql database using MySql.Data.MySqlClient. This might be used to populate dgv objects.
     {
-        public BindingList<BindingList<string>> Query(string input)
+        public List<List<string>> Query(string input)
         {
-            // cmd and reader are defined in Connection.cs
             cmd = new MySqlCommand(input, connection);
             reader = cmd.ExecuteReader();
-            // resultList is a binding list which contains binding lists of strings
-            var resultList = new BindingList<BindingList<string>>();
+            // resultList is a list which contains lists of strings
+            var resultList = new List<List<string>>();
             // FieldCount gets the number of columns in the selected row
             var columns = reader.FieldCount;
             // increment count until all columns have been added and loop until reader.Read() returns false
             while (reader.Read())
             {
-                BindingList<string> dataEntry = new BindingList<string>();
+                List<string> dataEntry = new List<string>();
                 int count = 0;
                 while(count < columns)
                 {

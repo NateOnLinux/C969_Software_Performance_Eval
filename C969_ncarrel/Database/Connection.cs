@@ -1,9 +1,6 @@
-﻿using System;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System.Windows.Forms;
 using System.Configuration;
-using System.Data;
-using System.ComponentModel;
 
 namespace C969_ncarrel.Database
 {
@@ -13,12 +10,11 @@ namespace C969_ncarrel.Database
         public static MySqlCommand cmd { get; set; }
         public static MySqlDataAdapter adapter { get; set; }
         public static MySqlDataReader reader { get; set; }
-
-        public static string connectionString = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
+        //public static string connectionString = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
 
         public static void startConn()
         {
-
+            string connectionString = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
             try
             {
                 connection = new MySqlConnection(connectionString);

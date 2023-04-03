@@ -33,14 +33,14 @@ namespace C969_ncarrel
 			this.tabControlMainScreen = new System.Windows.Forms.TabControl();
 			this.tabPageCalendar = new System.Windows.Forms.TabPage();
 			this.tabPageCustomers = new System.Windows.Forms.TabPage();
-			this.tabPageAppointments = new System.Windows.Forms.TabPage();
-			this.tabPageSysReports = new System.Windows.Forms.TabPage();
 			this.dgvCustomers = new System.Windows.Forms.DataGridView();
+			this.tabPageAppointments = new System.Windows.Forms.TabPage();
 			this.dgvAppointments = new System.Windows.Forms.DataGridView();
+			this.tabPageSysReports = new System.Windows.Forms.TabPage();
 			this.tabControlMainScreen.SuspendLayout();
 			this.tabPageCustomers.SuspendLayout();
-			this.tabPageAppointments.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
+			this.tabPageAppointments.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -61,11 +61,11 @@ namespace C969_ncarrel
 			this.tabControlMainScreen.Controls.Add(this.tabPageCustomers);
 			this.tabControlMainScreen.Controls.Add(this.tabPageAppointments);
 			this.tabControlMainScreen.Controls.Add(this.tabPageSysReports);
-			this.tabControlMainScreen.Dock = System.Windows.Forms.DockStyle.Top;
+			this.tabControlMainScreen.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tabControlMainScreen.Location = new System.Drawing.Point(0, 0);
 			this.tabControlMainScreen.Name = "tabControlMainScreen";
 			this.tabControlMainScreen.SelectedIndex = 0;
-			this.tabControlMainScreen.Size = new System.Drawing.Size(939, 409);
+			this.tabControlMainScreen.Size = new System.Drawing.Size(939, 445);
 			this.tabControlMainScreen.TabIndex = 2;
 			// 
 			// tabPageCalendar
@@ -73,7 +73,7 @@ namespace C969_ncarrel
 			this.tabPageCalendar.Location = new System.Drawing.Point(4, 22);
 			this.tabPageCalendar.Name = "tabPageCalendar";
 			this.tabPageCalendar.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageCalendar.Size = new System.Drawing.Size(931, 383);
+			this.tabPageCalendar.Size = new System.Drawing.Size(931, 419);
 			this.tabPageCalendar.TabIndex = 0;
 			this.tabPageCalendar.Text = "Calendar View";
 			this.tabPageCalendar.UseVisualStyleBackColor = true;
@@ -84,10 +84,19 @@ namespace C969_ncarrel
 			this.tabPageCustomers.Location = new System.Drawing.Point(4, 22);
 			this.tabPageCustomers.Name = "tabPageCustomers";
 			this.tabPageCustomers.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageCustomers.Size = new System.Drawing.Size(931, 383);
+			this.tabPageCustomers.Size = new System.Drawing.Size(931, 419);
 			this.tabPageCustomers.TabIndex = 1;
 			this.tabPageCustomers.Text = "Manage Customers";
 			this.tabPageCustomers.UseVisualStyleBackColor = true;
+			// 
+			// dgvCustomers
+			// 
+			this.dgvCustomers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvCustomers.Location = new System.Drawing.Point(6, 3);
+			this.dgvCustomers.Name = "dgvCustomers";
+			this.dgvCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+			this.dgvCustomers.Size = new System.Drawing.Size(919, 197);
+			this.dgvCustomers.TabIndex = 4;
 			// 
 			// tabPageAppointments
 			// 
@@ -95,10 +104,18 @@ namespace C969_ncarrel
 			this.tabPageAppointments.Location = new System.Drawing.Point(4, 22);
 			this.tabPageAppointments.Name = "tabPageAppointments";
 			this.tabPageAppointments.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPageAppointments.Size = new System.Drawing.Size(931, 383);
+			this.tabPageAppointments.Size = new System.Drawing.Size(469, 419);
 			this.tabPageAppointments.TabIndex = 2;
 			this.tabPageAppointments.Text = "Manage Appointments";
 			this.tabPageAppointments.UseVisualStyleBackColor = true;
+			// 
+			// dgvAppointments
+			// 
+			this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dgvAppointments.Location = new System.Drawing.Point(6, 3);
+			this.dgvAppointments.Name = "dgvAppointments";
+			this.dgvAppointments.Size = new System.Drawing.Size(919, 198);
+			this.dgvAppointments.TabIndex = 1;
 			// 
 			// tabPageSysReports
 			// 
@@ -108,22 +125,6 @@ namespace C969_ncarrel
 			this.tabPageSysReports.TabIndex = 3;
 			this.tabPageSysReports.Text = "View System Reports";
 			this.tabPageSysReports.UseVisualStyleBackColor = true;
-			// 
-			// dgvCustomers
-			// 
-			this.dgvCustomers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvCustomers.Location = new System.Drawing.Point(3, 6);
-			this.dgvCustomers.Name = "dgvCustomers";
-			this.dgvCustomers.Size = new System.Drawing.Size(920, 197);
-			this.dgvCustomers.TabIndex = 0;
-			// 
-			// dgvAppointments
-			// 
-			this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dgvAppointments.Location = new System.Drawing.Point(8, 6);
-			this.dgvAppointments.Name = "dgvAppointments";
-			this.dgvAppointments.Size = new System.Drawing.Size(915, 177);
-			this.dgvAppointments.TabIndex = 0;
 			// 
 			// Homepage
 			// 
@@ -137,8 +138,8 @@ namespace C969_ncarrel
 			this.Load += new System.EventHandler(this.Homepage_Load);
 			this.tabControlMainScreen.ResumeLayout(false);
 			this.tabPageCustomers.ResumeLayout(false);
-			this.tabPageAppointments.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).EndInit();
+			this.tabPageAppointments.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
 			this.ResumeLayout(false);
 
@@ -150,8 +151,8 @@ namespace C969_ncarrel
 		private System.Windows.Forms.TabPage tabPageCalendar;
 		private System.Windows.Forms.TabPage tabPageCustomers;
 		private System.Windows.Forms.TabPage tabPageAppointments;
-		private System.Windows.Forms.DataGridView dgvCustomers;
-		private System.Windows.Forms.DataGridView dgvAppointments;
 		private System.Windows.Forms.TabPage tabPageSysReports;
+		private System.Windows.Forms.DataGridView dgvAppointments;
+		internal System.Windows.Forms.DataGridView dgvCustomers;
 	}
 }

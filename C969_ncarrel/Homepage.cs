@@ -8,7 +8,7 @@ namespace C969_ncarrel
 {
     public partial class Homepage : Form
     {
-        private CustomerTab CustomerTab = new CustomerTab();
+        private CustomerView CustomerView = new CustomerView();
 
         public Homepage()
         {
@@ -22,7 +22,8 @@ namespace C969_ncarrel
 
         private void Homepage_Load(object sender, EventArgs e)
         {
-            dgvCustomers.DataSource = CustomerTab.PopulateCustomers();
+            dgvCustomers.DataSource = CustomerView.PopulateCustomers();
+            dgvAppointments.DataSource = CustomerView.PopulateCustomers();
         }
     }
 }

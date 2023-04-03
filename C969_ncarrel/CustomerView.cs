@@ -4,7 +4,7 @@ using System.Data;
 
 namespace C969_ncarrel
 {
-    class CustomerTab
+    class CustomerView
     {
         private BindingList<Customer> AllCustomers = new BindingList<Customer>();
         private CustomerData CustomerData = new CustomerData();

@@ -39,9 +39,7 @@ namespace C969_ncarrel
             this.tabPageSysReports = new System.Windows.Forms.TabPage();
             this.tbCustName = new System.Windows.Forms.TextBox();
             this.labelCustName = new System.Windows.Forms.Label();
-            this.labelCustStatus = new System.Windows.Forms.Label();
             this.tbCustPhone = new System.Windows.Forms.TextBox();
-            this.cbCustStatus = new System.Windows.Forms.ComboBox();
             this.labelCustPhone = new System.Windows.Forms.Label();
             this.tbCustAddress = new System.Windows.Forms.TextBox();
             this.tbCustAddress2 = new System.Windows.Forms.TextBox();
@@ -54,7 +52,7 @@ namespace C969_ncarrel
             this.labelCustCity = new System.Windows.Forms.Label();
             this.labelCustCountry = new System.Windows.Forms.Label();
             this.btnCustNew = new System.Windows.Forms.Button();
-            this.btnCustUpdate = new System.Windows.Forms.Button();
+            this.btnCustEdit = new System.Windows.Forms.Button();
             this.btnCustDelete = new System.Windows.Forms.Button();
             this.labelApptEnd = new System.Windows.Forms.Label();
             this.labelApptType = new System.Windows.Forms.Label();
@@ -74,11 +72,15 @@ namespace C969_ncarrel
             this.dtpApptEnd = new System.Windows.Forms.DateTimePicker();
             this.btnApptClear = new System.Windows.Forms.Button();
             this.btnApptSave = new System.Windows.Forms.Button();
+            this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.rbActive = new System.Windows.Forms.RadioButton();
+            this.rbInactive = new System.Windows.Forms.RadioButton();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCustomers.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
             this.tabPageAppointments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
+            this.gbStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // Exit
@@ -117,8 +119,9 @@ namespace C969_ncarrel
             // 
             // tabPageCustomers
             // 
+            this.tabPageCustomers.Controls.Add(this.gbStatus);
             this.tabPageCustomers.Controls.Add(this.btnCustDelete);
-            this.tabPageCustomers.Controls.Add(this.btnCustUpdate);
+            this.tabPageCustomers.Controls.Add(this.btnCustEdit);
             this.tabPageCustomers.Controls.Add(this.btnCustNew);
             this.tabPageCustomers.Controls.Add(this.labelCustCountry);
             this.tabPageCustomers.Controls.Add(this.labelCustCity);
@@ -131,9 +134,7 @@ namespace C969_ncarrel
             this.tabPageCustomers.Controls.Add(this.tbCustAddress2);
             this.tabPageCustomers.Controls.Add(this.tbCustAddress);
             this.tabPageCustomers.Controls.Add(this.labelCustPhone);
-            this.tabPageCustomers.Controls.Add(this.cbCustStatus);
             this.tabPageCustomers.Controls.Add(this.tbCustPhone);
-            this.tabPageCustomers.Controls.Add(this.labelCustStatus);
             this.tabPageCustomers.Controls.Add(this.labelCustName);
             this.tabPageCustomers.Controls.Add(this.tbCustName);
             this.tabPageCustomers.Controls.Add(this.dgvCustomers);
@@ -225,34 +226,17 @@ namespace C969_ncarrel
             this.labelCustName.TabIndex = 6;
             this.labelCustName.Text = "Name";
             // 
-            // labelCustStatus
-            // 
-            this.labelCustStatus.AutoSize = true;
-            this.labelCustStatus.Location = new System.Drawing.Point(29, 235);
-            this.labelCustStatus.Name = "labelCustStatus";
-            this.labelCustStatus.Size = new System.Drawing.Size(37, 13);
-            this.labelCustStatus.TabIndex = 7;
-            this.labelCustStatus.Text = "Status";
-            // 
             // tbCustPhone
             // 
-            this.tbCustPhone.Location = new System.Drawing.Point(72, 259);
+            this.tbCustPhone.Location = new System.Drawing.Point(72, 232);
             this.tbCustPhone.Name = "tbCustPhone";
             this.tbCustPhone.Size = new System.Drawing.Size(168, 20);
             this.tbCustPhone.TabIndex = 8;
             // 
-            // cbCustStatus
-            // 
-            this.cbCustStatus.FormattingEnabled = true;
-            this.cbCustStatus.Location = new System.Drawing.Point(72, 232);
-            this.cbCustStatus.Name = "cbCustStatus";
-            this.cbCustStatus.Size = new System.Drawing.Size(121, 21);
-            this.cbCustStatus.TabIndex = 9;
-            // 
             // labelCustPhone
             // 
             this.labelCustPhone.AutoSize = true;
-            this.labelCustPhone.Location = new System.Drawing.Point(28, 262);
+            this.labelCustPhone.Location = new System.Drawing.Point(28, 235);
             this.labelCustPhone.Name = "labelCustPhone";
             this.labelCustPhone.Size = new System.Drawing.Size(38, 13);
             this.labelCustPhone.TabIndex = 10;
@@ -347,15 +331,16 @@ namespace C969_ncarrel
             this.btnCustNew.TabIndex = 21;
             this.btnCustNew.Text = "Add New";
             this.btnCustNew.UseVisualStyleBackColor = true;
+            this.btnCustNew.Click += new System.EventHandler(this.btnCustNew_Click);
             // 
-            // btnCustUpdate
+            // btnCustEdit
             // 
-            this.btnCustUpdate.Location = new System.Drawing.Point(836, 235);
-            this.btnCustUpdate.Name = "btnCustUpdate";
-            this.btnCustUpdate.Size = new System.Drawing.Size(87, 23);
-            this.btnCustUpdate.TabIndex = 22;
-            this.btnCustUpdate.Text = "Update";
-            this.btnCustUpdate.UseVisualStyleBackColor = true;
+            this.btnCustEdit.Location = new System.Drawing.Point(836, 235);
+            this.btnCustEdit.Name = "btnCustEdit";
+            this.btnCustEdit.Size = new System.Drawing.Size(87, 23);
+            this.btnCustEdit.TabIndex = 22;
+            this.btnCustEdit.Text = "Edit";
+            this.btnCustEdit.UseVisualStyleBackColor = true;
             // 
             // btnCustDelete
             // 
@@ -365,6 +350,7 @@ namespace C969_ncarrel
             this.btnCustDelete.TabIndex = 23;
             this.btnCustDelete.Text = "Delete";
             this.btnCustDelete.UseVisualStyleBackColor = true;
+            this.btnCustDelete.Click += new System.EventHandler(this.btnCustDelete_Click);
             // 
             // labelApptEnd
             // 
@@ -514,6 +500,39 @@ namespace C969_ncarrel
             this.btnApptSave.Text = "Save";
             this.btnApptSave.UseVisualStyleBackColor = true;
             // 
+            // gbStatus
+            // 
+            this.gbStatus.Controls.Add(this.rbInactive);
+            this.gbStatus.Controls.Add(this.rbActive);
+            this.gbStatus.Location = new System.Drawing.Point(23, 256);
+            this.gbStatus.Name = "gbStatus";
+            this.gbStatus.Size = new System.Drawing.Size(102, 61);
+            this.gbStatus.TabIndex = 24;
+            this.gbStatus.TabStop = false;
+            this.gbStatus.Text = "Status";
+            // 
+            // rbActive
+            // 
+            this.rbActive.AutoSize = true;
+            this.rbActive.Checked = true;
+            this.rbActive.Location = new System.Drawing.Point(38, 15);
+            this.rbActive.Name = "rbActive";
+            this.rbActive.Size = new System.Drawing.Size(55, 17);
+            this.rbActive.TabIndex = 0;
+            this.rbActive.TabStop = true;
+            this.rbActive.Text = "Active";
+            this.rbActive.UseVisualStyleBackColor = true;
+            // 
+            // rbInactive
+            // 
+            this.rbInactive.AutoSize = true;
+            this.rbInactive.Location = new System.Drawing.Point(38, 38);
+            this.rbInactive.Name = "rbInactive";
+            this.rbInactive.Size = new System.Drawing.Size(63, 17);
+            this.rbInactive.TabIndex = 1;
+            this.rbInactive.Text = "Inactive";
+            this.rbInactive.UseVisualStyleBackColor = true;
+            // 
             // Homepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -531,6 +550,8 @@ namespace C969_ncarrel
             this.tabPageAppointments.ResumeLayout(false);
             this.tabPageAppointments.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
+            this.gbStatus.ResumeLayout(false);
+            this.gbStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -545,7 +566,7 @@ namespace C969_ncarrel
 		private System.Windows.Forms.DataGridView dgvAppointments;
 		internal System.Windows.Forms.DataGridView dgvCustomers;
         private System.Windows.Forms.Button btnCustDelete;
-        private System.Windows.Forms.Button btnCustUpdate;
+        private System.Windows.Forms.Button btnCustEdit;
         private System.Windows.Forms.Button btnCustNew;
         private System.Windows.Forms.Label labelCustCountry;
         private System.Windows.Forms.Label labelCustCity;
@@ -558,9 +579,7 @@ namespace C969_ncarrel
         private System.Windows.Forms.TextBox tbCustAddress2;
         private System.Windows.Forms.TextBox tbCustAddress;
         private System.Windows.Forms.Label labelCustPhone;
-        private System.Windows.Forms.ComboBox cbCustStatus;
         private System.Windows.Forms.TextBox tbCustPhone;
-        private System.Windows.Forms.Label labelCustStatus;
         private System.Windows.Forms.Label labelCustName;
         private System.Windows.Forms.TextBox tbCustName;
         private System.Windows.Forms.Button btnApptClear;
@@ -581,5 +600,8 @@ namespace C969_ncarrel
         private System.Windows.Forms.Label labelApptStart;
         private System.Windows.Forms.Label labelApptCustomer;
         private System.Windows.Forms.TextBox tbApptsCustomer;
+        private System.Windows.Forms.GroupBox gbStatus;
+        private System.Windows.Forms.RadioButton rbInactive;
+        private System.Windows.Forms.RadioButton rbActive;
     }
 }

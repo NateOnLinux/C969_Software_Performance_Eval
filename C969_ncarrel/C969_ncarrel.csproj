@@ -90,7 +90,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomerView.cs" />
+    <Compile Include="DataTables.cs" />
     <Compile Include="Database\Connection.cs" />
     <Compile Include="Database\Login.cs" />
     <Compile Include="Database\Objects.cs" />

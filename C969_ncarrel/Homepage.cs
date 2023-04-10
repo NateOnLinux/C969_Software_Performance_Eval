@@ -8,8 +8,8 @@ namespace C969_ncarrel
 {
     public partial class Homepage : Form
     {
-        private CustomerView CustomerView = new CustomerView();
-
+        private DataTables CustomerView = new DataTables();
+        CustomerData modifyDB = new CustomerData();
         public Homepage()
         {
             InitializeComponent();
@@ -21,6 +21,24 @@ namespace C969_ncarrel
         }
 
         private void Homepage_Load(object sender, EventArgs e)
+        {
+            UpdateDataGrids();
+        }
+
+        private void btnCustNew_Click(object sender, EventArgs e)
+        {
+            modifyDB.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text); 
+            UpdateDataGrids();
+        }
+
+        private void btnCustDelete_Click(object sender, EventArgs e)
+        {
+            var id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells[0].Value);
+            modifyDB.Delete(id);
+            UpdateDataGrids();
+        }
+
+        private void UpdateDataGrids()
         {
             dgvCustomers.DataSource = CustomerView.PopulateCustomers();
             dgvAppointments.DataSource = CustomerView.PopulateCustomers();

@@ -3,9 +3,7 @@ using C969_ncarrel.Database;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace C969_ncarrel.Database
 {
@@ -46,14 +44,19 @@ namespace C969_ncarrel.Database
         }
 
     }
-    public class City //db has a table for cities, so may need city objects
+    public class Country
+    {
+        public int countryId;
+        public string country;
+    }
+    public class City
     {
         public int cityId;
         public string city;
         public int countryId;
-        public string country;
+        public Country country;
     }
-    public class Address //db has table for addresses, so may need address objects
+    public class Address
     {
         public int addressId;
         public string address;
@@ -63,7 +66,7 @@ namespace C969_ncarrel.Database
         public string phone;
         public City city;
     }
-    public class Customer //need customer objects to manip customer data
+    public class Customer
     {
         public int customerId;
         public string customerName;
@@ -73,52 +76,140 @@ namespace C969_ncarrel.Database
     }
     public class CustomerData : Connection //separate from Customer? Couldn't find a good solution to include customer object here
     {
-        public QueryDB customerSearch = new QueryDB();
-        public BindingList<Customer> result;
+        public QueryDB customerConnection = new QueryDB();
+        public BindingList<Customer> blCustomers;
         public void Update(int customerId, Customer newData, Customer oldData)
         {
 
         }
-        public int Create(Customer newCustomer)
+        public void Create(string customerName, bool active, string address, string address2, string postalCode, string phone, string city, string country)
         {
-            // create a new Customer and add it to the list
-            int result = 0; //placeholder
-            return result;
+            var user = "test"; //TODO: Store user on login for use here
+
+            ///<<ISSUE>>
+            ///Low prio - it aint broke so don't fix it
+            ///
+            ///There's probably a better way to do this.
+            ///One statement going to "else" means everything else will also go to "else" - new contry=new city=new address 
+            ///BUT, statements going through "if" does not mean everything else will go to "if" - could have existing country+existing city+new address, or existing country+new city+new address 
+            ///Will need to ask somebody to help me with this
+            ///<</ISSUE>
+            ///<<example>>
+            ///The lines _ = customerConnection.Query(sqlString); may be replaced with the following:
+            ////     cmd = new MySqlCommand(sqlString, connection); 
+            ////     cmd.ExecuteNonQuery();
+            ///<</example>>
+
+            //Check Country
+            int countryId;
+            string sqlString = $"SELECT countryId FROM country WHERE country='{country}';";
+            cmd = new MySqlCommand(sqlString, connection);
+            reader = cmd.ExecuteReader();
+            
+            if(reader.HasRows) //Get the countryId
+            {
+                reader.Read();
+                countryId = Convert.ToInt32(reader.GetValue(0));
+                reader.Close();
+            }
+            else //Create a new country and get its Id
+            {
+                reader.Close();
+                sqlString = $"INSERT INTO country(country,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{country}',now(),'{user}',now(),'{user}');";
+                _ = customerConnection.Query(sqlString);
+                countryId = (int)cmd.LastInsertedId;
+            }
+
+            //Check City
+            int cityId;
+            sqlString = $"SELECT cityId FROM city WHERE city='{city}' AND countryId={countryId}";
+            cmd = new MySqlCommand(sqlString, connection);
+            reader = cmd.ExecuteReader();
+            if(reader.HasRows) //Get the cityId
+            {
+                reader.Read();
+                cityId = Convert.ToInt32(reader.GetValue(0));
+                reader.Close();
+            }
+            else //Create a new city and get its Id
+            {
+                reader.Close();
+                sqlString = $"INSERT INTO city(city,countryId,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{city}','{countryId}',now(),'{user}',now(),'{user}');";
+                _ = customerConnection.Query(sqlString);
+                cityId = (int)cmd.LastInsertedId;
+            }
+
+            //Check Address
+            int addressId;
+            // select the address ID for which address, address 2, cityId, and postalCode are an exact match
+            sqlString = $"SELECT addressId FROM address WHERE address='{address}' AND address2='{address2}' AND cityId={cityId} AND postalCode='{postalCode}';";
+            cmd = new MySqlCommand(sqlString, connection);
+            reader = cmd.ExecuteReader();
+            if(reader.HasRows) //get addressId
+            {
+                reader.Read();
+                addressId = Convert.ToInt32(reader.GetValue(0));
+                reader.Close();
+            }
+            else //create new address and get its Id
+            {
+                reader.Close();
+                sqlString = $"INSERT INTO address(address,address2,cityId,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{address}','{address2}',{cityId},{postalCode},'{phone}',now(),'{user}',now(),'{user}');";
+                _ = customerConnection.Query(sqlString);
+                addressId = (int)cmd.LastInsertedId;
+            }
+
+            //Take the countryId, cityId, and addressId values we got above and use them to create a new Customer entry
+            sqlString = $"INSERT INTO customer(customerName,addressId,active,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{customerName}',{addressId},{active},now(),'{user}',now(),'{user}')";
+            _ = customerConnection.Query(sqlString); //'_ = Foo();' disposes the returned data because we're just running the INSERT INTO but no query
         }
         public void Delete(int customerId)
         {
-
+            string sqlString = $"DELETE FROM customer WHERE customerId={customerId}";
+            var warning = MessageBox.Show($"Are you sure you want to delete customer {customerId}?", $"Delete {customerId}?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            switch(warning)
+            {
+                case DialogResult.Yes:
+                    _ = customerConnection.Query(sqlString);
+                    MessageBox.Show($"Successfully deleted customer {customerId}");
+                    break;
+                default:
+                    MessageBox.Show($"No customers were deleted");
+                    break;
+            }
         }
         public BindingList<Customer> GetCustomers()
         {
-            result = new BindingList<Customer>();
+            blCustomers = new BindingList<Customer>();
             string sqlString = "SELECT a.customerId, a.customerName, a.active, b.addressId, b.address, b.address2, c.cityId, b.postalCode, b.phone, c.city, d.countryId, d.country FROM (customer a LEFT JOIN address b ON a.addressId = b.addressId LEFT JOIN city c ON b.cityId = c.cityId LEFT JOIN country d ON c.countryId = d.countryId)";
-            var incomingData = customerSearch.Query(sqlString);
-            foreach (var incomingCollumn in incomingData)
+            var dataIn = customerConnection.Query(sqlString);
+            foreach (var collumnIn in dataIn)
             {
                 var customer = new Customer();
                 var address = new Address();
                 var city = new City();
+                var country = new Country();
 
-                customer.customerId = int.Parse(incomingCollumn[0]);
-                customer.customerName = incomingCollumn[1];
-                customer.active = incomingCollumn[2];
-                customer.addressId = address.addressId = int.Parse(incomingCollumn[3]);
-                address.address = incomingCollumn[4];
-                address.address2 = incomingCollumn[5];
-                address.cityId = city.cityId = int.Parse(incomingCollumn[6]);
-                address.postalCode = incomingCollumn[7];
-                address.phone = incomingCollumn[8];
-                city.city = incomingCollumn[9];
-                city.countryId = int.Parse(incomingCollumn[10]);
-                city.country = incomingCollumn[11];
+                customer.customerId = int.Parse(collumnIn[0]);
+                customer.customerName = collumnIn[1];
+                customer.active = collumnIn[2];
+                customer.addressId = address.addressId = int.Parse(collumnIn[3]);
+                address.address = collumnIn[4];
+                address.address2 = collumnIn[5];
+                address.cityId = city.cityId = int.Parse(collumnIn[6]);
+                address.postalCode = collumnIn[7];
+                address.phone = collumnIn[8];
+                city.city = collumnIn[9];
+                city.countryId = int.Parse(collumnIn[10]);
+                country.country = collumnIn[11];
 
+                city.country = country;
                 address.city = city;
                 customer.address = address;
 
-                result.Add(customer);
+                blCustomers.Add(customer);
             }
-            return result;
+            return blCustomers;
         }
     }
 
@@ -128,9 +219,7 @@ namespace C969_ncarrel.Database
         {
             cmd = new MySqlCommand(input, connection);
             reader = cmd.ExecuteReader();
-            // resultList is a list which contains lists of strings
             var resultList = new List<List<string>>();
-            // FieldCount gets the number of columns in the selected row
             var columns = reader.FieldCount;
             // increment count until all columns have been added and loop until reader.Read() returns false
             while (reader.Read())
@@ -144,9 +233,7 @@ namespace C969_ncarrel.Database
                 }
                 resultList.Add(dataEntry);
             }
-            // dispose of the reader
             reader.Close();
-            // this is returning something unexpected. It should be returning a binding list of all rows but instead returns the current user's permissions. Why???
             return resultList;
         }
     }

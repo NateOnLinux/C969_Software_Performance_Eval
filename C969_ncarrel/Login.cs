@@ -48,7 +48,8 @@ namespace C969_ncarrel
 						{
 							MessageBox.Show("Login success");
 							this.Hide();
-							Homepage homepage = new Homepage();
+							var homepage = new Homepage();
+							homepage.FormClosed += (s, args) => this.Close();
 							homepage.Show();
 						}
 						else
@@ -63,5 +64,10 @@ namespace C969_ncarrel
 				MessageBox.Show("No active MySQL server connection found at localhost:3306");
 			}
 		}
-	}
+
+        private void Homepage_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

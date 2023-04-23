@@ -44,19 +44,66 @@ namespace C969_ncarrel.Database
         }
 
     }
-    public class Country
+    public class Country : Connection
     {
         public int countryId;
         public string country;
+
+        //public QueryDB customerConnection = new QueryDB();
+        public int GetId(string country)
+        {
+            QueryDB customerConnection = new QueryDB();
+            var sqlString = $"SELECT countryId FROM country WHERE country='{country}';";
+            cmd = new MySqlCommand(sqlString, connection);
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows) //Get the countryId
+            {
+                reader.Read();
+                countryId = Convert.ToInt32(reader.GetValue(0));
+                reader.Close();
+                return countryId;
+            }
+            else //Create a new country and get its Id
+            {
+                reader.Close();
+                sqlString = $"INSERT INTO country(country,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{country}',now(),'test',now(),'test');";
+                _ = customerConnection.Query(sqlString);
+                countryId = (int)cmd.LastInsertedId;
+                return countryId;
+            }
+        }
     }
-    public class City
+    public class City : Connection
     {
         public int cityId;
         public string city;
         public int countryId;
         public Country country;
+
+        public int GetId(string city, int countryId)
+        {
+            QueryDB customerConnection = new QueryDB();
+            var sqlString = $"SELECT cityId FROM city WHERE city='{city}' AND countryId={countryId}";
+            cmd = new MySqlCommand(sqlString, connection);
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows) //Get the cityId
+            {
+                reader.Read();
+                cityId = Convert.ToInt32(reader.GetValue(0));
+                reader.Close();
+                return cityId;
+            }
+            else //Create a new city and get its Id
+            {
+                reader.Close();
+                sqlString = $"INSERT INTO city(city,countryId,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{city}','{countryId}',now(),'test',now(),'test');";
+                _ = customerConnection.Query(sqlString);
+                cityId = (int)cmd.LastInsertedId;
+                return cityId;
+            }
+        }
     }
-    public class Address
+    public class Address : Connection
     {
         public int addressId;
         public string address;
@@ -65,6 +112,30 @@ namespace C969_ncarrel.Database
         public string postalCode;
         public string phone;
         public City city;
+
+        public int GetId(string address, string address2, int cityId, string postalCode, string phone)
+        {
+            QueryDB customerConnection = new QueryDB();
+            // select the address ID for which address, address 2, cityId, and postalCode are an exact match
+            var sqlString = $"SELECT addressId FROM address WHERE address='{address}' AND address2='{address2}' AND cityId={cityId} AND postalCode='{postalCode}' AND phone='{phone}';";
+            cmd = new MySqlCommand(sqlString, connection);
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows) //get addressId
+            {
+                reader.Read();
+                addressId = Convert.ToInt32(reader.GetValue(0));
+                reader.Close();
+                return addressId;
+            }
+            else //create new address and get its Id
+            {
+                reader.Close();
+                sqlString = $"INSERT INTO address(address,address2,cityId,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{address}','{address2}',{cityId},{postalCode},'{phone}',now(),'test',now(),'test');";
+                _ = customerConnection.Query(sqlString);
+                addressId = (int)cmd.LastInsertedId;
+                return addressId;
+            }
+        }
     }
     public class Customer
     {
@@ -78,90 +149,30 @@ namespace C969_ncarrel.Database
     {
         public QueryDB customerConnection = new QueryDB();
         public BindingList<Customer> blCustomers;
-        public void Update(int customerId, Customer newData, Customer oldData)
+        public void Update(int customerId, string customerName, bool active, string address, string address2, string postalCode, string phone, string city, string country)
         {
-
+            var user = "test"; //TODO: Store user on login
+            var updateCountry = new Country();
+            var updateCity = new City();
+            var updateAddress = new Address();
+            var newCountryId = updateCountry.GetId(country);
+            var newCityId = updateCity.GetId(city, newCountryId);
+            var newAddressId = updateAddress.GetId(address, address2, newCityId, postalCode, phone);
+            var sqlString = $"UPDATE customer SET customerName='{customerName}',addressId={newAddressId},active={active},lastUpdate=now(),lastUpdateBy='{user}' WHERE customerId={customerId};";
+            _ = customerConnection.Query(sqlString);
         }
         public void Create(string customerName, bool active, string address, string address2, string postalCode, string phone, string city, string country)
         {
-            var user = "test"; //TODO: Store user on login for use here
-
-            ///<<ISSUE>>
-            ///Low prio - it aint broke so don't fix it
-            ///
-            ///There's probably a better way to do this.
-            ///One statement going to "else" means everything else will also go to "else" - new contry=new city=new address 
-            ///BUT, statements going through "if" does not mean everything else will go to "if" - could have existing country+existing city+new address, or existing country+new city+new address 
-            ///Will need to ask somebody to help me with this
-            ///<</ISSUE>
-            ///<<example>>
-            ///The lines _ = customerConnection.Query(sqlString); may be replaced with the following:
-            ////     cmd = new MySqlCommand(sqlString, connection); 
-            ////     cmd.ExecuteNonQuery();
-            ///<</example>>
-
-            //Check Country
-            int countryId;
-            string sqlString = $"SELECT countryId FROM country WHERE country='{country}';";
-            cmd = new MySqlCommand(sqlString, connection);
-            reader = cmd.ExecuteReader();
-            
-            if(reader.HasRows) //Get the countryId
-            {
-                reader.Read();
-                countryId = Convert.ToInt32(reader.GetValue(0));
-                reader.Close();
-            }
-            else //Create a new country and get its Id
-            {
-                reader.Close();
-                sqlString = $"INSERT INTO country(country,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{country}',now(),'{user}',now(),'{user}');";
-                _ = customerConnection.Query(sqlString);
-                countryId = (int)cmd.LastInsertedId;
-            }
-
-            //Check City
-            int cityId;
-            sqlString = $"SELECT cityId FROM city WHERE city='{city}' AND countryId={countryId}";
-            cmd = new MySqlCommand(sqlString, connection);
-            reader = cmd.ExecuteReader();
-            if(reader.HasRows) //Get the cityId
-            {
-                reader.Read();
-                cityId = Convert.ToInt32(reader.GetValue(0));
-                reader.Close();
-            }
-            else //Create a new city and get its Id
-            {
-                reader.Close();
-                sqlString = $"INSERT INTO city(city,countryId,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{city}','{countryId}',now(),'{user}',now(),'{user}');";
-                _ = customerConnection.Query(sqlString);
-                cityId = (int)cmd.LastInsertedId;
-            }
-
-            //Check Address
-            int addressId;
-            // select the address ID for which address, address 2, cityId, and postalCode are an exact match
-            sqlString = $"SELECT addressId FROM address WHERE address='{address}' AND address2='{address2}' AND cityId={cityId} AND postalCode='{postalCode}';";
-            cmd = new MySqlCommand(sqlString, connection);
-            reader = cmd.ExecuteReader();
-            if(reader.HasRows) //get addressId
-            {
-                reader.Read();
-                addressId = Convert.ToInt32(reader.GetValue(0));
-                reader.Close();
-            }
-            else //create new address and get its Id
-            {
-                reader.Close();
-                sqlString = $"INSERT INTO address(address,address2,cityId,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{address}','{address2}',{cityId},{postalCode},'{phone}',now(),'{user}',now(),'{user}');";
-                _ = customerConnection.Query(sqlString);
-                addressId = (int)cmd.LastInsertedId;
-            }
-
+            var user = "test"; //TODO: Store user on login
+            var newCustCountry = new Country();
+            var newCustCity = new City();
+            var newCustAddress = new Address();
+            var countryId = newCustCountry.GetId(country);
+            var cityId = newCustCity.GetId(city, countryId);
+            var addressId = newCustAddress.GetId(address, address2, cityId, postalCode, phone);
             //Take the countryId, cityId, and addressId values we got above and use them to create a new Customer entry
-            sqlString = $"INSERT INTO customer(customerName,addressId,active,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{customerName}',{addressId},{active},now(),'{user}',now(),'{user}')";
-            _ = customerConnection.Query(sqlString); //'_ = Foo();' disposes the returned data because we're just running the INSERT INTO but no query
+            var sqlString = $"INSERT INTO customer(customerName,addressId,active,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{customerName}',{addressId},{active},now(),'{user}',now(),'{user}')";
+            _ = customerConnection.Query(sqlString);
         }
         public void Delete(int customerId)
         {
@@ -200,7 +211,7 @@ namespace C969_ncarrel.Database
                 address.postalCode = collumnIn[7];
                 address.phone = collumnIn[8];
                 city.city = collumnIn[9];
-                city.countryId = int.Parse(collumnIn[10]);
+                city.countryId = country.countryId = int.Parse(collumnIn[10]);
                 country.country = collumnIn[11];
 
                 city.country = country;
@@ -213,7 +224,7 @@ namespace C969_ncarrel.Database
         }
     }
 
-    public class QueryDB : Connection // General method to query the MySql database using MySql.Data.MySqlClient. This might be used to populate dgv objects.
+    public class QueryDB : Connection // General method to query the MySql database using MySql.Data.MySqlClient.
     {
         public List<List<string>> Query(string input)
         {

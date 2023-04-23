@@ -33,27 +33,32 @@ namespace C969_ncarrel
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
             this.tabPageCustomers = new System.Windows.Forms.TabPage();
+            this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.rbInactive = new System.Windows.Forms.RadioButton();
+            this.rbActive = new System.Windows.Forms.RadioButton();
+            this.btnCustDelete = new System.Windows.Forms.Button();
+            this.btnCustEdit = new System.Windows.Forms.Button();
+            this.btnCustNew = new System.Windows.Forms.Button();
+            this.labelCustCountry = new System.Windows.Forms.Label();
+            this.labelCustCity = new System.Windows.Forms.Label();
+            this.labelCustZIP = new System.Windows.Forms.Label();
+            this.labelCustAddress2 = new System.Windows.Forms.Label();
+            this.labelCustAddress = new System.Windows.Forms.Label();
+            this.cbCustCountry = new System.Windows.Forms.ComboBox();
+            this.tbCustCity = new System.Windows.Forms.TextBox();
+            this.tbCustZIP = new System.Windows.Forms.TextBox();
+            this.tbCustAddress2 = new System.Windows.Forms.TextBox();
+            this.tbCustAddress = new System.Windows.Forms.TextBox();
+            this.labelCustPhone = new System.Windows.Forms.Label();
+            this.tbCustPhone = new System.Windows.Forms.TextBox();
+            this.labelCustName = new System.Windows.Forms.Label();
+            this.tbCustName = new System.Windows.Forms.TextBox();
             this.dgvCustomers = new System.Windows.Forms.DataGridView();
             this.tabPageAppointments = new System.Windows.Forms.TabPage();
-            this.dgvAppointments = new System.Windows.Forms.DataGridView();
-            this.tabPageSysReports = new System.Windows.Forms.TabPage();
-            this.tbCustName = new System.Windows.Forms.TextBox();
-            this.labelCustName = new System.Windows.Forms.Label();
-            this.tbCustPhone = new System.Windows.Forms.TextBox();
-            this.labelCustPhone = new System.Windows.Forms.Label();
-            this.tbCustAddress = new System.Windows.Forms.TextBox();
-            this.tbCustAddress2 = new System.Windows.Forms.TextBox();
-            this.tbCustZIP = new System.Windows.Forms.TextBox();
-            this.tbCustCity = new System.Windows.Forms.TextBox();
-            this.cbCustCountry = new System.Windows.Forms.ComboBox();
-            this.labelCustAddress = new System.Windows.Forms.Label();
-            this.labelCustAddress2 = new System.Windows.Forms.Label();
-            this.labelCustZIP = new System.Windows.Forms.Label();
-            this.labelCustCity = new System.Windows.Forms.Label();
-            this.labelCustCountry = new System.Windows.Forms.Label();
-            this.btnCustNew = new System.Windows.Forms.Button();
-            this.btnCustEdit = new System.Windows.Forms.Button();
-            this.btnCustDelete = new System.Windows.Forms.Button();
+            this.btnApptClear = new System.Windows.Forms.Button();
+            this.btnApptSave = new System.Windows.Forms.Button();
+            this.dtpApptEnd = new System.Windows.Forms.DateTimePicker();
+            this.dtpApptStart = new System.Windows.Forms.DateTimePicker();
             this.labelApptEnd = new System.Windows.Forms.Label();
             this.labelApptType = new System.Windows.Forms.Label();
             this.labelApptContact = new System.Windows.Forms.Label();
@@ -68,19 +73,15 @@ namespace C969_ncarrel
             this.labelApptStart = new System.Windows.Forms.Label();
             this.labelApptCustomer = new System.Windows.Forms.Label();
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
-            this.dtpApptStart = new System.Windows.Forms.DateTimePicker();
-            this.dtpApptEnd = new System.Windows.Forms.DateTimePicker();
-            this.btnApptClear = new System.Windows.Forms.Button();
-            this.btnApptSave = new System.Windows.Forms.Button();
-            this.gbStatus = new System.Windows.Forms.GroupBox();
-            this.rbActive = new System.Windows.Forms.RadioButton();
-            this.rbInactive = new System.Windows.Forms.RadioButton();
+            this.dgvAppointments = new System.Windows.Forms.DataGridView();
+            this.tabPageSysReports = new System.Windows.Forms.TabPage();
+            this.labelEditWarning = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCustomers.SuspendLayout();
+            this.gbStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
             this.tabPageAppointments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
-            this.gbStatus.SuspendLayout();
             this.SuspendLayout();
             // 
             // Exit
@@ -119,6 +120,7 @@ namespace C969_ncarrel
             // 
             // tabPageCustomers
             // 
+            this.tabPageCustomers.Controls.Add(this.labelEditWarning);
             this.tabPageCustomers.Controls.Add(this.gbStatus);
             this.tabPageCustomers.Controls.Add(this.btnCustDelete);
             this.tabPageCustomers.Controls.Add(this.btnCustEdit);
@@ -146,6 +148,182 @@ namespace C969_ncarrel
             this.tabPageCustomers.Text = "Manage Customers";
             this.tabPageCustomers.UseVisualStyleBackColor = true;
             // 
+            // gbStatus
+            // 
+            this.gbStatus.Controls.Add(this.rbInactive);
+            this.gbStatus.Controls.Add(this.rbActive);
+            this.gbStatus.Location = new System.Drawing.Point(23, 256);
+            this.gbStatus.Name = "gbStatus";
+            this.gbStatus.Size = new System.Drawing.Size(102, 61);
+            this.gbStatus.TabIndex = 24;
+            this.gbStatus.TabStop = false;
+            this.gbStatus.Text = "Status";
+            // 
+            // rbInactive
+            // 
+            this.rbInactive.AutoSize = true;
+            this.rbInactive.Location = new System.Drawing.Point(38, 38);
+            this.rbInactive.Name = "rbInactive";
+            this.rbInactive.Size = new System.Drawing.Size(63, 17);
+            this.rbInactive.TabIndex = 1;
+            this.rbInactive.Text = "Inactive";
+            this.rbInactive.UseVisualStyleBackColor = true;
+            // 
+            // rbActive
+            // 
+            this.rbActive.AutoSize = true;
+            this.rbActive.Checked = true;
+            this.rbActive.Location = new System.Drawing.Point(38, 15);
+            this.rbActive.Name = "rbActive";
+            this.rbActive.Size = new System.Drawing.Size(55, 17);
+            this.rbActive.TabIndex = 0;
+            this.rbActive.TabStop = true;
+            this.rbActive.Text = "Active";
+            this.rbActive.UseVisualStyleBackColor = true;
+            // 
+            // btnCustDelete
+            // 
+            this.btnCustDelete.Location = new System.Drawing.Point(836, 264);
+            this.btnCustDelete.Name = "btnCustDelete";
+            this.btnCustDelete.Size = new System.Drawing.Size(87, 23);
+            this.btnCustDelete.TabIndex = 23;
+            this.btnCustDelete.Text = "Delete";
+            this.btnCustDelete.UseVisualStyleBackColor = true;
+            this.btnCustDelete.Click += new System.EventHandler(this.btnCustDelete_Click);
+            // 
+            // btnCustEdit
+            // 
+            this.btnCustEdit.Location = new System.Drawing.Point(836, 235);
+            this.btnCustEdit.Name = "btnCustEdit";
+            this.btnCustEdit.Size = new System.Drawing.Size(87, 23);
+            this.btnCustEdit.TabIndex = 22;
+            this.btnCustEdit.Text = "Edit";
+            this.btnCustEdit.UseVisualStyleBackColor = true;
+            this.btnCustEdit.Click += new System.EventHandler(this.btnCustEdit_Click);
+            // 
+            // btnCustNew
+            // 
+            this.btnCustNew.Location = new System.Drawing.Point(836, 204);
+            this.btnCustNew.Name = "btnCustNew";
+            this.btnCustNew.Size = new System.Drawing.Size(87, 23);
+            this.btnCustNew.TabIndex = 21;
+            this.btnCustNew.Text = "Add New";
+            this.btnCustNew.UseVisualStyleBackColor = true;
+            this.btnCustNew.Click += new System.EventHandler(this.btnCustNew_Click);
+            // 
+            // labelCustCountry
+            // 
+            this.labelCustCountry.AutoSize = true;
+            this.labelCustCountry.Location = new System.Drawing.Point(469, 235);
+            this.labelCustCountry.Name = "labelCustCountry";
+            this.labelCustCountry.Size = new System.Drawing.Size(43, 13);
+            this.labelCustCountry.TabIndex = 20;
+            this.labelCustCountry.Text = "Country";
+            // 
+            // labelCustCity
+            // 
+            this.labelCustCity.AutoSize = true;
+            this.labelCustCity.Location = new System.Drawing.Point(488, 209);
+            this.labelCustCity.Name = "labelCustCity";
+            this.labelCustCity.Size = new System.Drawing.Size(24, 13);
+            this.labelCustCity.TabIndex = 19;
+            this.labelCustCity.Text = "City";
+            // 
+            // labelCustZIP
+            // 
+            this.labelCustZIP.AutoSize = true;
+            this.labelCustZIP.Location = new System.Drawing.Point(267, 261);
+            this.labelCustZIP.Name = "labelCustZIP";
+            this.labelCustZIP.Size = new System.Drawing.Size(24, 13);
+            this.labelCustZIP.TabIndex = 18;
+            this.labelCustZIP.Text = "ZIP";
+            // 
+            // labelCustAddress2
+            // 
+            this.labelCustAddress2.AutoSize = true;
+            this.labelCustAddress2.Location = new System.Drawing.Point(255, 235);
+            this.labelCustAddress2.Name = "labelCustAddress2";
+            this.labelCustAddress2.Size = new System.Drawing.Size(36, 13);
+            this.labelCustAddress2.TabIndex = 17;
+            this.labelCustAddress2.Text = "Line 2";
+            // 
+            // labelCustAddress
+            // 
+            this.labelCustAddress.AutoSize = true;
+            this.labelCustAddress.Location = new System.Drawing.Point(246, 209);
+            this.labelCustAddress.Name = "labelCustAddress";
+            this.labelCustAddress.Size = new System.Drawing.Size(45, 13);
+            this.labelCustAddress.TabIndex = 16;
+            this.labelCustAddress.Text = "Address";
+            // 
+            // cbCustCountry
+            // 
+            this.cbCustCountry.FormattingEnabled = true;
+            this.cbCustCountry.Location = new System.Drawing.Point(518, 232);
+            this.cbCustCountry.Name = "cbCustCountry";
+            this.cbCustCountry.Size = new System.Drawing.Size(121, 21);
+            this.cbCustCountry.TabIndex = 15;
+            // 
+            // tbCustCity
+            // 
+            this.tbCustCity.Location = new System.Drawing.Point(518, 206);
+            this.tbCustCity.Name = "tbCustCity";
+            this.tbCustCity.Size = new System.Drawing.Size(168, 20);
+            this.tbCustCity.TabIndex = 14;
+            // 
+            // tbCustZIP
+            // 
+            this.tbCustZIP.Location = new System.Drawing.Point(297, 258);
+            this.tbCustZIP.Name = "tbCustZIP";
+            this.tbCustZIP.Size = new System.Drawing.Size(121, 20);
+            this.tbCustZIP.TabIndex = 13;
+            // 
+            // tbCustAddress2
+            // 
+            this.tbCustAddress2.Location = new System.Drawing.Point(297, 232);
+            this.tbCustAddress2.Name = "tbCustAddress2";
+            this.tbCustAddress2.Size = new System.Drawing.Size(168, 20);
+            this.tbCustAddress2.TabIndex = 12;
+            // 
+            // tbCustAddress
+            // 
+            this.tbCustAddress.Location = new System.Drawing.Point(297, 206);
+            this.tbCustAddress.Name = "tbCustAddress";
+            this.tbCustAddress.Size = new System.Drawing.Size(168, 20);
+            this.tbCustAddress.TabIndex = 11;
+            // 
+            // labelCustPhone
+            // 
+            this.labelCustPhone.AutoSize = true;
+            this.labelCustPhone.Location = new System.Drawing.Point(28, 235);
+            this.labelCustPhone.Name = "labelCustPhone";
+            this.labelCustPhone.Size = new System.Drawing.Size(38, 13);
+            this.labelCustPhone.TabIndex = 10;
+            this.labelCustPhone.Text = "Phone";
+            // 
+            // tbCustPhone
+            // 
+            this.tbCustPhone.Location = new System.Drawing.Point(72, 232);
+            this.tbCustPhone.Name = "tbCustPhone";
+            this.tbCustPhone.Size = new System.Drawing.Size(168, 20);
+            this.tbCustPhone.TabIndex = 8;
+            // 
+            // labelCustName
+            // 
+            this.labelCustName.AutoSize = true;
+            this.labelCustName.Location = new System.Drawing.Point(31, 209);
+            this.labelCustName.Name = "labelCustName";
+            this.labelCustName.Size = new System.Drawing.Size(35, 13);
+            this.labelCustName.TabIndex = 6;
+            this.labelCustName.Text = "Name";
+            // 
+            // tbCustName
+            // 
+            this.tbCustName.Location = new System.Drawing.Point(72, 206);
+            this.tbCustName.Name = "tbCustName";
+            this.tbCustName.Size = new System.Drawing.Size(168, 20);
+            this.tbCustName.TabIndex = 5;
+            // 
             // dgvCustomers
             // 
             this.dgvCustomers.AllowUserToAddRows = false;
@@ -158,6 +336,7 @@ namespace C969_ncarrel
             this.dgvCustomers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCustomers.Size = new System.Drawing.Size(919, 197);
             this.dgvCustomers.TabIndex = 4;
+            this.dgvCustomers.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomers_CellDoubleClick);
             // 
             // tabPageAppointments
             // 
@@ -188,169 +367,37 @@ namespace C969_ncarrel
             this.tabPageAppointments.Text = "New Appointment";
             this.tabPageAppointments.UseVisualStyleBackColor = true;
             // 
-            // dgvAppointments
+            // btnApptClear
             // 
-            this.dgvAppointments.AllowUserToAddRows = false;
-            this.dgvAppointments.AllowUserToDeleteRows = false;
-            this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAppointments.Location = new System.Drawing.Point(6, 3);
-            this.dgvAppointments.MultiSelect = false;
-            this.dgvAppointments.Name = "dgvAppointments";
-            this.dgvAppointments.ReadOnly = true;
-            this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAppointments.Size = new System.Drawing.Size(919, 198);
-            this.dgvAppointments.TabIndex = 1;
+            this.btnApptClear.Location = new System.Drawing.Point(836, 239);
+            this.btnApptClear.Name = "btnApptClear";
+            this.btnApptClear.Size = new System.Drawing.Size(87, 23);
+            this.btnApptClear.TabIndex = 40;
+            this.btnApptClear.Text = "Clear";
+            this.btnApptClear.UseVisualStyleBackColor = true;
             // 
-            // tabPageSysReports
+            // btnApptSave
             // 
-            this.tabPageSysReports.Location = new System.Drawing.Point(4, 22);
-            this.tabPageSysReports.Name = "tabPageSysReports";
-            this.tabPageSysReports.Size = new System.Drawing.Size(931, 325);
-            this.tabPageSysReports.TabIndex = 3;
-            this.tabPageSysReports.Text = "View System Reports";
-            this.tabPageSysReports.UseVisualStyleBackColor = true;
+            this.btnApptSave.Location = new System.Drawing.Point(836, 208);
+            this.btnApptSave.Name = "btnApptSave";
+            this.btnApptSave.Size = new System.Drawing.Size(87, 23);
+            this.btnApptSave.TabIndex = 39;
+            this.btnApptSave.Text = "Save";
+            this.btnApptSave.UseVisualStyleBackColor = true;
             // 
-            // tbCustName
+            // dtpApptEnd
             // 
-            this.tbCustName.Location = new System.Drawing.Point(72, 206);
-            this.tbCustName.Name = "tbCustName";
-            this.tbCustName.Size = new System.Drawing.Size(168, 20);
-            this.tbCustName.TabIndex = 5;
+            this.dtpApptEnd.Location = new System.Drawing.Point(78, 291);
+            this.dtpApptEnd.Name = "dtpApptEnd";
+            this.dtpApptEnd.Size = new System.Drawing.Size(200, 20);
+            this.dtpApptEnd.TabIndex = 38;
             // 
-            // labelCustName
+            // dtpApptStart
             // 
-            this.labelCustName.AutoSize = true;
-            this.labelCustName.Location = new System.Drawing.Point(31, 209);
-            this.labelCustName.Name = "labelCustName";
-            this.labelCustName.Size = new System.Drawing.Size(35, 13);
-            this.labelCustName.TabIndex = 6;
-            this.labelCustName.Text = "Name";
-            // 
-            // tbCustPhone
-            // 
-            this.tbCustPhone.Location = new System.Drawing.Point(72, 232);
-            this.tbCustPhone.Name = "tbCustPhone";
-            this.tbCustPhone.Size = new System.Drawing.Size(168, 20);
-            this.tbCustPhone.TabIndex = 8;
-            // 
-            // labelCustPhone
-            // 
-            this.labelCustPhone.AutoSize = true;
-            this.labelCustPhone.Location = new System.Drawing.Point(28, 235);
-            this.labelCustPhone.Name = "labelCustPhone";
-            this.labelCustPhone.Size = new System.Drawing.Size(38, 13);
-            this.labelCustPhone.TabIndex = 10;
-            this.labelCustPhone.Text = "Phone";
-            // 
-            // tbCustAddress
-            // 
-            this.tbCustAddress.Location = new System.Drawing.Point(297, 206);
-            this.tbCustAddress.Name = "tbCustAddress";
-            this.tbCustAddress.Size = new System.Drawing.Size(168, 20);
-            this.tbCustAddress.TabIndex = 11;
-            // 
-            // tbCustAddress2
-            // 
-            this.tbCustAddress2.Location = new System.Drawing.Point(297, 232);
-            this.tbCustAddress2.Name = "tbCustAddress2";
-            this.tbCustAddress2.Size = new System.Drawing.Size(168, 20);
-            this.tbCustAddress2.TabIndex = 12;
-            // 
-            // tbCustZIP
-            // 
-            this.tbCustZIP.Location = new System.Drawing.Point(297, 258);
-            this.tbCustZIP.Name = "tbCustZIP";
-            this.tbCustZIP.Size = new System.Drawing.Size(121, 20);
-            this.tbCustZIP.TabIndex = 13;
-            // 
-            // tbCustCity
-            // 
-            this.tbCustCity.Location = new System.Drawing.Point(518, 206);
-            this.tbCustCity.Name = "tbCustCity";
-            this.tbCustCity.Size = new System.Drawing.Size(168, 20);
-            this.tbCustCity.TabIndex = 14;
-            // 
-            // cbCustCountry
-            // 
-            this.cbCustCountry.FormattingEnabled = true;
-            this.cbCustCountry.Location = new System.Drawing.Point(518, 232);
-            this.cbCustCountry.Name = "cbCustCountry";
-            this.cbCustCountry.Size = new System.Drawing.Size(121, 21);
-            this.cbCustCountry.TabIndex = 15;
-            // 
-            // labelCustAddress
-            // 
-            this.labelCustAddress.AutoSize = true;
-            this.labelCustAddress.Location = new System.Drawing.Point(246, 209);
-            this.labelCustAddress.Name = "labelCustAddress";
-            this.labelCustAddress.Size = new System.Drawing.Size(45, 13);
-            this.labelCustAddress.TabIndex = 16;
-            this.labelCustAddress.Text = "Address";
-            // 
-            // labelCustAddress2
-            // 
-            this.labelCustAddress2.AutoSize = true;
-            this.labelCustAddress2.Location = new System.Drawing.Point(255, 235);
-            this.labelCustAddress2.Name = "labelCustAddress2";
-            this.labelCustAddress2.Size = new System.Drawing.Size(36, 13);
-            this.labelCustAddress2.TabIndex = 17;
-            this.labelCustAddress2.Text = "Line 2";
-            // 
-            // labelCustZIP
-            // 
-            this.labelCustZIP.AutoSize = true;
-            this.labelCustZIP.Location = new System.Drawing.Point(267, 261);
-            this.labelCustZIP.Name = "labelCustZIP";
-            this.labelCustZIP.Size = new System.Drawing.Size(24, 13);
-            this.labelCustZIP.TabIndex = 18;
-            this.labelCustZIP.Text = "ZIP";
-            // 
-            // labelCustCity
-            // 
-            this.labelCustCity.AutoSize = true;
-            this.labelCustCity.Location = new System.Drawing.Point(488, 209);
-            this.labelCustCity.Name = "labelCustCity";
-            this.labelCustCity.Size = new System.Drawing.Size(24, 13);
-            this.labelCustCity.TabIndex = 19;
-            this.labelCustCity.Text = "City";
-            // 
-            // labelCustCountry
-            // 
-            this.labelCustCountry.AutoSize = true;
-            this.labelCustCountry.Location = new System.Drawing.Point(469, 235);
-            this.labelCustCountry.Name = "labelCustCountry";
-            this.labelCustCountry.Size = new System.Drawing.Size(43, 13);
-            this.labelCustCountry.TabIndex = 20;
-            this.labelCustCountry.Text = "Country";
-            // 
-            // btnCustNew
-            // 
-            this.btnCustNew.Location = new System.Drawing.Point(836, 204);
-            this.btnCustNew.Name = "btnCustNew";
-            this.btnCustNew.Size = new System.Drawing.Size(87, 23);
-            this.btnCustNew.TabIndex = 21;
-            this.btnCustNew.Text = "Add New";
-            this.btnCustNew.UseVisualStyleBackColor = true;
-            this.btnCustNew.Click += new System.EventHandler(this.btnCustNew_Click);
-            // 
-            // btnCustEdit
-            // 
-            this.btnCustEdit.Location = new System.Drawing.Point(836, 235);
-            this.btnCustEdit.Name = "btnCustEdit";
-            this.btnCustEdit.Size = new System.Drawing.Size(87, 23);
-            this.btnCustEdit.TabIndex = 22;
-            this.btnCustEdit.Text = "Edit";
-            this.btnCustEdit.UseVisualStyleBackColor = true;
-            // 
-            // btnCustDelete
-            // 
-            this.btnCustDelete.Location = new System.Drawing.Point(836, 264);
-            this.btnCustDelete.Name = "btnCustDelete";
-            this.btnCustDelete.Size = new System.Drawing.Size(87, 23);
-            this.btnCustDelete.TabIndex = 23;
-            this.btnCustDelete.Text = "Delete";
-            this.btnCustDelete.UseVisualStyleBackColor = true;
-            this.btnCustDelete.Click += new System.EventHandler(this.btnCustDelete_Click);
+            this.dtpApptStart.Location = new System.Drawing.Point(78, 265);
+            this.dtpApptStart.Name = "dtpApptStart";
+            this.dtpApptStart.Size = new System.Drawing.Size(200, 20);
+            this.dtpApptStart.TabIndex = 37;
             // 
             // labelApptEnd
             // 
@@ -468,70 +515,38 @@ namespace C969_ncarrel
             this.tbApptsCustomer.Size = new System.Drawing.Size(168, 20);
             this.tbApptsCustomer.TabIndex = 21;
             // 
-            // dtpApptStart
+            // dgvAppointments
             // 
-            this.dtpApptStart.Location = new System.Drawing.Point(78, 265);
-            this.dtpApptStart.Name = "dtpApptStart";
-            this.dtpApptStart.Size = new System.Drawing.Size(200, 20);
-            this.dtpApptStart.TabIndex = 37;
+            this.dgvAppointments.AllowUserToAddRows = false;
+            this.dgvAppointments.AllowUserToDeleteRows = false;
+            this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAppointments.Location = new System.Drawing.Point(6, 3);
+            this.dgvAppointments.MultiSelect = false;
+            this.dgvAppointments.Name = "dgvAppointments";
+            this.dgvAppointments.ReadOnly = true;
+            this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvAppointments.Size = new System.Drawing.Size(919, 198);
+            this.dgvAppointments.TabIndex = 1;
             // 
-            // dtpApptEnd
+            // tabPageSysReports
             // 
-            this.dtpApptEnd.Location = new System.Drawing.Point(78, 291);
-            this.dtpApptEnd.Name = "dtpApptEnd";
-            this.dtpApptEnd.Size = new System.Drawing.Size(200, 20);
-            this.dtpApptEnd.TabIndex = 38;
+            this.tabPageSysReports.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSysReports.Name = "tabPageSysReports";
+            this.tabPageSysReports.Size = new System.Drawing.Size(931, 325);
+            this.tabPageSysReports.TabIndex = 3;
+            this.tabPageSysReports.Text = "View System Reports";
+            this.tabPageSysReports.UseVisualStyleBackColor = true;
             // 
-            // btnApptClear
+            // labelEditWarning
             // 
-            this.btnApptClear.Location = new System.Drawing.Point(836, 239);
-            this.btnApptClear.Name = "btnApptClear";
-            this.btnApptClear.Size = new System.Drawing.Size(87, 23);
-            this.btnApptClear.TabIndex = 40;
-            this.btnApptClear.Text = "Clear";
-            this.btnApptClear.UseVisualStyleBackColor = true;
-            // 
-            // btnApptSave
-            // 
-            this.btnApptSave.Location = new System.Drawing.Point(836, 208);
-            this.btnApptSave.Name = "btnApptSave";
-            this.btnApptSave.Size = new System.Drawing.Size(87, 23);
-            this.btnApptSave.TabIndex = 39;
-            this.btnApptSave.Text = "Save";
-            this.btnApptSave.UseVisualStyleBackColor = true;
-            // 
-            // gbStatus
-            // 
-            this.gbStatus.Controls.Add(this.rbInactive);
-            this.gbStatus.Controls.Add(this.rbActive);
-            this.gbStatus.Location = new System.Drawing.Point(23, 256);
-            this.gbStatus.Name = "gbStatus";
-            this.gbStatus.Size = new System.Drawing.Size(102, 61);
-            this.gbStatus.TabIndex = 24;
-            this.gbStatus.TabStop = false;
-            this.gbStatus.Text = "Status";
-            // 
-            // rbActive
-            // 
-            this.rbActive.AutoSize = true;
-            this.rbActive.Checked = true;
-            this.rbActive.Location = new System.Drawing.Point(38, 15);
-            this.rbActive.Name = "rbActive";
-            this.rbActive.Size = new System.Drawing.Size(55, 17);
-            this.rbActive.TabIndex = 0;
-            this.rbActive.TabStop = true;
-            this.rbActive.Text = "Active";
-            this.rbActive.UseVisualStyleBackColor = true;
-            // 
-            // rbInactive
-            // 
-            this.rbInactive.AutoSize = true;
-            this.rbInactive.Location = new System.Drawing.Point(38, 38);
-            this.rbInactive.Name = "rbInactive";
-            this.rbInactive.Size = new System.Drawing.Size(63, 17);
-            this.rbInactive.TabIndex = 1;
-            this.rbInactive.Text = "Inactive";
-            this.rbInactive.UseVisualStyleBackColor = true;
+            this.labelEditWarning.AutoSize = true;
+            this.labelEditWarning.ForeColor = System.Drawing.Color.Red;
+            this.labelEditWarning.Location = new System.Drawing.Point(724, 304);
+            this.labelEditWarning.Name = "labelEditWarning";
+            this.labelEditWarning.Size = new System.Drawing.Size(155, 13);
+            this.labelEditWarning.TabIndex = 25;
+            this.labelEditWarning.Text = "You are currently editing UID -1";
+            this.labelEditWarning.Visible = false;
             // 
             // Homepage
             // 
@@ -546,12 +561,12 @@ namespace C969_ncarrel
             this.tabControlMainScreen.ResumeLayout(false);
             this.tabPageCustomers.ResumeLayout(false);
             this.tabPageCustomers.PerformLayout();
+            this.gbStatus.ResumeLayout(false);
+            this.gbStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).EndInit();
             this.tabPageAppointments.ResumeLayout(false);
             this.tabPageAppointments.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
-            this.gbStatus.ResumeLayout(false);
-            this.gbStatus.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -603,5 +618,6 @@ namespace C969_ncarrel
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.RadioButton rbInactive;
         private System.Windows.Forms.RadioButton rbActive;
+        private System.Windows.Forms.Label labelEditWarning;
     }
 }

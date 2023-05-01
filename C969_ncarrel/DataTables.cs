@@ -1,13 +1,16 @@
 ﻿using C969_ncarrel.Database;
 using System.ComponentModel;
 using System.Data;
+using MySql.Data.MySqlClient;
 
 namespace C969_ncarrel
 {
-    class DataTables
+    class DataTables : Connection
     {
         private BindingList<Customer> AllCustomers = new BindingList<Customer>();
+        private BindingList<Appointment> AllAppointments = new BindingList<Appointment>();
         private CustomerData CustomerData = new CustomerData();
+        private Appointment Appointments = new Appointment();
 
         public DataTable PopulateCustomers()
         {
@@ -28,6 +31,33 @@ namespace C969_ncarrel
                 dtCustomers.Rows.Add(entry.customerId, entry.customerName, customerStatus, entry.address.phone, entry.address.address, entry.address.address2, entry.address.city.city, entry.address.postalCode, entry.address.city.country.country);
             }
             return dtCustomers;
+        }
+
+        public DataTable PopulateAppointments()
+        {
+            var dtAppointments = new DataTable();
+            AllAppointments = Appointments.GetAppointments();
+            dtAppointments.Columns.Add("Appointment ID");
+            dtAppointments.Columns.Add("Customer");
+            dtAppointments.Columns.Add("Date");
+            dtAppointments.Columns.Add("Start");
+            dtAppointments.Columns.Add("End");
+            dtAppointments.Columns.Add("Title");
+            dtAppointments.Columns.Add("Type");
+            foreach (var entry in AllAppointments)
+            {
+                var sqlString = $"SELECT customerName FROM customer WHERE customerId = {entry.customerId}";
+                cmd = new MySqlCommand(sqlString,connection);
+                reader = cmd.ExecuteReader();
+                if(reader.HasRows)
+                {
+                    reader.Read();
+                    var customerName = reader.GetString(0);
+                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToShortDateString(), entry.start.TimeOfDay, entry.end.TimeOfDay, entry.title, entry.type);
+                }
+                reader.Close();
+            }
+            return dtAppointments;
         }
     }
 }

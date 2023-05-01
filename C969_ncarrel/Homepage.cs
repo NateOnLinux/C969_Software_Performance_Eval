@@ -9,7 +9,8 @@ namespace C969_ncarrel
     public partial class Homepage : Form
     {
         private DataTables CustomerView = new DataTables();
-        CustomerData modifyDB = new CustomerData();
+        CustomerData Customer = new CustomerData();
+        Appointment Appointment;
         EditingState currentState;
         struct EditingState
         {
@@ -34,21 +35,22 @@ namespace C969_ncarrel
 
         private void btnCustNew_Click(object sender, EventArgs e)
         {
-            modifyDB.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text); 
+            Customer.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text); 
             UpdateDataGrids();
         }
 
         private void btnCustDelete_Click(object sender, EventArgs e)
         {
             var id = Convert.ToInt32(dgvCustomers.CurrentRow.Cells[0].Value);
-            modifyDB.Delete(id);
+            Customer.Delete(id);
             UpdateDataGrids();
         }
 
         private void UpdateDataGrids()
         {
             dgvCustomers.DataSource = CustomerView.PopulateCustomers();
-            dgvAppointments.DataSource = CustomerView.PopulateCustomers();
+            dgvCustomersAppt.DataSource = CustomerView.PopulateCustomers();
+            dgvCalendar.DataSource = CustomerView.PopulateAppointments();
         }
 
         private void dgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -86,10 +88,102 @@ namespace C969_ncarrel
                 var result = MessageBox.Show($"Are you sure you want to edit {dgvCustomers.CurrentRow.Cells[1].Value} (UID {Convert.ToInt32(dgvCustomers.CurrentRow.Cells[0].Value)})?", "Confirm changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if(result == DialogResult.Yes)
                 {
-                    modifyDB.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
+                    Customer.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
                     UpdateDataGrids();
                     currentState = new EditingState(-1, false);
                     labelEditWarning.Visible = false;
+                }
+            }
+        }
+
+        private void dgvCustomersAppt_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            tbApptsCustomer.Text = dgvCustomersAppt.CurrentRow.Cells[1].Value.ToString();
+        }
+
+        private void btnApptSave_Click(object sender, EventArgs e)
+        {
+            Appointment = new Appointment();
+            Appointment.customerId = Convert.ToInt32(dgvCustomersAppt.CurrentRow.Cells[0].Value);
+            Appointment.title = tbApptTitle.Text;
+            Appointment.description = tbApptDescription.Text;
+            Appointment.location = tbApptLocation.Text;
+            Appointment.contact = tbApptContact.Text;
+            Appointment.type = tbApptType.Text;
+            Appointment.url = tbApptURL.Text;
+            Appointment.start = dtpApptStart.Value;
+            Appointment.end = dtpApptEnd.Value;
+
+            if (!currentState.Editing)
+            {
+                Appointment.Create(Appointment);
+            }
+            else
+            {
+                Appointment.Update(currentState.Id, Appointment);
+                currentState = new EditingState(-1,false);
+            }
+
+            UpdateDataGrids();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            Appointment = new Appointment();
+            var appointmentId = Convert.ToInt32(dgvCalendar.CurrentRow.Cells[0].Value);
+            Appointment.Delete(appointmentId);
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            var id = Convert.ToInt32(dgvCalendar.CurrentRow.Cells[0].Value);
+            Appointment = new Appointment();
+            Appointment = Appointment.GetAppointments(id);
+            tbApptTitle.Text = Appointment.title;
+            tbApptDescription.Text = Appointment.description;
+            tbApptLocation.Text = Appointment.location;
+            tbApptContact.Text = Appointment.contact;
+            tbApptType.Text = Appointment.type;
+            tbApptURL.Text = Appointment.url;
+            dtpApptStart.Value = Appointment.start;
+            dtpApptEnd.Value = Appointment.end;
+            tabControlMainScreen.SelectedTab = tabPageAppointments;
+            UpdateDataGrids();
+            foreach (DataGridViewRow row in dgvCustomersAppt.Rows)
+            {
+                if (Convert.ToInt32(row.Cells[0].Value) == Appointment.customerId)
+                {
+                    dgvCustomersAppt.Rows[row.Index].Selected = true;
+                    tbApptsCustomer.Text = row.Cells[1].Value.ToString();
+                }
+            }
+            currentState = new EditingState(id, true);
+        }
+        private void tabControlMainScreen_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (currentState.Editing)
+            {
+                var Confirm = MessageBox.Show($"You have unsaved changes. Continue without saving?", "Continue without saving?", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (Confirm == DialogResult.OK)
+                {
+                    tbCustName.Text = "";
+                    tbCustAddress.Text = "";
+                    tbCustAddress2.Text = "";
+                    tbCustZIP.Text = "";
+                    tbCustPhone.Text = "";
+                    tbCustCity.Text = "";
+                    cbCustCountry.Text = "";
+                    tbApptTitle.Text = "";
+                    tbApptDescription.Text = "";
+                    tbApptLocation.Text = "";
+                    tbApptContact.Text = "";
+                    tbApptType.Text = "";
+                    tbApptURL.Text = "";
+                    currentState = new EditingState(-1, false);
+                }
+                else if (Confirm == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
                 }
             }
         }

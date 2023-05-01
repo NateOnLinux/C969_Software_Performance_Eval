@@ -7,6 +7,13 @@ using System.Windows.Forms;
 
 namespace C969_ncarrel.Database
 {
+    public class User
+    {
+        public int userId;
+        public string userName;
+        public string password;
+        bool active;
+    }
     public class Appointment : Connection
     {
         //all vars are named the exact same as in the database for readability
@@ -21,28 +28,105 @@ namespace C969_ncarrel.Database
         public string url;
         public DateTime start;
         public DateTime end;
-        public DateTime createDate;
-        public string createdBy;
-        public DateTime lastUpdate;
-        public string lastUpdateBy;
-        
+
+        QueryDB ApptConnection;
+        BindingList<Appointment> blAppointments;
         public bool ConflictCheck(DateTime start, DateTime end)
         {
             //using start and end, check that no other appointments occupy the time slot. If another appointment occupies the time slot, return false and show error dialogue
             return true;
         }
         
-        public int Create(int appointmentId, Appointment newAppointment)
+        public int Create(Appointment newAppointment)
         {
             // using appointment data, add or update appointment entries
+            userId = 1;
+            ApptConnection = new QueryDB();
+            var sqlString = 
+                $"INSERT INTO appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) " +
+                $"VALUES ({newAppointment.customerId},{newAppointment.userId},'" + MySqlHelper.EscapeString(newAppointment.title) + $"','{newAppointment.description}','{newAppointment.location}','{newAppointment.contact}'," +
+                $"'{newAppointment.type}','{newAppointment.url}','{newAppointment.start.ToString("yyyy-MM-dd HH:mm:ss")}','{newAppointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',now(),'test',now(),'test');";
+            _ = ApptConnection.Query(sqlString);
             return appointmentId;
         }
 
         public void Delete(int appointmentId)
         {
-            //using the appointmentID parameter, "DELETE FROM appointment WHERE appointmentId = " + appointmentID + ";";
+            //using appointmentID parameter, "DELETE FROM appointment WHERE appointmentId={appointmentID};
+            ApptConnection = new QueryDB();
+            string sqlString = $"DELETE FROM appointment WHERE appointmentId={appointmentId}";
+            var warning = MessageBox.Show($"Are you sure you want to delete appointment {appointmentId}?", $"Delete {appointmentId}?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            switch (warning)
+            {
+                case DialogResult.Yes:
+                    _ = ApptConnection.Query(sqlString);
+                    MessageBox.Show($"Successfully deleted appointment {appointmentId}");
+                    break;
+                default:
+                    MessageBox.Show($"No appointments were deleted");
+                    break;
+            }
         }
 
+        public void Update(int appointmentId, Appointment appointment)
+        {
+            //using appointmentID parameter, "UPDATE appointment SET ... WHERE appointmentId={appointmentID};" 
+            var sqlString = $"UPDATE appointment SET customerId={appointment.customerId},title='{appointment.title}',description='{appointment.description}'," +
+                $"location='{appointment.location}',contact='{appointment.contact}',type='{appointment.type}',url='{appointment.url}'," +
+                $"start='{appointment.start.ToString("yyyy-MM-dd HH:mm:ss")}',end='{appointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',lastUpdate=now(),lastUpdateBy='test' WHERE appointmentId={appointmentId};";
+            _ = ApptConnection.Query(sqlString);
+        }
+
+        public BindingList<Appointment> GetAppointments()
+        {
+            ApptConnection = new QueryDB();
+            blAppointments = new BindingList<Appointment>();
+            string sqlString = "SELECT * FROM appointment";
+            var dataIn = ApptConnection.Query(sqlString);
+            foreach (var collumnIn in dataIn)
+            {
+                var appointment = new Appointment();
+
+                appointment.appointmentId = int.Parse(collumnIn[0]);
+                appointment.customerId = int.Parse(collumnIn[1]);
+                appointment.userId = int.Parse(collumnIn[2]);
+                appointment.title = collumnIn[3];
+                appointment.description = collumnIn[4];
+                appointment.location = collumnIn[5];
+                appointment.contact = collumnIn[6];
+                appointment.type = collumnIn[7];
+                appointment.url = collumnIn[8];
+                appointment.start = DateTime.Parse(collumnIn[9]);
+                appointment.end = DateTime.Parse(collumnIn[10]);
+
+                blAppointments.Add(appointment);
+            }
+            return blAppointments;
+        }
+
+        public Appointment GetAppointments(int appointmentId)
+        {
+            ApptConnection = new QueryDB();
+            string sqlString = $"SELECT * FROM appointment WHERE appointmentId={appointmentId};";
+            var dataIn = ApptConnection.Query(sqlString);
+            var appointment = new Appointment();
+            foreach (var collumnIn in dataIn) //alternatively, "appointment.(field) = dataIn[0][n];" but using foreach in case this needs to be adapted later
+            {
+                //var appointment = new Appointment();
+                appointment.appointmentId = int.Parse(collumnIn[0]);
+                appointment.customerId = int.Parse(collumnIn[1]);
+                appointment.userId = int.Parse(collumnIn[2]);
+                appointment.title = collumnIn[3];
+                appointment.description = collumnIn[4];
+                appointment.location = collumnIn[5];
+                appointment.contact = collumnIn[6];
+                appointment.type = collumnIn[7];
+                appointment.url = collumnIn[8];
+                appointment.start = DateTime.Parse(collumnIn[9]);
+                appointment.end = DateTime.Parse(collumnIn[10]);
+            }
+            return appointment;
+        }
     }
     public class Country : Connection
     {
@@ -145,7 +229,7 @@ namespace C969_ncarrel.Database
         public string active;
         public Address address;
     }
-    public class CustomerData : Connection //separate from Customer? Couldn't find a good solution to include customer object here
+    public class CustomerData : Connection
     {
         public QueryDB customerConnection = new QueryDB();
         public BindingList<Customer> blCustomers;

@@ -33,6 +33,7 @@ namespace C969_ncarrel
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
             this.tabPageCustomers = new System.Windows.Forms.TabPage();
+            this.labelEditWarning = new System.Windows.Forms.Label();
             this.gbStatus = new System.Windows.Forms.GroupBox();
             this.rbInactive = new System.Windows.Forms.RadioButton();
             this.rbActive = new System.Windows.Forms.RadioButton();
@@ -55,7 +56,8 @@ namespace C969_ncarrel
             this.tbCustName = new System.Windows.Forms.TextBox();
             this.dgvCustomers = new System.Windows.Forms.DataGridView();
             this.tabPageAppointments = new System.Windows.Forms.TabPage();
-            this.btnApptClear = new System.Windows.Forms.Button();
+            this.labelTitle = new System.Windows.Forms.Label();
+            this.tbApptTitle = new System.Windows.Forms.TextBox();
             this.btnApptSave = new System.Windows.Forms.Button();
             this.dtpApptEnd = new System.Windows.Forms.DateTimePicker();
             this.dtpApptStart = new System.Windows.Forms.DateTimePicker();
@@ -73,15 +75,23 @@ namespace C969_ncarrel
             this.labelApptStart = new System.Windows.Forms.Label();
             this.labelApptCustomer = new System.Windows.Forms.Label();
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
-            this.dgvAppointments = new System.Windows.Forms.DataGridView();
+            this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
             this.tabPageSysReports = new System.Windows.Forms.TabPage();
-            this.labelEditWarning = new System.Windows.Forms.Label();
+            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.dgvCalendar = new System.Windows.Forms.DataGridView();
+            this.rbToggleView = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.rbToday = new System.Windows.Forms.RadioButton();
             this.tabControlMainScreen.SuspendLayout();
+            this.tabPageCalendar.SuspendLayout();
             this.tabPageCustomers.SuspendLayout();
             this.gbStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
             this.tabPageAppointments.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
             this.SuspendLayout();
             // 
             // Exit
@@ -107,9 +117,17 @@ namespace C969_ncarrel
             this.tabControlMainScreen.SelectedIndex = 0;
             this.tabControlMainScreen.Size = new System.Drawing.Size(939, 351);
             this.tabControlMainScreen.TabIndex = 2;
+            this.tabControlMainScreen.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControlMainScreen_Selecting);
             // 
             // tabPageCalendar
             // 
+            this.tabPageCalendar.Controls.Add(this.rbToday);
+            this.tabPageCalendar.Controls.Add(this.btnEdit);
+            this.tabPageCalendar.Controls.Add(this.btnDelete);
+            this.tabPageCalendar.Controls.Add(this.radioButton1);
+            this.tabPageCalendar.Controls.Add(this.rbToggleView);
+            this.tabPageCalendar.Controls.Add(this.dgvCalendar);
+            this.tabPageCalendar.Controls.Add(this.monthCalendar1);
             this.tabPageCalendar.Location = new System.Drawing.Point(4, 22);
             this.tabPageCalendar.Name = "tabPageCalendar";
             this.tabPageCalendar.Padding = new System.Windows.Forms.Padding(3);
@@ -147,6 +165,17 @@ namespace C969_ncarrel
             this.tabPageCustomers.TabIndex = 1;
             this.tabPageCustomers.Text = "Manage Customers";
             this.tabPageCustomers.UseVisualStyleBackColor = true;
+            // 
+            // labelEditWarning
+            // 
+            this.labelEditWarning.AutoSize = true;
+            this.labelEditWarning.ForeColor = System.Drawing.Color.Red;
+            this.labelEditWarning.Location = new System.Drawing.Point(724, 304);
+            this.labelEditWarning.Name = "labelEditWarning";
+            this.labelEditWarning.Size = new System.Drawing.Size(155, 13);
+            this.labelEditWarning.TabIndex = 25;
+            this.labelEditWarning.Text = "You are currently editing UID -1";
+            this.labelEditWarning.Visible = false;
             // 
             // gbStatus
             // 
@@ -340,7 +369,8 @@ namespace C969_ncarrel
             // 
             // tabPageAppointments
             // 
-            this.tabPageAppointments.Controls.Add(this.btnApptClear);
+            this.tabPageAppointments.Controls.Add(this.labelTitle);
+            this.tabPageAppointments.Controls.Add(this.tbApptTitle);
             this.tabPageAppointments.Controls.Add(this.btnApptSave);
             this.tabPageAppointments.Controls.Add(this.dtpApptEnd);
             this.tabPageAppointments.Controls.Add(this.dtpApptStart);
@@ -358,7 +388,7 @@ namespace C969_ncarrel
             this.tabPageAppointments.Controls.Add(this.labelApptStart);
             this.tabPageAppointments.Controls.Add(this.labelApptCustomer);
             this.tabPageAppointments.Controls.Add(this.tbApptsCustomer);
-            this.tabPageAppointments.Controls.Add(this.dgvAppointments);
+            this.tabPageAppointments.Controls.Add(this.dgvCustomersAppt);
             this.tabPageAppointments.Location = new System.Drawing.Point(4, 22);
             this.tabPageAppointments.Name = "tabPageAppointments";
             this.tabPageAppointments.Padding = new System.Windows.Forms.Padding(3);
@@ -367,14 +397,21 @@ namespace C969_ncarrel
             this.tabPageAppointments.Text = "New Appointment";
             this.tabPageAppointments.UseVisualStyleBackColor = true;
             // 
-            // btnApptClear
+            // labelTitle
             // 
-            this.btnApptClear.Location = new System.Drawing.Point(836, 239);
-            this.btnApptClear.Name = "btnApptClear";
-            this.btnApptClear.Size = new System.Drawing.Size(87, 23);
-            this.btnApptClear.TabIndex = 40;
-            this.btnApptClear.Text = "Clear";
-            this.btnApptClear.UseVisualStyleBackColor = true;
+            this.labelTitle.AutoSize = true;
+            this.labelTitle.Location = new System.Drawing.Point(318, 213);
+            this.labelTitle.Name = "labelTitle";
+            this.labelTitle.Size = new System.Drawing.Size(27, 13);
+            this.labelTitle.TabIndex = 41;
+            this.labelTitle.Text = "Title";
+            // 
+            // tbApptTitle
+            // 
+            this.tbApptTitle.Location = new System.Drawing.Point(351, 210);
+            this.tbApptTitle.Name = "tbApptTitle";
+            this.tbApptTitle.Size = new System.Drawing.Size(168, 20);
+            this.tbApptTitle.TabIndex = 40;
             // 
             // btnApptSave
             // 
@@ -384,9 +421,12 @@ namespace C969_ncarrel
             this.btnApptSave.TabIndex = 39;
             this.btnApptSave.Text = "Save";
             this.btnApptSave.UseVisualStyleBackColor = true;
+            this.btnApptSave.Click += new System.EventHandler(this.btnApptSave_Click);
             // 
             // dtpApptEnd
             // 
+            this.dtpApptEnd.CustomFormat = "dd-MM-yyyy HH:mm";
+            this.dtpApptEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpApptEnd.Location = new System.Drawing.Point(78, 291);
             this.dtpApptEnd.Name = "dtpApptEnd";
             this.dtpApptEnd.Size = new System.Drawing.Size(200, 20);
@@ -394,10 +434,14 @@ namespace C969_ncarrel
             // 
             // dtpApptStart
             // 
+            this.dtpApptStart.AllowDrop = true;
+            this.dtpApptStart.CustomFormat = "dd-MM-yyyy HH:mm";
+            this.dtpApptStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpApptStart.Location = new System.Drawing.Point(78, 265);
             this.dtpApptStart.Name = "dtpApptStart";
             this.dtpApptStart.Size = new System.Drawing.Size(200, 20);
             this.dtpApptStart.TabIndex = 37;
+            this.dtpApptStart.Value = new System.DateTime(2023, 4, 23, 0, 0, 0, 0);
             // 
             // labelApptEnd
             // 
@@ -411,7 +455,7 @@ namespace C969_ncarrel
             // labelApptType
             // 
             this.labelApptType.AutoSize = true;
-            this.labelApptType.Location = new System.Drawing.Point(323, 291);
+            this.labelApptType.Location = new System.Drawing.Point(314, 265);
             this.labelApptType.Name = "labelApptType";
             this.labelApptType.Size = new System.Drawing.Size(31, 13);
             this.labelApptType.TabIndex = 35;
@@ -420,7 +464,7 @@ namespace C969_ncarrel
             // labelApptContact
             // 
             this.labelApptContact.AutoSize = true;
-            this.labelApptContact.Location = new System.Drawing.Point(313, 265);
+            this.labelApptContact.Location = new System.Drawing.Point(530, 240);
             this.labelApptContact.Name = "labelApptContact";
             this.labelApptContact.Size = new System.Drawing.Size(44, 13);
             this.labelApptContact.TabIndex = 34;
@@ -429,7 +473,7 @@ namespace C969_ncarrel
             // labelApptLocation
             // 
             this.labelApptLocation.AutoSize = true;
-            this.labelApptLocation.Location = new System.Drawing.Point(309, 239);
+            this.labelApptLocation.Location = new System.Drawing.Point(526, 214);
             this.labelApptLocation.Name = "labelApptLocation";
             this.labelApptLocation.Size = new System.Drawing.Size(48, 13);
             this.labelApptLocation.TabIndex = 33;
@@ -438,7 +482,7 @@ namespace C969_ncarrel
             // labelApptDescription
             // 
             this.labelApptDescription.AutoSize = true;
-            this.labelApptDescription.Location = new System.Drawing.Point(297, 213);
+            this.labelApptDescription.Location = new System.Drawing.Point(288, 239);
             this.labelApptDescription.Name = "labelApptDescription";
             this.labelApptDescription.Size = new System.Drawing.Size(60, 13);
             this.labelApptDescription.TabIndex = 32;
@@ -446,28 +490,28 @@ namespace C969_ncarrel
             // 
             // tbApptType
             // 
-            this.tbApptType.Location = new System.Drawing.Point(360, 288);
+            this.tbApptType.Location = new System.Drawing.Point(351, 262);
             this.tbApptType.Name = "tbApptType";
             this.tbApptType.Size = new System.Drawing.Size(168, 20);
             this.tbApptType.TabIndex = 30;
             // 
             // tbApptContact
             // 
-            this.tbApptContact.Location = new System.Drawing.Point(360, 262);
+            this.tbApptContact.Location = new System.Drawing.Point(577, 237);
             this.tbApptContact.Name = "tbApptContact";
             this.tbApptContact.Size = new System.Drawing.Size(121, 20);
             this.tbApptContact.TabIndex = 29;
             // 
             // tbApptLocation
             // 
-            this.tbApptLocation.Location = new System.Drawing.Point(360, 236);
+            this.tbApptLocation.Location = new System.Drawing.Point(577, 211);
             this.tbApptLocation.Name = "tbApptLocation";
             this.tbApptLocation.Size = new System.Drawing.Size(168, 20);
             this.tbApptLocation.TabIndex = 28;
             // 
             // tbApptDescription
             // 
-            this.tbApptDescription.Location = new System.Drawing.Point(360, 210);
+            this.tbApptDescription.Location = new System.Drawing.Point(351, 236);
             this.tbApptDescription.Name = "tbApptDescription";
             this.tbApptDescription.Size = new System.Drawing.Size(168, 20);
             this.tbApptDescription.TabIndex = 27;
@@ -500,7 +544,6 @@ namespace C969_ncarrel
             // labelApptCustomer
             // 
             this.labelApptCustomer.AutoSize = true;
-            this.labelApptCustomer.Enabled = false;
             this.labelApptCustomer.Location = new System.Drawing.Point(8, 213);
             this.labelApptCustomer.Name = "labelApptCustomer";
             this.labelApptCustomer.Size = new System.Drawing.Size(96, 13);
@@ -509,24 +552,27 @@ namespace C969_ncarrel
             // 
             // tbApptsCustomer
             // 
-            this.tbApptsCustomer.Enabled = false;
+            this.tbApptsCustomer.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbApptsCustomer.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.tbApptsCustomer.Location = new System.Drawing.Point(110, 210);
             this.tbApptsCustomer.Name = "tbApptsCustomer";
+            this.tbApptsCustomer.ReadOnly = true;
             this.tbApptsCustomer.Size = new System.Drawing.Size(168, 20);
             this.tbApptsCustomer.TabIndex = 21;
             // 
-            // dgvAppointments
+            // dgvCustomersAppt
             // 
-            this.dgvAppointments.AllowUserToAddRows = false;
-            this.dgvAppointments.AllowUserToDeleteRows = false;
-            this.dgvAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAppointments.Location = new System.Drawing.Point(6, 3);
-            this.dgvAppointments.MultiSelect = false;
-            this.dgvAppointments.Name = "dgvAppointments";
-            this.dgvAppointments.ReadOnly = true;
-            this.dgvAppointments.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAppointments.Size = new System.Drawing.Size(919, 198);
-            this.dgvAppointments.TabIndex = 1;
+            this.dgvCustomersAppt.AllowUserToAddRows = false;
+            this.dgvCustomersAppt.AllowUserToDeleteRows = false;
+            this.dgvCustomersAppt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCustomersAppt.Location = new System.Drawing.Point(6, 3);
+            this.dgvCustomersAppt.MultiSelect = false;
+            this.dgvCustomersAppt.Name = "dgvCustomersAppt";
+            this.dgvCustomersAppt.ReadOnly = true;
+            this.dgvCustomersAppt.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCustomersAppt.Size = new System.Drawing.Size(919, 198);
+            this.dgvCustomersAppt.TabIndex = 1;
+            this.dgvCustomersAppt.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomersAppt_CellClick);
             // 
             // tabPageSysReports
             // 
@@ -537,16 +583,82 @@ namespace C969_ncarrel
             this.tabPageSysReports.Text = "View System Reports";
             this.tabPageSysReports.UseVisualStyleBackColor = true;
             // 
-            // labelEditWarning
+            // monthCalendar1
             // 
-            this.labelEditWarning.AutoSize = true;
-            this.labelEditWarning.ForeColor = System.Drawing.Color.Red;
-            this.labelEditWarning.Location = new System.Drawing.Point(724, 304);
-            this.labelEditWarning.Name = "labelEditWarning";
-            this.labelEditWarning.Size = new System.Drawing.Size(155, 13);
-            this.labelEditWarning.TabIndex = 25;
-            this.labelEditWarning.Text = "You are currently editing UID -1";
-            this.labelEditWarning.Visible = false;
+            this.monthCalendar1.Location = new System.Drawing.Point(14, 38);
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 0;
+            // 
+            // dgvCalendar
+            // 
+            this.dgvCalendar.AllowUserToAddRows = false;
+            this.dgvCalendar.AllowUserToDeleteRows = false;
+            this.dgvCalendar.AllowUserToOrderColumns = true;
+            this.dgvCalendar.AllowUserToResizeColumns = false;
+            this.dgvCalendar.AllowUserToResizeRows = false;
+            this.dgvCalendar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCalendar.Location = new System.Drawing.Point(253, 38);
+            this.dgvCalendar.Name = "dgvCalendar";
+            this.dgvCalendar.ReadOnly = true;
+            this.dgvCalendar.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCalendar.Size = new System.Drawing.Size(670, 281);
+            this.dgvCalendar.TabIndex = 1;
+            // 
+            // rbToggleView
+            // 
+            this.rbToggleView.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbToggleView.AutoSize = true;
+            this.rbToggleView.Location = new System.Drawing.Point(347, 9);
+            this.rbToggleView.Name = "rbToggleView";
+            this.rbToggleView.Size = new System.Drawing.Size(47, 23);
+            this.rbToggleView.TabIndex = 2;
+            this.rbToggleView.TabStop = true;
+            this.rbToggleView.Text = "Month";
+            this.rbToggleView.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.Appearance = System.Windows.Forms.Appearance.Button;
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(295, 9);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(46, 23);
+            this.radioButton1.TabIndex = 3;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Week";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(848, 9);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 4;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Location = new System.Drawing.Point(767, 9);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.TabIndex = 5;
+            this.btnEdit.Text = "Edit";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // rbToday
+            // 
+            this.rbToday.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbToday.AutoSize = true;
+            this.rbToday.Location = new System.Drawing.Point(253, 9);
+            this.rbToday.Name = "rbToday";
+            this.rbToday.Size = new System.Drawing.Size(36, 23);
+            this.rbToday.TabIndex = 6;
+            this.rbToday.TabStop = true;
+            this.rbToday.Text = "Day";
+            this.rbToday.UseVisualStyleBackColor = true;
             // 
             // Homepage
             // 
@@ -559,6 +671,8 @@ namespace C969_ncarrel
             this.Text = "Homepage";
             this.Load += new System.EventHandler(this.Homepage_Load);
             this.tabControlMainScreen.ResumeLayout(false);
+            this.tabPageCalendar.ResumeLayout(false);
+            this.tabPageCalendar.PerformLayout();
             this.tabPageCustomers.ResumeLayout(false);
             this.tabPageCustomers.PerformLayout();
             this.gbStatus.ResumeLayout(false);
@@ -566,7 +680,8 @@ namespace C969_ncarrel
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).EndInit();
             this.tabPageAppointments.ResumeLayout(false);
             this.tabPageAppointments.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAppointments)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -578,7 +693,7 @@ namespace C969_ncarrel
 		private System.Windows.Forms.TabPage tabPageCustomers;
 		private System.Windows.Forms.TabPage tabPageAppointments;
 		private System.Windows.Forms.TabPage tabPageSysReports;
-		private System.Windows.Forms.DataGridView dgvAppointments;
+		private System.Windows.Forms.DataGridView dgvCustomersAppt;
 		internal System.Windows.Forms.DataGridView dgvCustomers;
         private System.Windows.Forms.Button btnCustDelete;
         private System.Windows.Forms.Button btnCustEdit;
@@ -597,7 +712,6 @@ namespace C969_ncarrel
         private System.Windows.Forms.TextBox tbCustPhone;
         private System.Windows.Forms.Label labelCustName;
         private System.Windows.Forms.TextBox tbCustName;
-        private System.Windows.Forms.Button btnApptClear;
         private System.Windows.Forms.Button btnApptSave;
         private System.Windows.Forms.DateTimePicker dtpApptEnd;
         private System.Windows.Forms.DateTimePicker dtpApptStart;
@@ -619,5 +733,14 @@ namespace C969_ncarrel
         private System.Windows.Forms.RadioButton rbInactive;
         private System.Windows.Forms.RadioButton rbActive;
         private System.Windows.Forms.Label labelEditWarning;
+        private System.Windows.Forms.Label labelTitle;
+        private System.Windows.Forms.TextBox tbApptTitle;
+        private System.Windows.Forms.RadioButton rbToday;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton rbToggleView;
+        private System.Windows.Forms.DataGridView dgvCalendar;
+        private System.Windows.Forms.MonthCalendar monthCalendar1;
     }
 }

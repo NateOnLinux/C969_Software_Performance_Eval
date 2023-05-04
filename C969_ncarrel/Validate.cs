@@ -15,8 +15,8 @@ namespace C969_ncarrel
         }
         public bool Phone(string phone) //VARCHAR 20 (Phone)
         {
-            Regex phoneNumber = new Regex(@"/\(? ([0 - 9]{ 3})\)?)([.-]?)([0-9]{3})\2([0-9]{}4)/");
-            return true;
+            Regex phoneNumber = new Regex(@"\(? ([0-9]{3})\)?([.-]?)([0-9]{3})\2([0-9]{4})");
+            return phoneNumber.IsMatch(phone);
         }
         public  bool Address(string address) //VARCHAR 50 (Address, Address 2, City, Country)
         {
@@ -25,13 +25,14 @@ namespace C969_ncarrel
             return address.Length <= 50;
 
         }
-        public bool PostalCode() //VARCHAR 20 (Postal Code)
+        public bool PostalCode(string zip) //VARCHAR 20 (Postal Code)
         {
-            return true;
+            Regex postalCode = new Regex(@"([0-9])");
+            return postalCode.IsMatch(zip) && zip.Length <= 20;
         }
-        public bool Title() //VARCHAR 255 (Title, URL)
+        public bool Title(string title) //VARCHAR 255 (Title, URL)
         {
-            return true;
+            return title.Length < 255;
         }
     }
 }

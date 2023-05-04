@@ -11,6 +11,7 @@ namespace C969_ncarrel
         CustomerData Customer = new CustomerData();
         Appointment Appointment;
         EditingState currentState;
+        Validate checkInput;
 
         struct EditingState
         {
@@ -215,6 +216,96 @@ namespace C969_ncarrel
         private void rbDay_CheckedChanged(object sender, EventArgs e)
         {
             UpdateDataGrids();
+        }
+
+        private void tbCustName_TextChanged(object sender, EventArgs e)
+        {
+            checkInput = new Validate();
+            var tb = (TextBox) sender;
+            if(!checkInput.Name(tb.Text))
+            {
+                tb.ForeColor = System.Drawing.Color.Red;
+                btnCustNew.Enabled = false;
+                btnApptSave.Enabled = false;
+            }
+            else
+            {
+                tb.ForeColor = DefaultForeColor;
+                btnCustNew.Enabled = true;
+                btnCustNew.Enabled = true;
+            }
+        }
+
+        private void tbCustPhone_TextChanged(object sender, EventArgs e)
+        {
+            checkInput = new Validate();
+            var tb = (TextBox)sender;
+            if (!checkInput.Phone(tb.Text))
+            {
+                tb.ForeColor = System.Drawing.Color.Red;
+                btnCustNew.Enabled = false;
+                btnApptSave.Enabled = false;
+            }
+            else
+            {
+                tb.ForeColor = DefaultForeColor;
+                btnCustNew.Enabled = true;
+                btnApptSave.Enabled = true;
+            }
+        }
+
+        private void tbCustAddress_TextChanged(object sender, EventArgs e)
+        {
+            checkInput = new Validate();
+            var tb = (TextBox)sender;
+            if (!checkInput.Address(tb.Text))
+            {
+                tb.ForeColor = System.Drawing.Color.Red;
+                btnCustNew.Enabled = false;
+                btnApptSave.Enabled = false;
+            }
+            else
+            {
+                tb.ForeColor = DefaultForeColor;
+                btnCustNew.Enabled = true;
+                btnApptSave.Enabled = true;
+            }
+        }
+
+        private void tbCustZIP_TextChanged(object sender, EventArgs e)
+        {
+            checkInput = new Validate();
+            var tb = (TextBox)sender;
+            if (!checkInput.PostalCode(tb.Text))
+            {
+                tb.ForeColor = System.Drawing.Color.Red;
+                btnCustNew.Enabled = false;
+                btnApptSave.Enabled = false;
+            }
+            else
+            {
+                tb.ForeColor = DefaultForeColor;
+                btnCustNew.Enabled = true;
+                btnApptSave.Enabled = true;
+            }
+        }
+
+        private void tbApptTitle_TextChanged(object sender, EventArgs e)
+        {
+            checkInput = new Validate();
+            var tb = (TextBox)sender;
+            if (!checkInput.Title(tb.Text))
+            {
+                tb.ForeColor = System.Drawing.Color.Red;
+                btnCustNew.Enabled = false;
+                btnApptSave.Enabled = false;
+            }
+            else
+            {
+                tb.ForeColor = DefaultForeColor;
+                btnCustNew.Enabled = true;
+                btnApptSave.Enabled = true;
+            }
         }
     }
 }

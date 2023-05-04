@@ -32,6 +32,7 @@ namespace C969_ncarrel
             this.Exit = new System.Windows.Forms.Button();
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.rbDay = new System.Windows.Forms.RadioButton();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -84,7 +85,6 @@ namespace C969_ncarrel
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
             this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
             this.tabPageSysReports = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
@@ -137,6 +137,15 @@ namespace C969_ncarrel
             this.tabPageCalendar.TabIndex = 0;
             this.tabPageCalendar.Text = "Calendar View";
             this.tabPageCalendar.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(47, 255);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "label1";
             // 
             // rbDay
             // 
@@ -383,6 +392,7 @@ namespace C969_ncarrel
             this.tbCustCity.Name = "tbCustCity";
             this.tbCustCity.Size = new System.Drawing.Size(168, 20);
             this.tbCustCity.TabIndex = 14;
+            this.tbCustCity.TextChanged += new System.EventHandler(this.tbCustAddress_TextChanged);
             // 
             // tbCustZIP
             // 
@@ -390,6 +400,7 @@ namespace C969_ncarrel
             this.tbCustZIP.Name = "tbCustZIP";
             this.tbCustZIP.Size = new System.Drawing.Size(121, 20);
             this.tbCustZIP.TabIndex = 13;
+            this.tbCustZIP.TextChanged += new System.EventHandler(this.tbCustZIP_TextChanged);
             // 
             // tbCustAddress2
             // 
@@ -397,6 +408,7 @@ namespace C969_ncarrel
             this.tbCustAddress2.Name = "tbCustAddress2";
             this.tbCustAddress2.Size = new System.Drawing.Size(168, 20);
             this.tbCustAddress2.TabIndex = 12;
+            this.tbCustAddress2.TextChanged += new System.EventHandler(this.tbCustAddress_TextChanged);
             // 
             // tbCustAddress
             // 
@@ -404,6 +416,7 @@ namespace C969_ncarrel
             this.tbCustAddress.Name = "tbCustAddress";
             this.tbCustAddress.Size = new System.Drawing.Size(168, 20);
             this.tbCustAddress.TabIndex = 11;
+            this.tbCustAddress.TextChanged += new System.EventHandler(this.tbCustAddress_TextChanged);
             // 
             // labelCustPhone
             // 
@@ -420,6 +433,7 @@ namespace C969_ncarrel
             this.tbCustPhone.Name = "tbCustPhone";
             this.tbCustPhone.Size = new System.Drawing.Size(168, 20);
             this.tbCustPhone.TabIndex = 8;
+            this.tbCustPhone.TextChanged += new System.EventHandler(this.tbCustPhone_TextChanged);
             // 
             // labelCustName
             // 
@@ -436,6 +450,7 @@ namespace C969_ncarrel
             this.tbCustName.Name = "tbCustName";
             this.tbCustName.Size = new System.Drawing.Size(168, 20);
             this.tbCustName.TabIndex = 5;
+            this.tbCustName.TextChanged += new System.EventHandler(this.tbCustName_TextChanged);
             // 
             // dgvCustomers
             // 
@@ -496,6 +511,7 @@ namespace C969_ncarrel
             this.tbApptTitle.Name = "tbApptTitle";
             this.tbApptTitle.Size = new System.Drawing.Size(168, 20);
             this.tbApptTitle.TabIndex = 40;
+            this.tbApptTitle.TextChanged += new System.EventHandler(this.tbApptTitle_TextChanged);
             // 
             // btnApptSave
             // 
@@ -615,6 +631,7 @@ namespace C969_ncarrel
             this.tbApptURL.Name = "tbApptURL";
             this.tbApptURL.Size = new System.Drawing.Size(200, 20);
             this.tbApptURL.TabIndex = 24;
+            this.tbApptURL.TextChanged += new System.EventHandler(this.tbApptTitle_TextChanged);
             // 
             // labelApptStart
             // 
@@ -666,15 +683,6 @@ namespace C969_ncarrel
             this.tabPageSysReports.TabIndex = 3;
             this.tabPageSysReports.Text = "View System Reports";
             this.tabPageSysReports.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 255);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
             // 
             // Homepage
             // 

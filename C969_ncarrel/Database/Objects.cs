@@ -62,14 +62,15 @@ namespace C969_ncarrel.Database
         
         public void Create(Appointment newAppointment)
         {
+            
             userId = 1;
             ApptConnection = new QueryDB();
             if (ConflictCheck(-1,newAppointment.start, newAppointment.end)) //Creating a new appointment so just set apptId to -1 for conflict check
                 return;
             var sqlString = 
                 $"INSERT INTO appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) " +
-                $"VALUES ({newAppointment.customerId},{newAppointment.userId},'" + MySqlHelper.EscapeString(newAppointment.title) + $"','{newAppointment.description}','{newAppointment.location}','{newAppointment.contact}'," +
-                $"'{newAppointment.type}','{newAppointment.url}','{newAppointment.start.ToString("yyyy-MM-dd HH:mm:ss")}','{newAppointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',now(),'test',now(),'test');";
+                $"VALUES ({newAppointment.customerId},{newAppointment.userId}," + MySqlHelper.EscapeString(newAppointment.title) + "," + MySqlHelper.EscapeString(newAppointment.description) + "," + MySqlHelper.EscapeString(newAppointment.location) + "," + MySqlHelper.EscapeString(newAppointment.contact) + "," +
+                MySqlHelper.EscapeString(newAppointment.type) + "," + MySqlHelper.EscapeString(newAppointment.url) + "," + $"'{newAppointment.start.ToString("yyyy-MM-dd HH:mm:ss")}','{newAppointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',now(),'test',now(),'test');";
             _ = ApptConnection.Query(sqlString);
         }
 
@@ -96,9 +97,9 @@ namespace C969_ncarrel.Database
             ApptConnection = new QueryDB();
             if (ConflictCheck(appointmentId,appointment.start,appointment.end))
                 return;
-            var sqlString = $"UPDATE appointment SET customerId={appointment.customerId},title='{appointment.title}',description='{appointment.description}'," +
-                $"location='{appointment.location}',contact='{appointment.contact}',type='{appointment.type}',url='{appointment.url}'," +
-                $"start='{appointment.start.ToString("yyyy-MM-dd HH:mm:ss")}',end='{appointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',lastUpdate=now(),lastUpdateBy='test' " +
+            var sqlString = $"UPDATE appointment SET customerId={appointment.customerId},title=" + MySqlHelper.EscapeString(appointment.title) + ",description=" + MySqlHelper.EscapeString(appointment.description) +
+                ",location=" + MySqlHelper.EscapeString(appointment.location) + ",contact=" + MySqlHelper.EscapeString(appointment.contact) + ",type=" + MySqlHelper.EscapeString(appointment.type) + ",url=" + MySqlHelper.EscapeString(appointment.url) +
+                $",start='{appointment.start.ToString("yyyy-MM-dd HH:mm:ss")}',end='{appointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',lastUpdate=now(),lastUpdateBy='test' " +
                 $"WHERE appointmentId={appointmentId};";
             _ = ApptConnection.Query(sqlString);
         }
@@ -163,7 +164,7 @@ namespace C969_ncarrel.Database
         public int GetId(string country)
         {
             QueryDB customerConnection = new QueryDB();
-            var sqlString = $"SELECT countryId FROM country WHERE country='{country}';";
+            var sqlString = $"SELECT countryId FROM country WHERE country=" + MySqlHelper.EscapeString(country) + ";";
             cmd = new MySqlCommand(sqlString, connection);
             reader = cmd.ExecuteReader();
             if (reader.HasRows) //Get the countryId
@@ -176,7 +177,7 @@ namespace C969_ncarrel.Database
             else //Create a new country and get its Id
             {
                 reader.Close();
-                sqlString = $"INSERT INTO country(country,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{country}',now(),'test',now(),'test');";
+                sqlString = $"INSERT INTO country(country,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES(" + MySqlHelper.EscapeString(country) + ",now(),'test',now(),'test');";
                 _ = customerConnection.Query(sqlString);
                 countryId = (int)cmd.LastInsertedId;
                 return countryId;
@@ -193,7 +194,7 @@ namespace C969_ncarrel.Database
         public int GetId(string city, int countryId)
         {
             QueryDB customerConnection = new QueryDB();
-            var sqlString = $"SELECT cityId FROM city WHERE city='{city}' AND countryId={countryId}";
+            var sqlString = $"SELECT cityId FROM city WHERE city=" + MySqlHelper.EscapeString(city) + $"AND countryId={countryId}";
             cmd = new MySqlCommand(sqlString, connection);
             reader = cmd.ExecuteReader();
             if (reader.HasRows) //Get the cityId
@@ -206,7 +207,7 @@ namespace C969_ncarrel.Database
             else //Create a new city and get its Id
             {
                 reader.Close();
-                sqlString = $"INSERT INTO city(city,countryId,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{city}','{countryId}',now(),'test',now(),'test');";
+                sqlString = $"INSERT INTO city(city,countryId,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES(" + MySqlHelper.EscapeString(city) + $",'{countryId}',now(),'test',now(),'test');";
                 _ = customerConnection.Query(sqlString);
                 cityId = (int)cmd.LastInsertedId;
                 return cityId;
@@ -227,7 +228,7 @@ namespace C969_ncarrel.Database
         {
             QueryDB customerConnection = new QueryDB();
             // select the address ID for which address, address 2, cityId, and postalCode are an exact match
-            var sqlString = $"SELECT addressId FROM address WHERE address='{address}' AND address2='{address2}' AND cityId={cityId} AND postalCode='{postalCode}' AND phone='{phone}';";
+            var sqlString = $"SELECT addressId FROM address WHERE address=" + MySqlHelper.EscapeString(address) + " AND address2= " + MySqlHelper.EscapeString(address2) + $" AND cityId={cityId} AND postalCode='{postalCode}' AND phone='{phone}';";
             cmd = new MySqlCommand(sqlString, connection);
             reader = cmd.ExecuteReader();
             if (reader.HasRows) //get addressId
@@ -240,7 +241,7 @@ namespace C969_ncarrel.Database
             else //create new address and get its Id
             {
                 reader.Close();
-                sqlString = $"INSERT INTO address(address,address2,cityId,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{address}','{address2}',{cityId},{postalCode},'{phone}',now(),'test',now(),'test');";
+                sqlString = $"INSERT INTO address(address,address2,cityId,postalCode,phone,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES(" + MySqlHelper.EscapeString(address) + "," + MySqlHelper.EscapeString(address2) + $",{cityId},{postalCode},'{phone}',now(),'test',now(),'test');";
                 _ = customerConnection.Query(sqlString);
                 addressId = (int)cmd.LastInsertedId;
                 return addressId;
@@ -268,7 +269,7 @@ namespace C969_ncarrel.Database
             var newCountryId = updateCountry.GetId(country);
             var newCityId = updateCity.GetId(city, newCountryId);
             var newAddressId = updateAddress.GetId(address, address2, newCityId, postalCode, phone);
-            var sqlString = $"UPDATE customer SET customerName='{customerName}',addressId={newAddressId},active={active},lastUpdate=now(),lastUpdateBy='{user}' WHERE customerId={customerId};";
+            var sqlString = $"UPDATE customer SET customerName=" + MySqlHelper.EscapeString(customerName) + $",addressId={newAddressId},active={active},lastUpdate=now(),lastUpdateBy='{user}' WHERE customerId={customerId};";
             _ = customerConnection.Query(sqlString);
         }
         public void Create(string customerName, bool active, string address, string address2, string postalCode, string phone, string city, string country)
@@ -281,7 +282,7 @@ namespace C969_ncarrel.Database
             var cityId = newCustCity.GetId(city, countryId);
             var addressId = newCustAddress.GetId(address, address2, cityId, postalCode, phone);
             //Take the countryId, cityId, and addressId values we got above and use them to create a new Customer entry
-            var sqlString = $"INSERT INTO customer(customerName,addressId,active,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('{customerName}',{addressId},{active},now(),'{user}',now(),'{user}')";
+            var sqlString = $"INSERT INTO customer(customerName,addressId,active,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES(" + MySqlHelper.EscapeString(customerName) + $",{addressId},{active},now(),'{user}',now(),'{user}')";
             _ = customerConnection.Query(sqlString);
         }
         public void Delete(int customerId)

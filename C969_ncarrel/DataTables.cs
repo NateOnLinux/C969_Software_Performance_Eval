@@ -53,7 +53,7 @@ namespace C969_ncarrel
                 {
                     reader.Read();
                     var customerName = reader.GetString(0);
-                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToShortDateString(), entry.start.TimeOfDay, entry.end.TimeOfDay, entry.title, entry.type);
+                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToString("MM/dd/yyyy"), entry.start.TimeOfDay, entry.end.TimeOfDay, entry.title, entry.type);
                 }
                 reader.Close();
             }

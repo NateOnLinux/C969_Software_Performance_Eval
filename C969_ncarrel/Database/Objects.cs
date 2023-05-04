@@ -31,23 +31,46 @@ namespace C969_ncarrel.Database
 
         QueryDB ApptConnection;
         BindingList<Appointment> blAppointments;
-        public bool ConflictCheck(DateTime start, DateTime end)
+        public bool ConflictCheck(int appointmentId, DateTime start, DateTime end)
         {
-            //using start and end, check that no other appointments occupy the time slot. If another appointment occupies the time slot, return false and show error dialogue
-            return true;
+            //Need to get the currently signed in user at this point
+            int tmpUser = 1;
+            var sqlString =
+                $"SELECT appointmentId FROM appointment WHERE NOT appointmentId = '{appointmentId}' AND userId = '{tmpUser}' AND start <= '{end:yyyy-MM-dd HH:mm:ss}' AND end >= '{start:yyyy-MM-dd HH:mm:ss}'";
+            cmd = new MySqlCommand(sqlString, connection);
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                var conflictAppt = Convert.ToInt32(reader.GetValue(0));
+                MessageBox.Show($"There is a time conflict with Appointment {conflictAppt}. Please select a different time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                reader.Close();
+                return true;
+            }
+            else if (end < start)
+            {
+                MessageBox.Show($"Start time cannot be after End time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                reader.Close();
+                return true;
+            }
+            else
+            {
+                reader.Close();
+                return false;
+            }
         }
         
-        public int Create(Appointment newAppointment)
+        public void Create(Appointment newAppointment)
         {
-            // using appointment data, add or update appointment entries
             userId = 1;
             ApptConnection = new QueryDB();
+            if (ConflictCheck(-1,newAppointment.start, newAppointment.end)) //Creating a new appointment so just set apptId to -1 for conflict check
+                return;
             var sqlString = 
                 $"INSERT INTO appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) " +
                 $"VALUES ({newAppointment.customerId},{newAppointment.userId},'" + MySqlHelper.EscapeString(newAppointment.title) + $"','{newAppointment.description}','{newAppointment.location}','{newAppointment.contact}'," +
                 $"'{newAppointment.type}','{newAppointment.url}','{newAppointment.start.ToString("yyyy-MM-dd HH:mm:ss")}','{newAppointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',now(),'test',now(),'test');";
             _ = ApptConnection.Query(sqlString);
-            return appointmentId;
         }
 
         public void Delete(int appointmentId)
@@ -70,10 +93,13 @@ namespace C969_ncarrel.Database
 
         public void Update(int appointmentId, Appointment appointment)
         {
-            //using appointmentID parameter, "UPDATE appointment SET ... WHERE appointmentId={appointmentID};" 
+            ApptConnection = new QueryDB();
+            if (ConflictCheck(appointmentId,appointment.start,appointment.end))
+                return;
             var sqlString = $"UPDATE appointment SET customerId={appointment.customerId},title='{appointment.title}',description='{appointment.description}'," +
                 $"location='{appointment.location}',contact='{appointment.contact}',type='{appointment.type}',url='{appointment.url}'," +
-                $"start='{appointment.start.ToString("yyyy-MM-dd HH:mm:ss")}',end='{appointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',lastUpdate=now(),lastUpdateBy='test' WHERE appointmentId={appointmentId};";
+                $"start='{appointment.start.ToString("yyyy-MM-dd HH:mm:ss")}',end='{appointment.end.ToString("yyyy-MM-dd HH:mm:ss")}',lastUpdate=now(),lastUpdateBy='test' " +
+                $"WHERE appointmentId={appointmentId};";
             _ = ApptConnection.Query(sqlString);
         }
 
@@ -104,13 +130,13 @@ namespace C969_ncarrel.Database
             return blAppointments;
         }
 
-        public Appointment GetAppointments(int appointmentId)
+        public Appointment GetAppointments(int appointmentId) //Get a specific appointment if given the ID
         {
             ApptConnection = new QueryDB();
             string sqlString = $"SELECT * FROM appointment WHERE appointmentId={appointmentId};";
             var dataIn = ApptConnection.Query(sqlString);
             var appointment = new Appointment();
-            foreach (var collumnIn in dataIn) //alternatively, "appointment.(field) = dataIn[0][n];" but using foreach in case this needs to be adapted later
+            foreach (var collumnIn in dataIn) //alternatively, "appointment.(field) = dataIn[0][i];"
             {
                 //var appointment = new Appointment();
                 appointment.appointmentId = int.Parse(collumnIn[0]);

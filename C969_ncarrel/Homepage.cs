@@ -1,6 +1,5 @@
 ﻿using C969_ncarrel.Database;
 using System;
-using System.ComponentModel;
 using System.Data;
 using System.Windows.Forms;
 
@@ -12,6 +11,7 @@ namespace C969_ncarrel
         CustomerData Customer = new CustomerData();
         Appointment Appointment;
         EditingState currentState;
+
         struct EditingState
         {
             public EditingState(int id, bool editing) => (Id, Editing) = (id, editing);
@@ -48,9 +48,27 @@ namespace C969_ncarrel
 
         private void UpdateDataGrids()
         {
+            var date = monthCalendar1.SelectionStart;
+            var filterDay = $"Date = '{date:MM/dd/yyyy}'";
+            var filterWeek = $"Date >= '{date:MM/dd/yyyy}' AND Date <= '{date.AddDays(7):MM/dd/yyyy}'";
+            var filterMonth = $"Date >= '{date:MM/dd/yyyy}' AND Date <= '{date.Month}/{DateTime.DaysInMonth(date.Year, date.Month)}/{date.Year}'";
+            var dvAppts = new DataView(CustomerView.PopulateAppointments());
+            if(rbDay.Checked)
+            {
+                dvAppts.RowFilter = filterDay;
+            }
+            else if (rbWeek.Checked)
+            {
+                dvAppts.RowFilter = filterWeek;
+            }
+            else
+            {
+                dvAppts.RowFilter = filterMonth;
+            }
             dgvCustomers.DataSource = CustomerView.PopulateCustomers();
             dgvCustomersAppt.DataSource = CustomerView.PopulateCustomers();
-            dgvCalendar.DataSource = CustomerView.PopulateAppointments();
+            dgvCalendar.DataSource = dvAppts;
+            label1.Text = dvAppts.RowFilter;
         }
 
         private void dgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -186,6 +204,17 @@ namespace C969_ncarrel
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            
+            UpdateDataGrids();
+        }
+
+        private void rbDay_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateDataGrids();
         }
     }
 }

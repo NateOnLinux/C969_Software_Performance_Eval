@@ -32,6 +32,13 @@ namespace C969_ncarrel
             this.Exit = new System.Windows.Forms.Button();
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
+            this.rbDay = new System.Windows.Forms.RadioButton();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.rbWeek = new System.Windows.Forms.RadioButton();
+            this.rbMonth = new System.Windows.Forms.RadioButton();
+            this.dgvCalendar = new System.Windows.Forms.DataGridView();
+            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.tabPageCustomers = new System.Windows.Forms.TabPage();
             this.labelEditWarning = new System.Windows.Forms.Label();
             this.gbStatus = new System.Windows.Forms.GroupBox();
@@ -77,21 +84,15 @@ namespace C969_ncarrel
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
             this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
             this.tabPageSysReports = new System.Windows.Forms.TabPage();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
-            this.dgvCalendar = new System.Windows.Forms.DataGridView();
-            this.rbToggleView = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.btnEdit = new System.Windows.Forms.Button();
-            this.rbToday = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
             this.tabPageCustomers.SuspendLayout();
             this.gbStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
             this.tabPageAppointments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
             this.SuspendLayout();
             // 
             // Exit
@@ -121,11 +122,12 @@ namespace C969_ncarrel
             // 
             // tabPageCalendar
             // 
-            this.tabPageCalendar.Controls.Add(this.rbToday);
+            this.tabPageCalendar.Controls.Add(this.label1);
+            this.tabPageCalendar.Controls.Add(this.rbDay);
             this.tabPageCalendar.Controls.Add(this.btnEdit);
             this.tabPageCalendar.Controls.Add(this.btnDelete);
-            this.tabPageCalendar.Controls.Add(this.radioButton1);
-            this.tabPageCalendar.Controls.Add(this.rbToggleView);
+            this.tabPageCalendar.Controls.Add(this.rbWeek);
+            this.tabPageCalendar.Controls.Add(this.rbMonth);
             this.tabPageCalendar.Controls.Add(this.dgvCalendar);
             this.tabPageCalendar.Controls.Add(this.monthCalendar1);
             this.tabPageCalendar.Location = new System.Drawing.Point(4, 22);
@@ -135,6 +137,88 @@ namespace C969_ncarrel
             this.tabPageCalendar.TabIndex = 0;
             this.tabPageCalendar.Text = "Calendar View";
             this.tabPageCalendar.UseVisualStyleBackColor = true;
+            // 
+            // rbDay
+            // 
+            this.rbDay.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbDay.AutoSize = true;
+            this.rbDay.Location = new System.Drawing.Point(253, 9);
+            this.rbDay.Name = "rbDay";
+            this.rbDay.Size = new System.Drawing.Size(36, 23);
+            this.rbDay.TabIndex = 6;
+            this.rbDay.TabStop = true;
+            this.rbDay.Text = "Day";
+            this.rbDay.UseVisualStyleBackColor = true;
+            this.rbDay.CheckedChanged += new System.EventHandler(this.rbDay_CheckedChanged);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Location = new System.Drawing.Point(767, 9);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.TabIndex = 5;
+            this.btnEdit.Text = "Edit";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(848, 9);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 4;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // rbWeek
+            // 
+            this.rbWeek.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbWeek.AutoSize = true;
+            this.rbWeek.Location = new System.Drawing.Point(295, 9);
+            this.rbWeek.Name = "rbWeek";
+            this.rbWeek.Size = new System.Drawing.Size(46, 23);
+            this.rbWeek.TabIndex = 3;
+            this.rbWeek.TabStop = true;
+            this.rbWeek.Text = "Week";
+            this.rbWeek.UseVisualStyleBackColor = true;
+            this.rbWeek.CheckedChanged += new System.EventHandler(this.rbDay_CheckedChanged);
+            // 
+            // rbMonth
+            // 
+            this.rbMonth.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbMonth.AutoSize = true;
+            this.rbMonth.Location = new System.Drawing.Point(347, 9);
+            this.rbMonth.Name = "rbMonth";
+            this.rbMonth.Size = new System.Drawing.Size(47, 23);
+            this.rbMonth.TabIndex = 2;
+            this.rbMonth.TabStop = true;
+            this.rbMonth.Text = "Month";
+            this.rbMonth.UseVisualStyleBackColor = true;
+            this.rbMonth.CheckedChanged += new System.EventHandler(this.rbDay_CheckedChanged);
+            // 
+            // dgvCalendar
+            // 
+            this.dgvCalendar.AllowUserToAddRows = false;
+            this.dgvCalendar.AllowUserToDeleteRows = false;
+            this.dgvCalendar.AllowUserToOrderColumns = true;
+            this.dgvCalendar.AllowUserToResizeColumns = false;
+            this.dgvCalendar.AllowUserToResizeRows = false;
+            this.dgvCalendar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCalendar.Location = new System.Drawing.Point(253, 38);
+            this.dgvCalendar.Name = "dgvCalendar";
+            this.dgvCalendar.ReadOnly = true;
+            this.dgvCalendar.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCalendar.Size = new System.Drawing.Size(670, 281);
+            this.dgvCalendar.TabIndex = 1;
+            // 
+            // monthCalendar1
+            // 
+            this.monthCalendar1.Location = new System.Drawing.Point(14, 38);
+            this.monthCalendar1.MaxSelectionCount = 1;
+            this.monthCalendar1.Name = "monthCalendar1";
+            this.monthCalendar1.TabIndex = 0;
+            this.monthCalendar1.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar1_DateChanged);
             // 
             // tabPageCustomers
             // 
@@ -583,82 +667,14 @@ namespace C969_ncarrel
             this.tabPageSysReports.Text = "View System Reports";
             this.tabPageSysReports.UseVisualStyleBackColor = true;
             // 
-            // monthCalendar1
+            // label1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(14, 38);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 0;
-            // 
-            // dgvCalendar
-            // 
-            this.dgvCalendar.AllowUserToAddRows = false;
-            this.dgvCalendar.AllowUserToDeleteRows = false;
-            this.dgvCalendar.AllowUserToOrderColumns = true;
-            this.dgvCalendar.AllowUserToResizeColumns = false;
-            this.dgvCalendar.AllowUserToResizeRows = false;
-            this.dgvCalendar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCalendar.Location = new System.Drawing.Point(253, 38);
-            this.dgvCalendar.Name = "dgvCalendar";
-            this.dgvCalendar.ReadOnly = true;
-            this.dgvCalendar.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCalendar.Size = new System.Drawing.Size(670, 281);
-            this.dgvCalendar.TabIndex = 1;
-            // 
-            // rbToggleView
-            // 
-            this.rbToggleView.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbToggleView.AutoSize = true;
-            this.rbToggleView.Location = new System.Drawing.Point(347, 9);
-            this.rbToggleView.Name = "rbToggleView";
-            this.rbToggleView.Size = new System.Drawing.Size(47, 23);
-            this.rbToggleView.TabIndex = 2;
-            this.rbToggleView.TabStop = true;
-            this.rbToggleView.Text = "Month";
-            this.rbToggleView.UseVisualStyleBackColor = true;
-            // 
-            // radioButton1
-            // 
-            this.radioButton1.Appearance = System.Windows.Forms.Appearance.Button;
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(295, 9);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(46, 23);
-            this.radioButton1.TabIndex = 3;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Week";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Location = new System.Drawing.Point(848, 9);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 4;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnEdit
-            // 
-            this.btnEdit.Location = new System.Drawing.Point(767, 9);
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 23);
-            this.btnEdit.TabIndex = 5;
-            this.btnEdit.Text = "Edit";
-            this.btnEdit.UseVisualStyleBackColor = true;
-            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
-            // 
-            // rbToday
-            // 
-            this.rbToday.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbToday.AutoSize = true;
-            this.rbToday.Location = new System.Drawing.Point(253, 9);
-            this.rbToday.Name = "rbToday";
-            this.rbToday.Size = new System.Drawing.Size(36, 23);
-            this.rbToday.TabIndex = 6;
-            this.rbToday.TabStop = true;
-            this.rbToday.Text = "Day";
-            this.rbToday.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(47, 255);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "label1";
             // 
             // Homepage
             // 
@@ -673,6 +689,7 @@ namespace C969_ncarrel
             this.tabControlMainScreen.ResumeLayout(false);
             this.tabPageCalendar.ResumeLayout(false);
             this.tabPageCalendar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).EndInit();
             this.tabPageCustomers.ResumeLayout(false);
             this.tabPageCustomers.PerformLayout();
             this.gbStatus.ResumeLayout(false);
@@ -681,7 +698,6 @@ namespace C969_ncarrel
             this.tabPageAppointments.ResumeLayout(false);
             this.tabPageAppointments.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -735,12 +751,13 @@ namespace C969_ncarrel
         private System.Windows.Forms.Label labelEditWarning;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.TextBox tbApptTitle;
-        private System.Windows.Forms.RadioButton rbToday;
+        private System.Windows.Forms.RadioButton rbDay;
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton rbToggleView;
+        private System.Windows.Forms.RadioButton rbWeek;
+        private System.Windows.Forms.RadioButton rbMonth;
         private System.Windows.Forms.DataGridView dgvCalendar;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private System.Windows.Forms.Label label1;
     }
 }

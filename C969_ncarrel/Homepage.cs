@@ -7,7 +7,7 @@ namespace C969_ncarrel
 {
     public partial class Homepage : Form
     {
-        private DataTables CustomerView = new DataTables();
+        private DataTables _DataTables = new DataTables();
         CustomerData Customer = new CustomerData();
         Appointment Appointment;
         EditingState currentState;
@@ -52,7 +52,7 @@ namespace C969_ncarrel
             var filterDay = $"Date = '{date:MM/dd/yyyy}'";
             var filterWeek = $"Date >= '{date:MM/dd/yyyy}' AND Date <= '{date.AddDays(7):MM/dd/yyyy}'";
             var filterMonth = $"Date >= '{date:MM/dd/yyyy}' AND Date <= '{date.Month}/{DateTime.DaysInMonth(date.Year, date.Month)}/{date.Year}'";
-            var dvAppts = new DataView(CustomerView.PopulateAppointments());
+            var dvAppts = new DataView(_DataTables.PopulateAppointments());
             if(rbDay.Checked)
             {
                 dvAppts.RowFilter = filterDay;
@@ -65,8 +65,8 @@ namespace C969_ncarrel
             {
                 dvAppts.RowFilter = filterMonth;
             }
-            dgvCustomers.DataSource = CustomerView.PopulateCustomers();
-            dgvCustomersAppt.DataSource = CustomerView.PopulateCustomers();
+            dgvCustomers.DataSource = _DataTables.PopulateCustomers();
+            dgvCustomersAppt.DataSource = _DataTables.PopulateCustomers();
             dgvCalendar.DataSource = dvAppts;
             label1.Text = dvAppts.RowFilter;
         }

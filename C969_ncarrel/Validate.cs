@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System.Text.RegularExpressions;
 
 namespace C969_ncarrel
 {
@@ -15,10 +10,10 @@ namespace C969_ncarrel
         }
         public bool Phone(string phone) //VARCHAR 20 (Phone)
         {
-            Regex phoneNumber = new Regex(@"\(? ([0-9]{3})\)?([.-]?)([0-9]{3})\2([0-9]{4})");
+            Regex phoneNumber = new Regex(@"^(?:(?:\(\d{3}\)[- ]?|\d{3}[- ]?|\d{0})|)\d{3}[- ]?\d{4}$");
             return phoneNumber.IsMatch(phone);
         }
-        public  bool Address(string address) //VARCHAR 50 (Address, Address 2, City, Country)
+        public bool Address(string address) //VARCHAR 50 (Address, Address 2, City, Country)
         {
             if (address is null)
                 return false;

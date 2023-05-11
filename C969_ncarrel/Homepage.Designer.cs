@@ -85,6 +85,9 @@ namespace C969_ncarrel
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
             this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
             this.tabPageSysReports = new System.Windows.Forms.TabPage();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnCancel2 = new System.Windows.Forms.Button();
+            this.labelEditWarning2 = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
@@ -141,7 +144,7 @@ namespace C969_ncarrel
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(47, 255);
+            this.label1.Location = new System.Drawing.Point(11, 251);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 7;
@@ -231,6 +234,7 @@ namespace C969_ncarrel
             // 
             // tabPageCustomers
             // 
+            this.tabPageCustomers.Controls.Add(this.btnCancel);
             this.tabPageCustomers.Controls.Add(this.labelEditWarning);
             this.tabPageCustomers.Controls.Add(this.gbStatus);
             this.tabPageCustomers.Controls.Add(this.btnCustDelete);
@@ -263,7 +267,7 @@ namespace C969_ncarrel
             // 
             this.labelEditWarning.AutoSize = true;
             this.labelEditWarning.ForeColor = System.Drawing.Color.Red;
-            this.labelEditWarning.Location = new System.Drawing.Point(724, 304);
+            this.labelEditWarning.Location = new System.Drawing.Point(664, 304);
             this.labelEditWarning.Name = "labelEditWarning";
             this.labelEditWarning.Size = new System.Drawing.Size(155, 13);
             this.labelEditWarning.TabIndex = 25;
@@ -468,6 +472,8 @@ namespace C969_ncarrel
             // 
             // tabPageAppointments
             // 
+            this.tabPageAppointments.Controls.Add(this.btnCancel2);
+            this.tabPageAppointments.Controls.Add(this.labelEditWarning2);
             this.tabPageAppointments.Controls.Add(this.labelTitle);
             this.tabPageAppointments.Controls.Add(this.tbApptTitle);
             this.tabPageAppointments.Controls.Add(this.btnApptSave);
@@ -684,6 +690,38 @@ namespace C969_ncarrel
             this.tabPageSysReports.Text = "View System Reports";
             this.tabPageSysReports.UseVisualStyleBackColor = true;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(836, 299);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(87, 23);
+            this.btnCancel.TabIndex = 26;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Visible = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnCancel2
+            // 
+            this.btnCancel2.Location = new System.Drawing.Point(836, 299);
+            this.btnCancel2.Name = "btnCancel2";
+            this.btnCancel2.Size = new System.Drawing.Size(87, 23);
+            this.btnCancel2.TabIndex = 43;
+            this.btnCancel2.Text = "Cancel";
+            this.btnCancel2.UseVisualStyleBackColor = true;
+            this.btnCancel2.Visible = false;
+            // 
+            // labelEditWarning2
+            // 
+            this.labelEditWarning2.AutoSize = true;
+            this.labelEditWarning2.ForeColor = System.Drawing.Color.Red;
+            this.labelEditWarning2.Location = new System.Drawing.Point(621, 304);
+            this.labelEditWarning2.Name = "labelEditWarning2";
+            this.labelEditWarning2.Size = new System.Drawing.Size(195, 13);
+            this.labelEditWarning2.TabIndex = 42;
+            this.labelEditWarning2.Text = "You are currently editing Appointment -1";
+            this.labelEditWarning2.Visible = false;
+            // 
             // Homepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -767,5 +805,8 @@ namespace C969_ncarrel
         private System.Windows.Forms.DataGridView dgvCalendar;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnCancel2;
+        private System.Windows.Forms.Label labelEditWarning2;
     }
 }

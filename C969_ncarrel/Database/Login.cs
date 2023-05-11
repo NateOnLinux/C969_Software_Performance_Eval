@@ -1,33 +1,41 @@
 ﻿using System;
+using System.IO;
 using MySql.Data.MySqlClient;
 using System.Windows.Forms;
-using System.Configuration;
-using System.Data;
 
 namespace C969_ncarrel.Database
 {
     class Login : Connection
     {
-        public bool verifyLogin(string username, string password)
+        public int verifyLogin(string username, string password)
         {
-            bool login = false;
-
-            cmd = new MySqlCommand("SELECT * FROM USER WHERE userName = '" + username + "' AND password = '" + password + "'", connection);
-            DataTable dt = new DataTable();
-            adapter = new MySqlDataAdapter(cmd);
-            adapter.Fill(dt);
+            cmd = new MySqlCommand("SELECT userId FROM user WHERE userName = '" + username + "' AND password = '" + password + "'", connection);
+            reader = cmd.ExecuteReader();
             try
             {
-                if (dt.Rows.Count > 0)
+                reader.Read();
+                var users = reader.GetValue(0) ?? -1;
+                if(users is null)
                 {
-                    login = true;
+                    reader.Close();
+                    return 0;
                 }
-                return login;
+                else
+                {
+                    using (StreamWriter logFile = new StreamWriter("c969_log.txt"))
+                    {
+                        logFile.WriteLine($"Authentication successful for user {Convert.ToInt32(reader.GetValue(0))} ({username}) at {DateTime.Now:s}");
+                    }
+                    var userId = Convert.ToInt32(reader.GetValue(0));
+                    reader.Close();
+                    return userId;
+                }
             }
             catch (Exception ex)
             {
+                reader.Close();
                 MessageBox.Show(ex.Message);
-                return login;
+                return 0;
             }
         }
     }

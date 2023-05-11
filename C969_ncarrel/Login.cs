@@ -11,9 +11,9 @@ namespace C969_ncarrel
 {
 	public partial class Login : Form
 	{
-		Database.Login verify { get; set; }
+		Database.Login Verify { get; set; }
 		CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
-
+		public static Homepage mainScreen;
 		public Login()
 		{
 			InitializeComponent();
@@ -22,20 +22,21 @@ namespace C969_ncarrel
 		private void buttonLogin_Click(object sender, EventArgs e)
 		{
 			MySqlConnection connection = Connection.connection;
-			verify = new Database.Login();
-			bool login;
+			Verify = new Database.Login();
+			int login;
 			if (connection.State == ConnectionState.Open)
 			{
 				switch (currentCulture.TwoLetterISOLanguageName)
 				{
 					case ("de"):
-						login = verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
-						if (login)
+						login = Verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
+						if (login > 0)
 						{
 							MessageBox.Show("Login bewährt");
 							this.Hide();
-							Homepage homepage = new Homepage();
-							homepage.Show();
+							mainScreen = new Homepage(login);
+							mainScreen.FormClosed += (s, args) => this.Close();
+							mainScreen.Show();
 						}
 						else
 						{
@@ -43,14 +44,14 @@ namespace C969_ncarrel
 						}
 						break;
 					default:
-						login = verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
-						if (login == true)
+						login = Verify.verifyLogin(textBoxUserName.Text, textBoxPassword.Text);
+						if (login > 0)
 						{
 							MessageBox.Show("Login success");
 							this.Hide();
-							var homepage = new Homepage();
-							homepage.FormClosed += (s, args) => this.Close();
-							homepage.Show();
+							mainScreen = new Homepage(login);
+							mainScreen.FormClosed += (s, args) => this.Close();
+							mainScreen.Show();
 						}
 						else
 						{

@@ -12,6 +12,7 @@ namespace C969_ncarrel
         Appointment Appointment;
         EditingState currentState;
         Validate checkInput;
+        public int UserId { get; set; }
 
         struct EditingState
         {
@@ -19,8 +20,9 @@ namespace C969_ncarrel
             public int Id { get; }
             public bool Editing { get; }
         }
-        public Homepage()
+        public Homepage(int userId)
         {
+            UserId = userId;
             InitializeComponent();
         }
 
@@ -38,6 +40,19 @@ namespace C969_ncarrel
         {
             Customer.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text); 
             UpdateDataGrids();
+            tbCustName.Text = "";
+            tbCustAddress.Text = "";
+            tbCustAddress2.Text = "";
+            tbCustZIP.Text = "";
+            tbCustPhone.Text = "";
+            tbCustCity.Text = "";
+            cbCustCountry.Text = "";
+            tbApptTitle.Text = "";
+            tbApptDescription.Text = "";
+            tbApptLocation.Text = "";
+            tbApptContact.Text = "";
+            tbApptType.Text = "";
+            tbApptURL.Text = "";
         }
 
         private void btnCustDelete_Click(object sender, EventArgs e)
@@ -92,6 +107,7 @@ namespace C969_ncarrel
             cbCustCountry.Text = dgvCustomers.CurrentRow.Cells[8].Value.ToString();
             currentState = new EditingState(id, true);
             labelEditWarning.Visible = true;
+            btnCancel.Visible = true;
             labelEditWarning.Text = $"Currently editing UID {id}";
         }
 
@@ -110,7 +126,23 @@ namespace C969_ncarrel
                     Customer.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
                     UpdateDataGrids();
                     currentState = new EditingState(-1, false);
+                    tbCustName.Text = "";
+                    tbCustAddress.Text = "";
+                    tbCustAddress2.Text = "";
+                    tbCustZIP.Text = "";
+                    tbCustPhone.Text = "";
+                    tbCustCity.Text = "";
+                    cbCustCountry.Text = "";
+                    tbApptTitle.Text = "";
+                    tbApptDescription.Text = "";
+                    tbApptLocation.Text = "";
+                    tbApptContact.Text = "";
+                    tbApptType.Text = "";
+                    tbApptURL.Text = "";
                     labelEditWarning.Visible = false;
+                    labelEditWarning2.Visible = false;
+                    btnCancel.Visible = false;
+                    btnCancel2.Visible = false;
                 }
             }
         }
@@ -132,6 +164,7 @@ namespace C969_ncarrel
             Appointment.url = tbApptURL.Text;
             Appointment.start = dtpApptStart.Value;
             Appointment.end = dtpApptEnd.Value;
+            Appointment.userId = Login.mainScreen.UserId;
 
             if (!currentState.Editing)
             {
@@ -142,8 +175,20 @@ namespace C969_ncarrel
                 Appointment.Update(currentState.Id, Appointment);
                 currentState = new EditingState(-1,false);
             }
-
             UpdateDataGrids();
+            tbCustName.Text = "";
+            tbCustAddress.Text = "";
+            tbCustAddress2.Text = "";
+            tbCustZIP.Text = "";
+            tbCustPhone.Text = "";
+            tbCustCity.Text = "";
+            cbCustCountry.Text = "";
+            tbApptTitle.Text = "";
+            tbApptDescription.Text = "";
+            tbApptLocation.Text = "";
+            tbApptContact.Text = "";
+            tbApptType.Text = "";
+            tbApptURL.Text = "";
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -177,6 +222,11 @@ namespace C969_ncarrel
                 }
             }
             currentState = new EditingState(id, true);
+            labelEditWarning2.Text = $"Currently Editing Appointment {id}";
+            labelEditWarning.Visible = true;
+            labelEditWarning2.Visible = true;
+            btnCancel.Visible = true;
+            btnCancel2.Visible = true;
         }
         private void tabControlMainScreen_Selecting(object sender, TabControlCancelEventArgs e)
         {
@@ -305,6 +355,32 @@ namespace C969_ncarrel
                 tb.ForeColor = DefaultForeColor;
                 btnCustNew.Enabled = true;
                 btnApptSave.Enabled = true;
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult clear = currentState.Editing ? MessageBox.Show($"Stop editing? All fields will be reset.", "Stop editing?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) : MessageBox.Show($"Clear all fields?", "Stop editing?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (clear == DialogResult.Yes)
+            {
+                tbCustName.Text = "";
+                tbCustAddress.Text = "";
+                tbCustAddress2.Text = "";
+                tbCustZIP.Text = "";
+                tbCustPhone.Text = "";
+                tbCustCity.Text = "";
+                cbCustCountry.Text = "";
+                tbApptTitle.Text = "";
+                tbApptDescription.Text = "";
+                tbApptLocation.Text = "";
+                tbApptContact.Text = "";
+                tbApptType.Text = "";
+                tbApptURL.Text = "";
+                currentState = new EditingState(-1, false);
+                labelEditWarning.Visible = false;
+                labelEditWarning2.Visible = false;
+                btnCancel.Visible = false;
+                btnCancel2.Visible = false;
             }
         }
     }

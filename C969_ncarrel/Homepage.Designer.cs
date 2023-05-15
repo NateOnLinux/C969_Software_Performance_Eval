@@ -32,7 +32,6 @@ namespace C969_ncarrel
             this.Exit = new System.Windows.Forms.Button();
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
             this.rbDay = new System.Windows.Forms.RadioButton();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -88,6 +87,8 @@ namespace C969_ncarrel
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnCancel2 = new System.Windows.Forms.Button();
             this.labelEditWarning2 = new System.Windows.Forms.Label();
+            this.chkboxHideInactiveUsers = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
@@ -141,15 +142,6 @@ namespace C969_ncarrel
             this.tabPageCalendar.Text = "Calendar View";
             this.tabPageCalendar.UseVisualStyleBackColor = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 251);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
-            // 
             // rbDay
             // 
             this.rbDay.Appearance = System.Windows.Forms.Appearance.Button;
@@ -200,6 +192,7 @@ namespace C969_ncarrel
             // 
             this.rbMonth.Appearance = System.Windows.Forms.Appearance.Button;
             this.rbMonth.AutoSize = true;
+            this.rbMonth.Checked = true;
             this.rbMonth.Location = new System.Drawing.Point(347, 9);
             this.rbMonth.Name = "rbMonth";
             this.rbMonth.Size = new System.Drawing.Size(47, 23);
@@ -234,6 +227,7 @@ namespace C969_ncarrel
             // 
             // tabPageCustomers
             // 
+            this.tabPageCustomers.Controls.Add(this.chkboxHideInactiveUsers);
             this.tabPageCustomers.Controls.Add(this.btnCancel);
             this.tabPageCustomers.Controls.Add(this.labelEditWarning);
             this.tabPageCustomers.Controls.Add(this.gbStatus);
@@ -722,6 +716,26 @@ namespace C969_ncarrel
             this.labelEditWarning2.Text = "You are currently editing Appointment -1";
             this.labelEditWarning2.Visible = false;
             // 
+            // chkboxHideInactiveUsers
+            // 
+            this.chkboxHideInactiveUsers.AutoSize = true;
+            this.chkboxHideInactiveUsers.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkboxHideInactiveUsers.Location = new System.Drawing.Point(131, 261);
+            this.chkboxHideInactiveUsers.Name = "chkboxHideInactiveUsers";
+            this.chkboxHideInactiveUsers.Size = new System.Drawing.Size(119, 17);
+            this.chkboxHideInactiveUsers.TabIndex = 27;
+            this.chkboxHideInactiveUsers.Text = "Hide Inactive Users";
+            this.chkboxHideInactiveUsers.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(100, 237);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "label1";
+            // 
             // Homepage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -804,9 +818,10 @@ namespace C969_ncarrel
         private System.Windows.Forms.RadioButton rbMonth;
         private System.Windows.Forms.DataGridView dgvCalendar;
         private System.Windows.Forms.MonthCalendar monthCalendar1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnCancel2;
         private System.Windows.Forms.Label labelEditWarning2;
+        private System.Windows.Forms.CheckBox chkboxHideInactiveUsers;
+        private System.Windows.Forms.Label label1;
     }
 }

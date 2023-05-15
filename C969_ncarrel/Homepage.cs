@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace C969_ncarrel
 {
@@ -34,6 +35,7 @@ namespace C969_ncarrel
         private void Homepage_Load(object sender, EventArgs e)
         {
             UpdateDataGrids();
+            var sqlString = $"SELECT * FROM appointment WHERE start<'{DateTime.Now.AddMinutes(15):yyyy-MM-dd HH:mm:ss}'&&start>'{DateTime.Now:yyyy - MM - dd HH:mm:ss}'";
         }
 
         private void btnCustNew_Click(object sender, EventArgs e)
@@ -64,27 +66,26 @@ namespace C969_ncarrel
 
         private void UpdateDataGrids()
         {
-            var date = monthCalendar1.SelectionStart;
-            var filterDay = $"Date = '{date:MM/dd/yyyy}'";
-            var filterWeek = $"Date >= '{date:MM/dd/yyyy}' AND Date <= '{date.AddDays(7):MM/dd/yyyy}'";
-            var filterMonth = $"Date >= '{date:MM/dd/yyyy}' AND Date <= '{date.Month}/{DateTime.DaysInMonth(date.Year, date.Month)}/{date.Year}'";
-            var dvAppts = new DataView(_DataTables.PopulateAppointments());
-            if(rbDay.Checked)
+            var selectedDate = monthCalendar1.SelectionStart;
+            RadioButton selectedFilter = new RadioButton();
+            //I used a Lambda expression to determine which radio button in the array is checked and return a radio button (rb) => {rb.Checked}. This saves several lines and avoids the use of if/else if statements
+            selectedFilter = new[] { rbDay, rbWeek, rbMonth }.FirstOrDefault(rb => rb.Checked);
+            //I used a Lambda expression to create local function `filterSelector` which returns a string `(rb) => {...}`; 
+            Func<RadioButton, string> filterSelector = rb =>
             {
-                dvAppts.RowFilter = filterDay;
-            }
-            else if (rbWeek.Checked)
-            {
-                dvAppts.RowFilter = filterWeek;
-            }
-            else
-            {
-                dvAppts.RowFilter = filterMonth;
-            }
+                if (rb == rbDay)
+                    return $"Date = '{selectedDate:MM/dd/yyyy}'";
+                else if (rb == rbWeek)
+                    return $"Date >= '{selectedDate:MM/dd/yyyy}' AND Date <= '{selectedDate.AddDays(7):MM/dd/yyyy}'";
+                else if (rb == rbMonth)
+                    return $"Date >= '{selectedDate:MM/dd/yyyy}' AND Date <= '{selectedDate.Month}/{DateTime.DaysInMonth(selectedDate.Year, selectedDate.Month)}/{selectedDate.Year}'";
+                else
+                    return $"";
+            };
             dgvCustomers.DataSource = _DataTables.PopulateCustomers();
             dgvCustomersAppt.DataSource = _DataTables.PopulateCustomers();
-            dgvCalendar.DataSource = dvAppts;
-            label1.Text = dvAppts.RowFilter;
+            dgvCalendar.DataSource = _DataTables.PopulateAppointments(filterSelector(selectedFilter));
+            label1.Text = filterSelector(selectedFilter);
         }
 
         private void dgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

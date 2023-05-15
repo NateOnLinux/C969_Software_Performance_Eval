@@ -35,6 +35,7 @@ namespace C969_ncarrel
 							MessageBox.Show("Login bewährt");
 							this.Hide();
 							mainScreen = new Homepage(login);
+							//I use a lambda expression here to create an event handler for the mainScreen.FormClosed event
 							mainScreen.FormClosed += (s, args) => this.Close();
 							mainScreen.Show();
 						}
@@ -50,6 +51,7 @@ namespace C969_ncarrel
 							MessageBox.Show("Login success");
 							this.Hide();
 							mainScreen = new Homepage(login);
+							//I use a lambda expression here to create an event handler for the mainScreen.FormClosed event
 							mainScreen.FormClosed += (s, args) => this.Close();
 							mainScreen.Show();
 						}

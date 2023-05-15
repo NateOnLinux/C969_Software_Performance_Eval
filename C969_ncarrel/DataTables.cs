@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Data;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace C969_ncarrel
 {
@@ -33,7 +34,7 @@ namespace C969_ncarrel
             return dtCustomers;
         }
 
-        public DataTable PopulateAppointments()
+        public DataView PopulateAppointments(string filter)
         {
             var dtAppointments = new DataTable();
             AllAppointments = Appointments.GetAppointments();
@@ -57,7 +58,9 @@ namespace C969_ncarrel
                 }
                 reader.Close();
             }
-            return dtAppointments;
+            var dvAppointments = new DataView(dtAppointments);
+            dvAppointments.RowFilter = filter;
+            return dvAppointments;
         }
     }
 }

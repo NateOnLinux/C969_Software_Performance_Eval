@@ -34,8 +34,8 @@ namespace C969_ncarrel
 
         private void Homepage_Load(object sender, EventArgs e)
         {
+            var test = new Appointment().CheckNext15();
             UpdateDataGrids();
-            var sqlString = $"SELECT * FROM appointment WHERE start<'{DateTime.Now.AddMinutes(15):yyyy-MM-dd HH:mm:ss}'&&start>'{DateTime.Now:yyyy - MM - dd HH:mm:ss}'";
         }
 
         private void btnCustNew_Click(object sender, EventArgs e)
@@ -169,27 +169,46 @@ namespace C969_ncarrel
 
             if (!currentState.Editing)
             {
-                Appointment.Create(Appointment);
+                var success = Appointment.Create(Appointment);
+                if(success)
+                {
+                    tbCustName.Text = "";
+                    tbCustAddress.Text = "";
+                    tbCustAddress2.Text = "";
+                    tbCustZIP.Text = "";
+                    tbCustPhone.Text = "";
+                    tbCustCity.Text = "";
+                    cbCustCountry.Text = "";
+                    tbApptTitle.Text = "";
+                    tbApptDescription.Text = "";
+                    tbApptLocation.Text = "";
+                    tbApptContact.Text = "";
+                    tbApptType.Text = "";
+                    tbApptURL.Text = "";
+                }
             }
             else
             {
-                Appointment.Update(currentState.Id, Appointment);
+                var success = Appointment.Update(currentState.Id, Appointment);
+                if(success)
+                {
+                    tbCustName.Text = "";
+                    tbCustAddress.Text = "";
+                    tbCustAddress2.Text = "";
+                    tbCustZIP.Text = "";
+                    tbCustPhone.Text = "";
+                    tbCustCity.Text = "";
+                    cbCustCountry.Text = "";
+                    tbApptTitle.Text = "";
+                    tbApptDescription.Text = "";
+                    tbApptLocation.Text = "";
+                    tbApptContact.Text = "";
+                    tbApptType.Text = "";
+                    tbApptURL.Text = "";
+                }
                 currentState = new EditingState(-1,false);
             }
             UpdateDataGrids();
-            tbCustName.Text = "";
-            tbCustAddress.Text = "";
-            tbCustAddress2.Text = "";
-            tbCustZIP.Text = "";
-            tbCustPhone.Text = "";
-            tbCustCity.Text = "";
-            cbCustCountry.Text = "";
-            tbApptTitle.Text = "";
-            tbApptDescription.Text = "";
-            tbApptLocation.Text = "";
-            tbApptContact.Text = "";
-            tbApptType.Text = "";
-            tbApptURL.Text = "";
         }
 
         private void btnDelete_Click(object sender, EventArgs e)

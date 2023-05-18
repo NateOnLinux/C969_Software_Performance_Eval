@@ -18,6 +18,10 @@ namespace C969_ncarrel.Database
                 if(users is null)
                 {
                     reader.Close();
+                    using (StreamWriter logFile = new StreamWriter("c969_log.txt"))
+                    {
+                        logFile.WriteLine($"Failed authentication attempt for \"{username}\" at {DateTime.Now:s}");
+                    }
                     return 0;
                 }
                 else

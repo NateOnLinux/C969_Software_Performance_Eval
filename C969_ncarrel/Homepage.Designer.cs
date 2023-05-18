@@ -32,6 +32,7 @@ namespace C969_ncarrel
             this.Exit = new System.Windows.Forms.Button();
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
             this.rbDay = new System.Windows.Forms.RadioButton();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -40,6 +41,8 @@ namespace C969_ncarrel
             this.dgvCalendar = new System.Windows.Forms.DataGridView();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.tabPageCustomers = new System.Windows.Forms.TabPage();
+            this.chkboxHideInactiveUsers = new System.Windows.Forms.CheckBox();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.labelEditWarning = new System.Windows.Forms.Label();
             this.gbStatus = new System.Windows.Forms.GroupBox();
             this.rbInactive = new System.Windows.Forms.RadioButton();
@@ -63,6 +66,8 @@ namespace C969_ncarrel
             this.tbCustName = new System.Windows.Forms.TextBox();
             this.dgvCustomers = new System.Windows.Forms.DataGridView();
             this.tabPageAppointments = new System.Windows.Forms.TabPage();
+            this.btnCancel2 = new System.Windows.Forms.Button();
+            this.labelEditWarning2 = new System.Windows.Forms.Label();
             this.labelTitle = new System.Windows.Forms.Label();
             this.tbApptTitle = new System.Windows.Forms.TextBox();
             this.btnApptSave = new System.Windows.Forms.Button();
@@ -84,11 +89,6 @@ namespace C969_ncarrel
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
             this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
             this.tabPageSysReports = new System.Windows.Forms.TabPage();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnCancel2 = new System.Windows.Forms.Button();
-            this.labelEditWarning2 = new System.Windows.Forms.Label();
-            this.chkboxHideInactiveUsers = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
@@ -141,6 +141,15 @@ namespace C969_ncarrel
             this.tabPageCalendar.TabIndex = 0;
             this.tabPageCalendar.Text = "Calendar View";
             this.tabPageCalendar.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(100, 237);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "label1";
             // 
             // rbDay
             // 
@@ -210,7 +219,7 @@ namespace C969_ncarrel
             this.dgvCalendar.AllowUserToResizeColumns = false;
             this.dgvCalendar.AllowUserToResizeRows = false;
             this.dgvCalendar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCalendar.Location = new System.Drawing.Point(253, 38);
+            this.dgvCalendar.Location = new System.Drawing.Point(244, 44);
             this.dgvCalendar.Name = "dgvCalendar";
             this.dgvCalendar.ReadOnly = true;
             this.dgvCalendar.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -219,7 +228,7 @@ namespace C969_ncarrel
             // 
             // monthCalendar1
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(14, 38);
+            this.monthCalendar1.Location = new System.Drawing.Point(9, 44);
             this.monthCalendar1.MaxSelectionCount = 1;
             this.monthCalendar1.Name = "monthCalendar1";
             this.monthCalendar1.TabIndex = 0;
@@ -256,6 +265,28 @@ namespace C969_ncarrel
             this.tabPageCustomers.TabIndex = 1;
             this.tabPageCustomers.Text = "Manage Customers";
             this.tabPageCustomers.UseVisualStyleBackColor = true;
+            // 
+            // chkboxHideInactiveUsers
+            // 
+            this.chkboxHideInactiveUsers.AutoSize = true;
+            this.chkboxHideInactiveUsers.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkboxHideInactiveUsers.Location = new System.Drawing.Point(131, 261);
+            this.chkboxHideInactiveUsers.Name = "chkboxHideInactiveUsers";
+            this.chkboxHideInactiveUsers.Size = new System.Drawing.Size(119, 17);
+            this.chkboxHideInactiveUsers.TabIndex = 27;
+            this.chkboxHideInactiveUsers.Text = "Hide Inactive Users";
+            this.chkboxHideInactiveUsers.UseVisualStyleBackColor = true;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(836, 299);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(87, 23);
+            this.btnCancel.TabIndex = 26;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Visible = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // labelEditWarning
             // 
@@ -496,6 +527,27 @@ namespace C969_ncarrel
             this.tabPageAppointments.Text = "New Appointment";
             this.tabPageAppointments.UseVisualStyleBackColor = true;
             // 
+            // btnCancel2
+            // 
+            this.btnCancel2.Location = new System.Drawing.Point(836, 299);
+            this.btnCancel2.Name = "btnCancel2";
+            this.btnCancel2.Size = new System.Drawing.Size(87, 23);
+            this.btnCancel2.TabIndex = 43;
+            this.btnCancel2.Text = "Cancel";
+            this.btnCancel2.UseVisualStyleBackColor = true;
+            this.btnCancel2.Visible = false;
+            // 
+            // labelEditWarning2
+            // 
+            this.labelEditWarning2.AutoSize = true;
+            this.labelEditWarning2.ForeColor = System.Drawing.Color.Red;
+            this.labelEditWarning2.Location = new System.Drawing.Point(621, 304);
+            this.labelEditWarning2.Name = "labelEditWarning2";
+            this.labelEditWarning2.Size = new System.Drawing.Size(195, 13);
+            this.labelEditWarning2.TabIndex = 42;
+            this.labelEditWarning2.Text = "You are currently editing Appointment -1";
+            this.labelEditWarning2.Visible = false;
+            // 
             // labelTitle
             // 
             this.labelTitle.AutoSize = true;
@@ -683,58 +735,6 @@ namespace C969_ncarrel
             this.tabPageSysReports.TabIndex = 3;
             this.tabPageSysReports.Text = "View System Reports";
             this.tabPageSysReports.UseVisualStyleBackColor = true;
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(836, 299);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(87, 23);
-            this.btnCancel.TabIndex = 26;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Visible = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnCancel2
-            // 
-            this.btnCancel2.Location = new System.Drawing.Point(836, 299);
-            this.btnCancel2.Name = "btnCancel2";
-            this.btnCancel2.Size = new System.Drawing.Size(87, 23);
-            this.btnCancel2.TabIndex = 43;
-            this.btnCancel2.Text = "Cancel";
-            this.btnCancel2.UseVisualStyleBackColor = true;
-            this.btnCancel2.Visible = false;
-            // 
-            // labelEditWarning2
-            // 
-            this.labelEditWarning2.AutoSize = true;
-            this.labelEditWarning2.ForeColor = System.Drawing.Color.Red;
-            this.labelEditWarning2.Location = new System.Drawing.Point(621, 304);
-            this.labelEditWarning2.Name = "labelEditWarning2";
-            this.labelEditWarning2.Size = new System.Drawing.Size(195, 13);
-            this.labelEditWarning2.TabIndex = 42;
-            this.labelEditWarning2.Text = "You are currently editing Appointment -1";
-            this.labelEditWarning2.Visible = false;
-            // 
-            // chkboxHideInactiveUsers
-            // 
-            this.chkboxHideInactiveUsers.AutoSize = true;
-            this.chkboxHideInactiveUsers.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkboxHideInactiveUsers.Location = new System.Drawing.Point(131, 261);
-            this.chkboxHideInactiveUsers.Name = "chkboxHideInactiveUsers";
-            this.chkboxHideInactiveUsers.Size = new System.Drawing.Size(119, 17);
-            this.chkboxHideInactiveUsers.TabIndex = 27;
-            this.chkboxHideInactiveUsers.Text = "Hide Inactive Users";
-            this.chkboxHideInactiveUsers.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(100, 237);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
             // 
             // Homepage
             // 

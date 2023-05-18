@@ -70,7 +70,7 @@ namespace C969_ncarrel
             RadioButton selectedFilter = new RadioButton();
             //I used a Lambda expression to determine which radio button in the array is checked and return a radio button (rb) => {rb.Checked}. This saves several lines and avoids the use of if/else if statements
             selectedFilter = new[] { rbDay, rbWeek, rbMonth }.FirstOrDefault(rb => rb.Checked);
-            //I used a Lambda expression to create local function `filterSelector` which returns a string `(rb) => {...}`; 
+            //I used a Lambda expression to create local function `filterSelector` which returns a string `(rb) => {return "string";}`; 
             Func<RadioButton, string> filterSelector = rb =>
             {
                 if (rb == rbDay)
@@ -163,8 +163,8 @@ namespace C969_ncarrel
             Appointment.contact = tbApptContact.Text;
             Appointment.type = tbApptType.Text;
             Appointment.url = tbApptURL.Text;
-            Appointment.start = dtpApptStart.Value;
-            Appointment.end = dtpApptEnd.Value;
+            Appointment.start = TimeZone.CurrentTimeZone.ToUniversalTime(dtpApptStart.Value);
+            Appointment.end = TimeZone.CurrentTimeZone.ToUniversalTime(dtpApptStart.Value);
             Appointment.userId = Login.mainScreen.UserId;
 
             if (!currentState.Editing)

@@ -89,6 +89,7 @@ namespace C969_ncarrel
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
             this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
             this.tabPageSysReports = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
@@ -97,6 +98,7 @@ namespace C969_ncarrel
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
             this.tabPageAppointments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).BeginInit();
+            this.tabPageSysReports.SuspendLayout();
             this.SuspendLayout();
             // 
             // Exit
@@ -729,12 +731,23 @@ namespace C969_ncarrel
             // 
             // tabPageSysReports
             // 
+            this.tabPageSysReports.Controls.Add(this.button1);
             this.tabPageSysReports.Location = new System.Drawing.Point(4, 22);
             this.tabPageSysReports.Name = "tabPageSysReports";
             this.tabPageSysReports.Size = new System.Drawing.Size(931, 325);
             this.tabPageSysReports.TabIndex = 3;
             this.tabPageSysReports.Text = "View System Reports";
             this.tabPageSysReports.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(347, 102);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Homepage
             // 
@@ -758,6 +771,7 @@ namespace C969_ncarrel
             this.tabPageAppointments.ResumeLayout(false);
             this.tabPageAppointments.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).EndInit();
+            this.tabPageSysReports.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -823,5 +837,6 @@ namespace C969_ncarrel
         private System.Windows.Forms.Label labelEditWarning2;
         private System.Windows.Forms.CheckBox chkboxHideInactiveUsers;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -403,5 +403,11 @@ namespace C969_ncarrel
                 btnCancel2.Visible = false;
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var Report = new Report();
+            Report.GenerateReport(1);
+        }
     }
 }

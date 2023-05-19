@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.IO;
 
 namespace C969_ncarrel.Database
 {
@@ -385,7 +386,7 @@ namespace C969_ncarrel.Database
                 var address = new Address();
                 var city = new City();
                 var country = new Country();
-
+                
                 customer.customerId = int.Parse(collumnIn[0]);
                 customer.customerName = collumnIn[1];
                 customer.active = collumnIn[2];
@@ -432,6 +433,65 @@ namespace C969_ncarrel.Database
             }
             reader.Close();
             return resultList;
+        }
+    }
+
+    public class Report : Connection
+    {
+        private QueryDB ReportConnecton;
+        private readonly Appointment Appointments = new Appointment();
+        private BindingList<Appointment> ListAppointments;
+        public void GenerateReport(int userId)
+        {
+            var FileName = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".report";
+            var FileLocation = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var FilePath = Path.Combine(FileLocation, FileName);
+            var FileStream = new FileStream(FilePath,FileMode.Append,FileAccess.Write);
+            ListAppointments = Appointments.GetAppointments();
+
+            GetAppointmentsMonthly(FileStream);
+        }
+        public void GetAppointmentsMonthly(FileStream Path)
+        {
+            var occurrencesByMonth = new Dictionary<string, int>();
+            using (StreamWriter reports = new StreamWriter(Path))
+            {
+                reports.Write("##Apointments per month:");
+                // I used a Lambda expression here to parse the elements of ListAppointments with "ToList().ForEach((a) => {});"
+                ListAppointments.ToList().ForEach(a =>
+                {
+                    var month = new System.Globalization.DateTimeFormatInfo().GetMonthName(a.start.Month).ToString();
+                    if (occurrencesByMonth.ContainsKey(month))
+                        occurrencesByMonth[month]++;
+                    else
+                        occurrencesByMonth[month] = 1;
+                });
+
+                foreach (var monthKey in occurrencesByMonth)
+                    reports.WriteLine($"{monthKey.Key}: {monthKey.Value}");
+            }            
+        }
+        public void GetSchedulesConsultantly()
+        {
+            ReportConnecton = new QueryDB();
+            var sqlString = "SELECT userId,userName FROM user";
+            var consultantList = ReportConnecton.Query(sqlString);
+            var users = new List<User>();
+            foreach (var consultant in consultantList)
+            {
+                var user = new User();
+                user.userId = int.Parse(consultant[0]);
+                user.userName = consultant[1];
+                users.Add(user);
+            }
+            users.ForEach(a =>
+            {
+                // 
+            });
+        }
+        public void GetCustomersCountryly()
+        {
+            var sqlString = "SELECT country,";
         }
     }
 }

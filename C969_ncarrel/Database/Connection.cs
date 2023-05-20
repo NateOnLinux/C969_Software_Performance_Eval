@@ -12,7 +12,7 @@ namespace C969_ncarrel.Database
         public static MySqlDataReader reader { get; set; }
         //public static string connectionString = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
 
-        public static void startConn()
+        public static void StartConn()
         {
             string connectionString = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
             try
@@ -20,8 +20,6 @@ namespace C969_ncarrel.Database
                 connection = new MySqlConnection(connectionString);
                 // open new connection to sql server
                 connection.Open();
-
-                MessageBox.Show("Connected to MySQL server");
             }
             catch (MySqlException ex)
             {
@@ -29,7 +27,7 @@ namespace C969_ncarrel.Database
             }
         }
 
-        public static void closeConn()
+        public static void CloseConn()
         {
             try
             {

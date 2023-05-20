@@ -18,9 +18,9 @@ namespace C969_ncarrel
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
-			Connection.startConn();
+			Connection.StartConn();
 			Application.Run(new Login());
-			Connection.closeConn();
+			Connection.CloseConn();
 		}
 	}
 }

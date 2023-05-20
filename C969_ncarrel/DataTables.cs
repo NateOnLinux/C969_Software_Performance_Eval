@@ -10,7 +10,7 @@ namespace C969_ncarrel
     {
         private BindingList<Customer> AllCustomers = new BindingList<Customer>();
         private BindingList<Appointment> AllAppointments = new BindingList<Appointment>();
-        private CustomerData CustomerData = new CustomerData();
+        private Customer CustomerData = new Customer();
         private Appointment Appointments = new Appointment();
 
         public DataTable PopulateCustomers()
@@ -54,7 +54,9 @@ namespace C969_ncarrel
                 {
                     reader.Read();
                     var customerName = reader.GetString(0);
-                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToString("MM/dd/yyyy"), entry.start.TimeOfDay, entry.end.TimeOfDay, entry.title, entry.type);
+                    entry.start = DateTime.SpecifyKind(entry.start, DateTimeKind.Utc);
+                    entry.end = DateTime.SpecifyKind(entry.end, DateTimeKind.Utc);
+                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToString("MM/dd/yyyy"), entry.start.ToLocalTime().TimeOfDay, entry.end.ToLocalTime().TimeOfDay, entry.title, entry.type);
                 }
                 reader.Close();
             }

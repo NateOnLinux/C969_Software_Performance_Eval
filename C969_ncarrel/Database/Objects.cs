@@ -120,12 +120,20 @@ namespace C969_ncarrel.Database
             var sqlString =
                 $"INSERT INTO appointment(customerId,userId,title,description,location,contact,type,url,start,end,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES ({newAppointment.customerId},{newAppointment.userId},'{MySqlHelper.EscapeString(newAppointment.title)}','{MySqlHelper.EscapeString(newAppointment.description)}','{MySqlHelper.EscapeString(newAppointment.location)}','{MySqlHelper.EscapeString(newAppointment.contact)}','{MySqlHelper.EscapeString(newAppointment.type)}','{MySqlHelper.EscapeString(newAppointment.url)}','{newAppointment.start:yyyy-MM-dd HH:mm:ss}','{newAppointment.end:yyyy-MM-dd HH:mm:ss}',now(),'{userName}',now(),'{userName}');";
             ApptConnection = new QueryDB();
-            if (ConflictCheck(-1,newAppointment.start, newAppointment.end)) //Creating a new appointment so just set apptId to -1 for conflict check
-                return false;
-            else
+            try
             {
-                _ = ApptConnection.Query(sqlString);
-                return true;
+                if (ConflictCheck(-1, newAppointment.start, newAppointment.end)) //Creating a new appointment so just set apptId to -1 for conflict check
+                    return false;
+                else
+                {
+                    _ = ApptConnection.Query(sqlString);
+                    return true;
+                }
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Please check that all required fields have been filled. \n{e}");
+                return false;
             }
         }
 
@@ -149,28 +157,36 @@ namespace C969_ncarrel.Database
 
         public bool Update(int appointmentId, Appointment appointment)
         {
-            ApptConnection = new QueryDB();
-            var userName = new User().GetUserName(C969_ncarrel.Login.mainScreen.UserId);
-            var sqlString = $"UPDATE appointment SET customerId={appointment.customerId},title='"
-                + MySqlHelper.EscapeString(appointment.title)
-                + "',description='"
-                + MySqlHelper.EscapeString(appointment.description)
-                + "',location='"
-                + MySqlHelper.EscapeString(appointment.location)
-                + "',contact='"
-                + MySqlHelper.EscapeString(appointment.contact)
-                + "',type='"
-                + MySqlHelper.EscapeString(appointment.type)
-                + "',url='"
-                + MySqlHelper.EscapeString(appointment.url)
-                + $"',start='{appointment.start:yyyy-MM-dd HH:mm:ss}',end='{appointment.end:yyyy-MM-dd HH:mm:ss}',lastUpdate=now(),lastUpdateBy='{userName}' "
-                + $"WHERE appointmentId={appointmentId};";
-            if (ConflictCheck(appointmentId,appointment.start,appointment.end))
-                return false;
-            else
+            try
             {
-                _ = ApptConnection.Query(sqlString);
-                return true;
+                ApptConnection = new QueryDB();
+                var userName = new User().GetUserName(C969_ncarrel.Login.mainScreen.UserId);
+                var sqlString = $"UPDATE appointment SET customerId={appointment.customerId},title='"
+                    + MySqlHelper.EscapeString(appointment.title)
+                    + "',description='"
+                    + MySqlHelper.EscapeString(appointment.description)
+                    + "',location='"
+                    + MySqlHelper.EscapeString(appointment.location)
+                    + "',contact='"
+                    + MySqlHelper.EscapeString(appointment.contact)
+                    + "',type='"
+                    + MySqlHelper.EscapeString(appointment.type)
+                    + "',url='"
+                    + MySqlHelper.EscapeString(appointment.url)
+                    + $"',start='{appointment.start:yyyy-MM-dd HH:mm:ss}',end='{appointment.end:yyyy-MM-dd HH:mm:ss}',lastUpdate=now(),lastUpdateBy='{userName}' "
+                    + $"WHERE appointmentId={appointmentId};";
+                if (ConflictCheck(appointmentId, appointment.start, appointment.end))
+                    return false;
+                else
+                {
+                    _ = ApptConnection.Query(sqlString);
+                    return true;
+                }
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Please check that all required fields have been filled. \n{e}");
+                return false;
             }
         }
 
@@ -335,28 +351,39 @@ namespace C969_ncarrel.Database
         public void Update(int customerId, string customerName, bool active, string address, string address2, string postalCode, string phone, string city, string country)
         {
             userName = currentUser.GetUserName(C969_ncarrel.Login.mainScreen.UserId);
-            reader = cmd.ExecuteReader();
             var updateCountry = new Country();
             var updateCity = new City();
             var updateAddress = new Address();
             var newCountryId = updateCountry.GetId(country);
             var newCityId = updateCity.GetId(city, newCountryId);
             var newAddressId = updateAddress.GetId(address, address2, newCityId, postalCode, phone);
-            var sqlString = $"UPDATE customer SET customerName='" + MySqlHelper.EscapeString(customerName) + $"',addressId={newAddressId},active={active},lastUpdate=now(),lastUpdateBy='{userName}' WHERE customerId={customerId};";
-            _ = customerConnection.Query(sqlString);
+            try
+            {
+                var sqlString = $"UPDATE customer SET customerName='" + MySqlHelper.EscapeString(customerName) + $"',addressId={newAddressId},active={active},lastUpdate=now(),lastUpdateBy='{userName}' WHERE customerId={customerId};";
+                _ = customerConnection.Query(sqlString);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Please check that all required fields have been filled. \n{e}");
+            }
         }
         public void Create(string customerName, bool active, string address, string address2, string postalCode, string phone, string city, string country)
         {
-            //TODO: Store user on login
             var newCustCountry = new Country();
             var newCustCity = new City();
             var newCustAddress = new Address();
             var countryId = newCustCountry.GetId(country);
             var cityId = newCustCity.GetId(city, countryId);
             var addressId = newCustAddress.GetId(address, address2, cityId, postalCode, phone);
-            //Take the countryId, cityId, and addressId values we got above and use them to create a new Customer entry
-            var sqlString = $"INSERT INTO customer(customerName,addressId,active,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('" + MySqlHelper.EscapeString(customerName) + $"',{addressId},{active},now(),'{userName}',now(),'{userName}')";
-            _ = customerConnection.Query(sqlString);
+            try
+            {
+                var sqlString = $"INSERT INTO customer(customerName,addressId,active,createDate,createdBy,lastUpdate,lastUpdateBy) VALUES('" + MySqlHelper.EscapeString(customerName) + $"',{addressId},{active},now(),'{userName}',now(),'{userName}')";
+                _ = customerConnection.Query(sqlString);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show($"Please check that all required fields have been filled. \n{e}");
+            }
         }
         public void Delete(int customerId)
         {
@@ -419,7 +446,6 @@ namespace C969_ncarrel.Database
             reader = cmd.ExecuteReader();
             var resultList = new List<List<string>>();
             var columns = reader.FieldCount;
-            // increment count until all columns have been added and loop until reader.Read() returns false
             while (reader.Read())
             {
                 List<string> dataEntry = new List<string>();
@@ -438,25 +464,30 @@ namespace C969_ncarrel.Database
 
     public class Report : Connection
     {
+        //private string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".report");
         private QueryDB ReportConnecton;
         private readonly Appointment Appointments = new Appointment();
+        private readonly CustomerData Customers = new CustomerData();
         private BindingList<Appointment> ListAppointments;
+        private BindingList<Customer> ListCustomers;
         public void GenerateReport(int userId)
         {
+            Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\ ");
             var FileName = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".report";
-            var FileLocation = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var FilePath = Path.Combine(FileLocation, FileName);
-            var FileStream = new FileStream(FilePath,FileMode.Append,FileAccess.Write);
+            var FileLocation = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\";
             ListAppointments = Appointments.GetAppointments();
-
-            GetAppointmentsMonthly(FileStream);
+            ListCustomers = Customers.GetCustomers();
+            //I tried sharing a single FileStream for all 3 methods however the object gets disposed within the StreamWriter
+            GetAppointmentsMonthly(new FileStream(Path.Combine(FileLocation, FileName),FileMode.Append, FileAccess.Write));
+            GetSchedulesConsultantly(new FileStream(Path.Combine(FileLocation, FileName), FileMode.Append, FileAccess.Write));
+            GetCustomersCountryly(new FileStream(Path.Combine(FileLocation, FileName), FileMode.Append, FileAccess.Write));
         }
         public void GetAppointmentsMonthly(FileStream Path)
         {
             var occurrencesByMonth = new Dictionary<string, int>();
             using (StreamWriter reports = new StreamWriter(Path))
             {
-                reports.Write("##Apointments per month:");
+                reports.WriteLine("##Apointments per month:");
                 // I used a Lambda expression here to parse the elements of ListAppointments with "ToList().ForEach((a) => {});"
                 ListAppointments.ToList().ForEach(a =>
                 {
@@ -466,13 +497,13 @@ namespace C969_ncarrel.Database
                     else
                         occurrencesByMonth[month] = 1;
                 });
-
                 foreach (var monthKey in occurrencesByMonth)
                     reports.WriteLine($"{monthKey.Key}: {monthKey.Value}");
             }            
         }
-        public void GetSchedulesConsultantly()
+        public void GetSchedulesConsultantly(FileStream Path)
         {
+            var consultantSchedules = new Dictionary<string, List<Appointment>>();
             ReportConnecton = new QueryDB();
             var sqlString = "SELECT userId,userName FROM user";
             var consultantList = ReportConnecton.Query(sqlString);
@@ -484,14 +515,70 @@ namespace C969_ncarrel.Database
                 user.userName = consultant[1];
                 users.Add(user);
             }
-            users.ForEach(a =>
+            using (StreamWriter reports = new StreamWriter(Path))
             {
-                // 
-            });
+                reports.WriteLine("\n\n##Consultant Schedules:");
+                ListAppointments = Appointments.GetAppointments();
+                users.ForEach(u =>
+                {
+                    ListAppointments.ToList().ForEach(a =>
+                    {
+                        if (u.userId == a.userId)
+                        {
+                            List<Appointment> appointmentLists = new List<Appointment>();
+
+                            if (consultantSchedules.ContainsKey(u.userName))
+                                consultantSchedules[u.userName].Add(a);
+                            else
+                            {
+                                appointmentLists.Add(a);
+                                consultantSchedules[u.userName] = appointmentLists;
+                            }
+                        }
+                    });
+                });
+                Func<List<Appointment>, string> GetAppointments = lA =>
+                {
+                    var outString = $"User ID: {lA[0].userId}\nTitle | Customer | Type | Start | End\n";
+                    lA.ForEach(a =>
+                    {
+                        outString += $"{a.title} | {a.customerId} | {a.type} |{a.start:G} | {a.end:G}\n";
+                    });
+                    return outString;
+                };
+                foreach (var userKey in consultantSchedules)
+                {
+                    reports.WriteLine(GetAppointments(userKey.Value));
+                }
+            }
         }
-        public void GetCustomersCountryly()
+        public void GetCustomersCountryly(FileStream Path)
         {
-            var sqlString = "SELECT country,";
+            ReportConnecton = new QueryDB();
+            var sqlString = "SELECT countryId,country FROM country";
+            var listList = ReportConnecton.Query(sqlString);
+            var countryList = new List<Country>();
+            foreach (var listCountry in listList)
+            {
+                var country = new Country();
+                country.countryId = int.Parse(listCountry[0]);
+                country.country = listCountry[1];
+                countryList.Add(country);
+            }
+            using(StreamWriter reports = new StreamWriter(Path))
+            {
+                reports.WriteLine($"\n##Customers per Country:");
+                var countryByCustomers = new Dictionary<string,int>();
+                countryList.ToList().ForEach(c =>
+                {
+                    if (countryByCustomers.ContainsKey(c.country))
+                        countryByCustomers[c.country]++;
+                    else
+                        countryByCustomers[c.country] = 1;
+                });
+                foreach (var countryKey in countryByCustomers)
+                    reports.WriteLine($"{countryKey.Key}: {countryKey.Value}");
+            }
         }
     }
 }

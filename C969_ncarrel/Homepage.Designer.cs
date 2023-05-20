@@ -32,7 +32,6 @@ namespace C969_ncarrel
             this.Exit = new System.Windows.Forms.Button();
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
             this.rbDay = new System.Windows.Forms.RadioButton();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -88,8 +87,8 @@ namespace C969_ncarrel
             this.labelApptCustomer = new System.Windows.Forms.Label();
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
             this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
-            this.tabPageSysReports = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnGenReports = new System.Windows.Forms.Button();
+            this.reportsInfoLabel = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
@@ -98,7 +97,6 @@ namespace C969_ncarrel
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomers)).BeginInit();
             this.tabPageAppointments.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).BeginInit();
-            this.tabPageSysReports.SuspendLayout();
             this.SuspendLayout();
             // 
             // Exit
@@ -117,7 +115,6 @@ namespace C969_ncarrel
             this.tabControlMainScreen.Controls.Add(this.tabPageCalendar);
             this.tabControlMainScreen.Controls.Add(this.tabPageCustomers);
             this.tabControlMainScreen.Controls.Add(this.tabPageAppointments);
-            this.tabControlMainScreen.Controls.Add(this.tabPageSysReports);
             this.tabControlMainScreen.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlMainScreen.Location = new System.Drawing.Point(0, 0);
             this.tabControlMainScreen.Name = "tabControlMainScreen";
@@ -128,7 +125,8 @@ namespace C969_ncarrel
             // 
             // tabPageCalendar
             // 
-            this.tabPageCalendar.Controls.Add(this.label1);
+            this.tabPageCalendar.Controls.Add(this.reportsInfoLabel);
+            this.tabPageCalendar.Controls.Add(this.btnGenReports);
             this.tabPageCalendar.Controls.Add(this.rbDay);
             this.tabPageCalendar.Controls.Add(this.btnEdit);
             this.tabPageCalendar.Controls.Add(this.btnDelete);
@@ -143,15 +141,6 @@ namespace C969_ncarrel
             this.tabPageCalendar.TabIndex = 0;
             this.tabPageCalendar.Text = "Calendar View";
             this.tabPageCalendar.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(100, 237);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "label1";
             // 
             // rbDay
             // 
@@ -729,25 +718,27 @@ namespace C969_ncarrel
             this.dgvCustomersAppt.TabIndex = 1;
             this.dgvCustomersAppt.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomersAppt_CellClick);
             // 
-            // tabPageSysReports
+            // btnGenReports
             // 
-            this.tabPageSysReports.Controls.Add(this.button1);
-            this.tabPageSysReports.Location = new System.Drawing.Point(4, 22);
-            this.tabPageSysReports.Name = "tabPageSysReports";
-            this.tabPageSysReports.Size = new System.Drawing.Size(931, 325);
-            this.tabPageSysReports.TabIndex = 3;
-            this.tabPageSysReports.Text = "View System Reports";
-            this.tabPageSysReports.UseVisualStyleBackColor = true;
+            this.btnGenReports.Location = new System.Drawing.Point(43, 218);
+            this.btnGenReports.Name = "btnGenReports";
+            this.btnGenReports.Size = new System.Drawing.Size(143, 57);
+            this.btnGenReports.TabIndex = 8;
+            this.btnGenReports.Text = "Generate Reports";
+            this.btnGenReports.UseVisualStyleBackColor = true;
+            this.btnGenReports.Click += new System.EventHandler(this.btnGenReports_Click);
             // 
-            // button1
+            // reportsInfoLabel
             // 
-            this.button1.Location = new System.Drawing.Point(347, 102);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.reportsInfoLabel.AutoSize = true;
+            this.reportsInfoLabel.Location = new System.Drawing.Point(6, 278);
+            this.reportsInfoLabel.MaximumSize = new System.Drawing.Size(220, 39);
+            this.reportsInfoLabel.MinimumSize = new System.Drawing.Size(220, 39);
+            this.reportsInfoLabel.Name = "reportsInfoLabel";
+            this.reportsInfoLabel.Size = new System.Drawing.Size(220, 39);
+            this.reportsInfoLabel.TabIndex = 9;
+            this.reportsInfoLabel.Text = "Reports are saved to C:\\Users\\";
+            this.reportsInfoLabel.Visible = false;
             // 
             // Homepage
             // 
@@ -771,7 +762,6 @@ namespace C969_ncarrel
             this.tabPageAppointments.ResumeLayout(false);
             this.tabPageAppointments.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCustomersAppt)).EndInit();
-            this.tabPageSysReports.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -782,7 +772,6 @@ namespace C969_ncarrel
 		private System.Windows.Forms.TabPage tabPageCalendar;
 		private System.Windows.Forms.TabPage tabPageCustomers;
 		private System.Windows.Forms.TabPage tabPageAppointments;
-		private System.Windows.Forms.TabPage tabPageSysReports;
 		private System.Windows.Forms.DataGridView dgvCustomersAppt;
 		internal System.Windows.Forms.DataGridView dgvCustomers;
         private System.Windows.Forms.Button btnCustDelete;
@@ -836,7 +825,7 @@ namespace C969_ncarrel
         private System.Windows.Forms.Button btnCancel2;
         private System.Windows.Forms.Label labelEditWarning2;
         private System.Windows.Forms.CheckBox chkboxHideInactiveUsers;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnGenReports;
+        private System.Windows.Forms.Label reportsInfoLabel;
     }
 }

@@ -70,7 +70,7 @@ namespace C969_ncarrel
             RadioButton selectedFilter = new RadioButton();
             //I used a Lambda expression to determine which radio button in the array is checked and return a radio button (rb) => {rb.Checked}. This saves several lines and avoids the use of if/else if statements
             selectedFilter = new[] { rbDay, rbWeek, rbMonth }.FirstOrDefault(rb => rb.Checked);
-            //I used a Lambda expression to create local function `filterSelector` which returns a string `(rb) => {return "string";}`; 
+            //I used a Lambda expression to create function `filterSelector` which returns a string `(rb) => {return "string";}`; 
             Func<RadioButton, string> filterSelector = rb =>
             {
                 if (rb == rbDay)
@@ -85,7 +85,6 @@ namespace C969_ncarrel
             dgvCustomers.DataSource = _DataTables.PopulateCustomers();
             dgvCustomersAppt.DataSource = _DataTables.PopulateCustomers();
             dgvCalendar.DataSource = _DataTables.PopulateAppointments(filterSelector(selectedFilter));
-            label1.Text = filterSelector(selectedFilter);
         }
 
         private void dgvCustomers_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -404,10 +403,12 @@ namespace C969_ncarrel
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnGenReports_Click(object sender, EventArgs e)
         {
             var Report = new Report();
             Report.GenerateReport(1);
+            reportsInfoLabel.Text = "Reports are saved to: " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\";
+            reportsInfoLabel.Visible = true;
         }
     }
 }

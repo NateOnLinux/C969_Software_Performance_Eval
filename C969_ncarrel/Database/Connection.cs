@@ -10,7 +10,6 @@ namespace C969_ncarrel.Database
         public static MySqlCommand cmd { get; set; }
         public static MySqlDataAdapter adapter { get; set; }
         public static MySqlDataReader reader { get; set; }
-        //public static string connectionString = ConfigurationManager.ConnectionStrings["localdb"].ConnectionString;
 
         public static void StartConn()
         {
@@ -18,7 +17,6 @@ namespace C969_ncarrel.Database
             try
             {
                 connection = new MySqlConnection(connectionString);
-                // open new connection to sql server
                 connection.Open();
             }
             catch (MySqlException ex)

@@ -12,7 +12,7 @@ namespace C969_ncarrel
 	public partial class Login : Form
 	{
 		Database.Login Verify { get; set; }
-		CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+		private readonly CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
 		public static Homepage mainScreen;
 		public Login()
 		{

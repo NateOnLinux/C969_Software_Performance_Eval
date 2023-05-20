@@ -10,7 +10,7 @@ namespace C969_ncarrel
     {
         private BindingList<Customer> AllCustomers = new BindingList<Customer>();
         private BindingList<Appointment> AllAppointments = new BindingList<Appointment>();
-        private CustomerData CustomerData = new CustomerData();
+        private Customer CustomerData = new Customer();
         private Appointment Appointments = new Appointment();
 
         public DataTable PopulateCustomers()

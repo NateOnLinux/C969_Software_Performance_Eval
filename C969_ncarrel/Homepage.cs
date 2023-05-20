@@ -1,6 +1,5 @@
 ﻿using C969_ncarrel.Database;
 using System;
-using System.Data;
 using System.Windows.Forms;
 using System.Linq;
 
@@ -9,13 +8,13 @@ namespace C969_ncarrel
     public partial class Homepage : Form
     {
         private DataTables _DataTables = new DataTables();
-        CustomerData Customer = new CustomerData();
-        Appointment Appointment;
-        EditingState currentState;
-        Validate checkInput;
+        private readonly Customer Customer = new Customer();
+        private Appointment Appointment;
+        private EditingState currentState;
+        private Validate checkInput;
         public int UserId { get; set; }
 
-        struct EditingState
+        private struct EditingState
         {
             public EditingState(int id, bool editing) => (Id, Editing) = (id, editing);
             public int Id { get; }
@@ -27,14 +26,11 @@ namespace C969_ncarrel
             InitializeComponent();
         }
 
-        private void Exit_Click(object sender, EventArgs e)
-        {
-            Environment.Exit(0);
-        }
+        private void Exit_Click(object sender, EventArgs e) => Environment.Exit(0);
 
         private void Homepage_Load(object sender, EventArgs e)
         {
-            var test = new Appointment().CheckNext15();
+            _ = new Appointment().CheckNext15();
             UpdateDataGrids();
         }
 
@@ -68,9 +64,9 @@ namespace C969_ncarrel
         {
             var selectedDate = monthCalendar1.SelectionStart;
             RadioButton selectedFilter = new RadioButton();
-            //I used a Lambda expression to determine which radio button in the array is checked and return a radio button (rb) => {rb.Checked}. This saves several lines and avoids the use of if/else if statements
+            //I used a Lambda expression to determine which radio button in the array is checked (rb) => {rb.Checked}. This saves several lines and avoids the use of if/else if statements
             selectedFilter = new[] { rbDay, rbWeek, rbMonth }.FirstOrDefault(rb => rb.Checked);
-            //I used a Lambda expression to create function `filterSelector` which returns a string `(rb) => {return "string";}`; 
+            //I used a Lambda expression to create function `(rb) => {return "string";}`; 
             Func<RadioButton, string> filterSelector = rb =>
             {
                 if (rb == rbDay)
@@ -78,12 +74,11 @@ namespace C969_ncarrel
                 else if (rb == rbWeek)
                     return $"Date >= '{selectedDate:MM/dd/yyyy}' AND Date <= '{selectedDate.AddDays(7):MM/dd/yyyy}'";
                 else if (rb == rbMonth)
-                    return $"Date >= '{selectedDate:MM/dd/yyyy}' AND Date <= '{selectedDate.Month}/{DateTime.DaysInMonth(selectedDate.Year, selectedDate.Month)}/{selectedDate.Year}'";
+                    return $"Date >= '{selectedDate:MM/dd/yyyy}' AND Date <= '{selectedDate:MM}/{DateTime.DaysInMonth(selectedDate.Year, selectedDate.Month)}/{selectedDate.Year}'";
                 else
                     return $"";
             };
-            dgvCustomers.DataSource = _DataTables.PopulateCustomers();
-            dgvCustomersAppt.DataSource = _DataTables.PopulateCustomers();
+            dgvCustomersAppt.DataSource = dgvCustomers.DataSource = _DataTables.PopulateCustomers();
             dgvCalendar.DataSource = _DataTables.PopulateAppointments(filterSelector(selectedFilter));
         }
 
@@ -147,10 +142,7 @@ namespace C969_ncarrel
             }
         }
 
-        private void dgvCustomersAppt_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            tbApptsCustomer.Text = dgvCustomersAppt.CurrentRow.Cells[1].Value.ToString();
-        }
+        private void dgvCustomersAppt_CellClick(object sender, DataGridViewCellEventArgs e) => tbApptsCustomer.Text = dgvCustomersAppt.CurrentRow.Cells[1].Value.ToString();
 
         private void btnApptSave_Click(object sender, EventArgs e)
         {
@@ -163,7 +155,7 @@ namespace C969_ncarrel
             Appointment.type = tbApptType.Text;
             Appointment.url = tbApptURL.Text;
             Appointment.start = TimeZone.CurrentTimeZone.ToUniversalTime(dtpApptStart.Value);
-            Appointment.end = TimeZone.CurrentTimeZone.ToUniversalTime(dtpApptStart.Value);
+            Appointment.end = TimeZone.CurrentTimeZone.ToUniversalTime(dtpApptEnd.Value);
             Appointment.userId = Login.mainScreen.UserId;
 
             if (!currentState.Editing)
@@ -171,19 +163,7 @@ namespace C969_ncarrel
                 var success = Appointment.Create(Appointment);
                 if(success)
                 {
-                    tbCustName.Text = "";
-                    tbCustAddress.Text = "";
-                    tbCustAddress2.Text = "";
-                    tbCustZIP.Text = "";
-                    tbCustPhone.Text = "";
-                    tbCustCity.Text = "";
-                    cbCustCountry.Text = "";
-                    tbApptTitle.Text = "";
-                    tbApptDescription.Text = "";
-                    tbApptLocation.Text = "";
-                    tbApptContact.Text = "";
-                    tbApptType.Text = "";
-                    tbApptURL.Text = "";
+                    ClearFields();
                 }
             }
             else
@@ -191,19 +171,7 @@ namespace C969_ncarrel
                 var success = Appointment.Update(currentState.Id, Appointment);
                 if(success)
                 {
-                    tbCustName.Text = "";
-                    tbCustAddress.Text = "";
-                    tbCustAddress2.Text = "";
-                    tbCustZIP.Text = "";
-                    tbCustPhone.Text = "";
-                    tbCustCity.Text = "";
-                    cbCustCountry.Text = "";
-                    tbApptTitle.Text = "";
-                    tbApptDescription.Text = "";
-                    tbApptLocation.Text = "";
-                    tbApptContact.Text = "";
-                    tbApptType.Text = "";
-                    tbApptURL.Text = "";
+                    ClearFields();
                 }
                 currentState = new EditingState(-1,false);
             }
@@ -254,19 +222,7 @@ namespace C969_ncarrel
                 var Confirm = MessageBox.Show($"You have unsaved changes. Continue without saving?", "Continue without saving?", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (Confirm == DialogResult.OK)
                 {
-                    tbCustName.Text = "";
-                    tbCustAddress.Text = "";
-                    tbCustAddress2.Text = "";
-                    tbCustZIP.Text = "";
-                    tbCustPhone.Text = "";
-                    tbCustCity.Text = "";
-                    cbCustCountry.Text = "";
-                    tbApptTitle.Text = "";
-                    tbApptDescription.Text = "";
-                    tbApptLocation.Text = "";
-                    tbApptContact.Text = "";
-                    tbApptType.Text = "";
-                    tbApptURL.Text = "";
+                    ClearFields();
                     currentState = new EditingState(-1, false);
                 }
                 else if (Confirm == DialogResult.Cancel)
@@ -276,16 +232,9 @@ namespace C969_ncarrel
             }
         }
 
-        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
-        {
-            
-            UpdateDataGrids();
-        }
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) => UpdateDataGrids();
 
-        private void rbDay_CheckedChanged(object sender, EventArgs e)
-        {
-            UpdateDataGrids();
-        }
+        private void rbDay_CheckedChanged(object sender, EventArgs e) => UpdateDataGrids();
 
         private void tbCustName_TextChanged(object sender, EventArgs e)
         {
@@ -382,19 +331,7 @@ namespace C969_ncarrel
             DialogResult clear = currentState.Editing ? MessageBox.Show($"Stop editing? All fields will be reset.", "Stop editing?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) : MessageBox.Show($"Clear all fields?", "Stop editing?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
             if (clear == DialogResult.Yes)
             {
-                tbCustName.Text = "";
-                tbCustAddress.Text = "";
-                tbCustAddress2.Text = "";
-                tbCustZIP.Text = "";
-                tbCustPhone.Text = "";
-                tbCustCity.Text = "";
-                cbCustCountry.Text = "";
-                tbApptTitle.Text = "";
-                tbApptDescription.Text = "";
-                tbApptLocation.Text = "";
-                tbApptContact.Text = "";
-                tbApptType.Text = "";
-                tbApptURL.Text = "";
+                ClearFields();
                 currentState = new EditingState(-1, false);
                 labelEditWarning.Visible = false;
                 labelEditWarning2.Visible = false;
@@ -409,6 +346,22 @@ namespace C969_ncarrel
             Report.GenerateReport(1);
             reportsInfoLabel.Text = "Reports are saved to: " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\";
             reportsInfoLabel.Visible = true;
+        }
+        private void ClearFields()
+        {
+            tbCustName.Text = "";
+            tbCustAddress.Text = "";
+            tbCustAddress2.Text = "";
+            tbCustZIP.Text = "";
+            tbCustPhone.Text = "";
+            tbCustCity.Text = "";
+            cbCustCountry.Text = "";
+            tbApptTitle.Text = "";
+            tbApptDescription.Text = "";
+            tbApptLocation.Text = "";
+            tbApptContact.Text = "";
+            tbApptType.Text = "";
+            tbApptURL.Text = "";
         }
     }
 }

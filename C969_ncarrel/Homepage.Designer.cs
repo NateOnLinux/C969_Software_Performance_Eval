@@ -527,6 +527,7 @@ namespace C969_ncarrel
             this.btnCancel2.Text = "Cancel";
             this.btnCancel2.UseVisualStyleBackColor = true;
             this.btnCancel2.Visible = false;
+            this.btnCancel2.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // labelEditWarning2
             // 

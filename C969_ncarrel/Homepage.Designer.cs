@@ -32,6 +32,8 @@ namespace C969_ncarrel
             this.Exit = new System.Windows.Forms.Button();
             this.tabControlMainScreen = new System.Windows.Forms.TabControl();
             this.tabPageCalendar = new System.Windows.Forms.TabPage();
+            this.reportsInfoLabel = new System.Windows.Forms.Label();
+            this.btnGenReports = new System.Windows.Forms.Button();
             this.rbDay = new System.Windows.Forms.RadioButton();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -87,8 +89,6 @@ namespace C969_ncarrel
             this.labelApptCustomer = new System.Windows.Forms.Label();
             this.tbApptsCustomer = new System.Windows.Forms.TextBox();
             this.dgvCustomersAppt = new System.Windows.Forms.DataGridView();
-            this.btnGenReports = new System.Windows.Forms.Button();
-            this.reportsInfoLabel = new System.Windows.Forms.Label();
             this.tabControlMainScreen.SuspendLayout();
             this.tabPageCalendar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCalendar)).BeginInit();
@@ -141,6 +141,28 @@ namespace C969_ncarrel
             this.tabPageCalendar.TabIndex = 0;
             this.tabPageCalendar.Text = "Calendar View";
             this.tabPageCalendar.UseVisualStyleBackColor = true;
+            // 
+            // reportsInfoLabel
+            // 
+            this.reportsInfoLabel.AutoSize = true;
+            this.reportsInfoLabel.Location = new System.Drawing.Point(6, 278);
+            this.reportsInfoLabel.MaximumSize = new System.Drawing.Size(220, 39);
+            this.reportsInfoLabel.MinimumSize = new System.Drawing.Size(220, 39);
+            this.reportsInfoLabel.Name = "reportsInfoLabel";
+            this.reportsInfoLabel.Size = new System.Drawing.Size(220, 39);
+            this.reportsInfoLabel.TabIndex = 9;
+            this.reportsInfoLabel.Text = "Reports are saved to C:\\Users\\";
+            this.reportsInfoLabel.Visible = false;
+            // 
+            // btnGenReports
+            // 
+            this.btnGenReports.Location = new System.Drawing.Point(43, 218);
+            this.btnGenReports.Name = "btnGenReports";
+            this.btnGenReports.Size = new System.Drawing.Size(143, 57);
+            this.btnGenReports.TabIndex = 8;
+            this.btnGenReports.Text = "Generate Reports";
+            this.btnGenReports.UseVisualStyleBackColor = true;
+            this.btnGenReports.Click += new System.EventHandler(this.btnGenReports_Click);
             // 
             // rbDay
             // 
@@ -412,7 +434,6 @@ namespace C969_ncarrel
             this.tbCustCity.Name = "tbCustCity";
             this.tbCustCity.Size = new System.Drawing.Size(168, 20);
             this.tbCustCity.TabIndex = 14;
-            this.tbCustCity.TextChanged += new System.EventHandler(this.tbCustAddress_TextChanged);
             // 
             // tbCustZIP
             // 
@@ -420,7 +441,6 @@ namespace C969_ncarrel
             this.tbCustZIP.Name = "tbCustZIP";
             this.tbCustZIP.Size = new System.Drawing.Size(121, 20);
             this.tbCustZIP.TabIndex = 13;
-            this.tbCustZIP.TextChanged += new System.EventHandler(this.tbCustZIP_TextChanged);
             // 
             // tbCustAddress2
             // 
@@ -428,7 +448,6 @@ namespace C969_ncarrel
             this.tbCustAddress2.Name = "tbCustAddress2";
             this.tbCustAddress2.Size = new System.Drawing.Size(168, 20);
             this.tbCustAddress2.TabIndex = 12;
-            this.tbCustAddress2.TextChanged += new System.EventHandler(this.tbCustAddress_TextChanged);
             // 
             // tbCustAddress
             // 
@@ -436,7 +455,6 @@ namespace C969_ncarrel
             this.tbCustAddress.Name = "tbCustAddress";
             this.tbCustAddress.Size = new System.Drawing.Size(168, 20);
             this.tbCustAddress.TabIndex = 11;
-            this.tbCustAddress.TextChanged += new System.EventHandler(this.tbCustAddress_TextChanged);
             // 
             // labelCustPhone
             // 
@@ -453,7 +471,6 @@ namespace C969_ncarrel
             this.tbCustPhone.Name = "tbCustPhone";
             this.tbCustPhone.Size = new System.Drawing.Size(168, 20);
             this.tbCustPhone.TabIndex = 8;
-            this.tbCustPhone.TextChanged += new System.EventHandler(this.tbCustPhone_TextChanged);
             // 
             // labelCustName
             // 
@@ -470,7 +487,6 @@ namespace C969_ncarrel
             this.tbCustName.Name = "tbCustName";
             this.tbCustName.Size = new System.Drawing.Size(168, 20);
             this.tbCustName.TabIndex = 5;
-            this.tbCustName.TextChanged += new System.EventHandler(this.tbCustName_TextChanged);
             // 
             // dgvCustomers
             // 
@@ -555,7 +571,6 @@ namespace C969_ncarrel
             this.tbApptTitle.Name = "tbApptTitle";
             this.tbApptTitle.Size = new System.Drawing.Size(168, 20);
             this.tbApptTitle.TabIndex = 40;
-            this.tbApptTitle.TextChanged += new System.EventHandler(this.tbApptTitle_TextChanged);
             // 
             // btnApptSave
             // 
@@ -675,7 +690,6 @@ namespace C969_ncarrel
             this.tbApptURL.Name = "tbApptURL";
             this.tbApptURL.Size = new System.Drawing.Size(200, 20);
             this.tbApptURL.TabIndex = 24;
-            this.tbApptURL.TextChanged += new System.EventHandler(this.tbApptTitle_TextChanged);
             // 
             // labelApptStart
             // 
@@ -718,28 +732,6 @@ namespace C969_ncarrel
             this.dgvCustomersAppt.Size = new System.Drawing.Size(919, 198);
             this.dgvCustomersAppt.TabIndex = 1;
             this.dgvCustomersAppt.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCustomersAppt_CellClick);
-            // 
-            // btnGenReports
-            // 
-            this.btnGenReports.Location = new System.Drawing.Point(43, 218);
-            this.btnGenReports.Name = "btnGenReports";
-            this.btnGenReports.Size = new System.Drawing.Size(143, 57);
-            this.btnGenReports.TabIndex = 8;
-            this.btnGenReports.Text = "Generate Reports";
-            this.btnGenReports.UseVisualStyleBackColor = true;
-            this.btnGenReports.Click += new System.EventHandler(this.btnGenReports_Click);
-            // 
-            // reportsInfoLabel
-            // 
-            this.reportsInfoLabel.AutoSize = true;
-            this.reportsInfoLabel.Location = new System.Drawing.Point(6, 278);
-            this.reportsInfoLabel.MaximumSize = new System.Drawing.Size(220, 39);
-            this.reportsInfoLabel.MinimumSize = new System.Drawing.Size(220, 39);
-            this.reportsInfoLabel.Name = "reportsInfoLabel";
-            this.reportsInfoLabel.Size = new System.Drawing.Size(220, 39);
-            this.reportsInfoLabel.TabIndex = 9;
-            this.reportsInfoLabel.Text = "Reports are saved to C:\\Users\\";
-            this.reportsInfoLabel.Visible = false;
             // 
             // Homepage
             // 

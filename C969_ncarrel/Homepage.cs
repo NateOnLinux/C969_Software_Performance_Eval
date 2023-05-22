@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace C969_ncarrel
 {
@@ -11,7 +12,6 @@ namespace C969_ncarrel
         private readonly Customer Customer = new Customer();
         private Appointment Appointment;
         private EditingState currentState;
-        private Validate checkInput;
         public int UserId { get; set; }
 
         private struct EditingState
@@ -36,21 +36,19 @@ namespace C969_ncarrel
 
         private void btnCustNew_Click(object sender, EventArgs e)
         {
-            Customer.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text); 
+            try
+            {
+                if (true)
+                {
+                    Customer.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
+                    ClearFields();
+                }
+            }
+            catch(Exception i)
+            {
+                Console.WriteLine(i);
+            }
             UpdateDataGrids();
-            tbCustName.Text = "";
-            tbCustAddress.Text = "";
-            tbCustAddress2.Text = "";
-            tbCustZIP.Text = "";
-            tbCustPhone.Text = "";
-            tbCustCity.Text = "";
-            cbCustCountry.Text = "";
-            tbApptTitle.Text = "";
-            tbApptDescription.Text = "";
-            tbApptLocation.Text = "";
-            tbApptContact.Text = "";
-            tbApptType.Text = "";
-            tbApptURL.Text = "";
         }
 
         private void btnCustDelete_Click(object sender, EventArgs e)
@@ -121,19 +119,7 @@ namespace C969_ncarrel
                     Customer.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
                     UpdateDataGrids();
                     currentState = new EditingState(-1, false);
-                    tbCustName.Text = "";
-                    tbCustAddress.Text = "";
-                    tbCustAddress2.Text = "";
-                    tbCustZIP.Text = "";
-                    tbCustPhone.Text = "";
-                    tbCustCity.Text = "";
-                    cbCustCountry.Text = "";
-                    tbApptTitle.Text = "";
-                    tbApptDescription.Text = "";
-                    tbApptLocation.Text = "";
-                    tbApptContact.Text = "";
-                    tbApptType.Text = "";
-                    tbApptURL.Text = "";
+                    ClearFields();
                     labelEditWarning.Visible = false;
                     labelEditWarning2.Visible = false;
                     btnCancel.Visible = false;
@@ -237,96 +223,6 @@ namespace C969_ncarrel
         private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e) => UpdateDataGrids();
 
         private void rbDay_CheckedChanged(object sender, EventArgs e) => UpdateDataGrids();
-
-        private void tbCustName_TextChanged(object sender, EventArgs e)
-        {
-            checkInput = new Validate();
-            var tb = (TextBox) sender;
-            if(!checkInput.Name(tb.Text))
-            {
-                tb.ForeColor = System.Drawing.Color.Red;
-                btnCustNew.Enabled = false;
-                btnApptSave.Enabled = false;
-            }
-            else
-            {
-                tb.ForeColor = DefaultForeColor;
-                btnCustNew.Enabled = true;
-                btnCustNew.Enabled = true;
-            }
-        }
-
-        private void tbCustPhone_TextChanged(object sender, EventArgs e)
-        {
-            checkInput = new Validate();
-            var tb = (TextBox)sender;
-            if (!checkInput.Phone(tb.Text))
-            {
-                tb.ForeColor = System.Drawing.Color.Red;
-                btnCustNew.Enabled = false;
-                btnApptSave.Enabled = false;
-            }
-            else
-            {
-                tb.ForeColor = DefaultForeColor;
-                btnCustNew.Enabled = true;
-                btnApptSave.Enabled = true;
-            }
-        }
-
-        private void tbCustAddress_TextChanged(object sender, EventArgs e)
-        {
-            checkInput = new Validate();
-            var tb = (TextBox)sender;
-            if (!checkInput.Address(tb.Text))
-            {
-                tb.ForeColor = System.Drawing.Color.Red;
-                btnCustNew.Enabled = false;
-                btnApptSave.Enabled = false;
-            }
-            else
-            {
-                tb.ForeColor = DefaultForeColor;
-                btnCustNew.Enabled = true;
-                btnApptSave.Enabled = true;
-            }
-        }
-
-        private void tbCustZIP_TextChanged(object sender, EventArgs e)
-        {
-            checkInput = new Validate();
-            var tb = (TextBox)sender;
-            if (!checkInput.PostalCode(tb.Text))
-            {
-                tb.ForeColor = System.Drawing.Color.Red;
-                btnCustNew.Enabled = false;
-                btnApptSave.Enabled = false;
-            }
-            else
-            {
-                tb.ForeColor = DefaultForeColor;
-                btnCustNew.Enabled = true;
-                btnApptSave.Enabled = true;
-            }
-        }
-
-        private void tbApptTitle_TextChanged(object sender, EventArgs e)
-        {
-            checkInput = new Validate();
-            var tb = (TextBox)sender;
-            if (!checkInput.Title(tb.Text))
-            {
-                tb.ForeColor = System.Drawing.Color.Red;
-                btnCustNew.Enabled = false;
-                btnApptSave.Enabled = false;
-            }
-            else
-            {
-                tb.ForeColor = DefaultForeColor;
-                btnCustNew.Enabled = true;
-                btnApptSave.Enabled = true;
-            }
-        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {

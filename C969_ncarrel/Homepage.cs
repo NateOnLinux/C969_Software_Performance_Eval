@@ -3,6 +3,7 @@ using System;
 using System.Windows.Forms;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace C969_ncarrel
 {
@@ -36,19 +37,7 @@ namespace C969_ncarrel
 
         private void btnCustNew_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (true)
-                {
-                    Customer.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
-                    ClearFields();
-                }
-            }
-            catch(Exception i)
-            {
-                Console.WriteLine(i);
-            }
-            UpdateDataGrids();
+            SubmitCustomer();
         }
 
         private void btnCustDelete_Click(object sender, EventArgs e)
@@ -116,14 +105,7 @@ namespace C969_ncarrel
                 var result = MessageBox.Show($"Are you sure you want to edit {dgvCustomers.CurrentRow.Cells[1].Value} (UID {Convert.ToInt32(dgvCustomers.CurrentRow.Cells[0].Value)})?", "Confirm changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if(result == DialogResult.Yes)
                 {
-                    Customer.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
-                    UpdateDataGrids();
-                    currentState = new EditingState(-1, false);
-                    ClearFields();
-                    labelEditWarning.Visible = false;
-                    labelEditWarning2.Visible = false;
-                    btnCancel.Visible = false;
-                    btnCancel2.Visible = false;
+                    SubmitCustomer();
                 }
             }
         }
@@ -260,6 +242,79 @@ namespace C969_ncarrel
             tbApptContact.Text = "";
             tbApptType.Text = "";
             tbApptURL.Text = "";
+        }
+
+        protected void SubmitCustomer()
+        {
+            try
+            {
+                var customer = new ValidateCustomer()
+                {
+                    CustName = tbCustName.Text,
+                    CustPhone = tbCustPhone.Text,
+                    CustAddress = tbCustAddress.Text,
+                    CustAddress2 = tbCustAddress2.Text,
+                    CustCity = tbCustCity.Text,
+                    CustCountry = cbCustCountry.Text,
+                    CustZip = tbCustZIP.Text
+                };
+                Dictionary<string, string> fieldNames = new Dictionary<string, string>()
+                {
+                    { "CustName", "Name" },
+                    { "CustPhone", "Phone" },
+                    { "CustAddress", "Address"},
+                    { "CustAddress2", "Address Line 2" },
+                    { "CustCity", "City" },
+                    { "CustCountry", "Country" },
+                    { "CustZip", "Postal Code" }
+                };
+                var context = new ValidationContext(customer);
+                var results = new List<ValidationResult>();
+                var isValid = Validator.TryValidateObject(customer, context, results, true);
+                var errorString = "Please correct the following:\n";
+
+                if(isValid)
+                {
+                    if(currentState.Editing)
+                    {
+                        Customer.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
+                        UpdateDataGrids();
+                        currentState = new EditingState(-1, false);
+                        ClearFields();
+                        labelEditWarning.Visible = false;
+                        labelEditWarning2.Visible = false;
+                        btnCancel.Visible = false;
+                        btnCancel2.Visible = false;
+                    }
+                    else
+                    {
+                        Customer.Create(tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
+                        UpdateDataGrids();
+                        ClearFields();
+                    }
+                }
+                else
+                {
+                    results.ForEach(r =>
+                    {
+                        errorString += r.ErrorMessage + "\n";
+                    });
+                    foreach (var name in fieldNames)
+                    {
+                        errorString = errorString.Replace(name.Key, name.Value);
+                    }
+                    MessageBox.Show(errorString, "There was an error in your submission", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception i)
+            {
+                MessageBox.Show($"{i}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        protected void SubmitAppt()
+        {
+
         }
     }
 }

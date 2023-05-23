@@ -114,37 +114,7 @@ namespace C969_ncarrel
 
         private void btnApptSave_Click(object sender, EventArgs e)
         {
-            Appointment = new Appointment();
-            Appointment.customerId = Convert.ToInt32(dgvCustomersAppt.CurrentRow.Cells[0].Value);
-            dtpApptStart.Value = DateTime.SpecifyKind(dtpApptStart.Value, DateTimeKind.Local);
-            dtpApptEnd.Value = DateTime.SpecifyKind(dtpApptEnd.Value, DateTimeKind.Local);
-            Appointment.title = tbApptTitle.Text;
-            Appointment.description = tbApptDescription.Text;
-            Appointment.location = tbApptLocation.Text;
-            Appointment.contact = tbApptContact.Text;
-            Appointment.type = tbApptType.Text;
-            Appointment.url = tbApptURL.Text;
-            Appointment.start = dtpApptStart.Value.ToUniversalTime();
-            Appointment.end = dtpApptEnd.Value.ToUniversalTime();
-            Appointment.userId = Login.mainScreen.UserId;
-
-            if (!currentState.Editing)
-            {
-                var success = Appointment.Create(Appointment);
-                if(success)
-                {
-                    ClearFields();
-                }
-            }
-            else
-            {
-                var success = Appointment.Update(currentState.Id, Appointment);
-                if(success)
-                {
-                    ClearFields();
-                }
-                currentState = new EditingState(-1,false);
-            }
+            SubmitAppt();
             UpdateDataGrids();
         }
 
@@ -219,11 +189,10 @@ namespace C969_ncarrel
                 btnCancel2.Visible = false;
             }
         }
-
         private void btnGenReports_Click(object sender, EventArgs e)
         {
             var Report = new Report();
-            Report.GenerateReport(1);
+            Report.GenerateReport();
             reportsInfoLabel.Text = "Reports are saved to: " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\";
             reportsInfoLabel.Visible = true;
         }
@@ -314,7 +283,77 @@ namespace C969_ncarrel
 
         protected void SubmitAppt()
         {
+            var appointment = new ValidateAppt()
+            {
+                ApptUrl = tbApptURL.Text,
+                ApptTitle = tbApptTitle.Text,
+                ApptDescription = tbApptDescription.Text,
+                ApptType = tbApptType.Text,
+                ApptContact = tbApptContact.Text,
+                ApptLocation = tbApptLocation.Text
+            };
+            Dictionary<string, string> fieldNames = new Dictionary<string, string>()
+            {
+                { "ApptUrl", "URL" },
+                { "ApptTitle", "Title" },
+                { "ApptDescription", "Description" },
+                { "ApptType", "Type" },
+                { "ApptContact", "Contact" },
+                { "ApptLocation", "Location" },
+                { "ApptStart", "Start" },
+                { "ApptEnd", "End" }
+            };
+            var context = new ValidationContext(appointment);
+            var results = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(appointment, context, results, true);
+            var errorString = "Please correct the following:\n";
+            if(isValid)
+            {
+                Appointment = new Appointment();
+                Appointment.customerId = Convert.ToInt32(dgvCustomersAppt.CurrentRow.Cells[0].Value);
+                dtpApptStart.Value = DateTime.SpecifyKind(dtpApptStart.Value, DateTimeKind.Local); //The DateTime value provided by DateTimePicker has Kind "Unspecified",
+                dtpApptEnd.Value = DateTime.SpecifyKind(dtpApptEnd.Value, DateTimeKind.Local);     //so I used DateTime.SpecifyKind to assign it the Kind "Local". Might be a better way to do this?
+                Appointment.title = tbApptTitle.Text;
+                Appointment.description = tbApptDescription.Text;
+                Appointment.location = tbApptLocation.Text;
+                Appointment.contact = tbApptContact.Text;
+                Appointment.type = tbApptType.Text;
+                Appointment.url = tbApptURL.Text;
+                Appointment.start = dtpApptStart.Value.ToUniversalTime(); //Convert the current DateTime value from Kind "Local" to Kind "UTC"
+                Appointment.end = dtpApptEnd.Value.ToUniversalTime();     //AND convert the time to UTC so we now have a DateTime value of Kind Utc
+                Appointment.userId = Login.mainScreen.UserId;
 
+                if (!currentState.Editing)
+                {
+                    var success = Appointment.Create(Appointment);
+                    if (success)
+                    {
+                        ClearFields();
+                    }
+                }
+                else
+                {
+                    var success = Appointment.Update(currentState.Id, Appointment);
+                    if (success)
+                    {
+                        ClearFields();
+                    }
+                    currentState = new EditingState(-1, false);
+                }
+                UpdateDataGrids();
+            }
+            else
+            {
+                results.ForEach(r =>
+                {
+                    errorString += r.ErrorMessage + "\n";
+                });
+                foreach (var name in fieldNames)
+                {
+                    errorString = errorString.Replace(name.Key, name.Value);
+                }
+                MessageBox.Show(errorString, "There was an error in your submission", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

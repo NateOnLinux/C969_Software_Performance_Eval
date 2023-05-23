@@ -42,7 +42,6 @@ namespace C969_ncarrel
             this.dgvCalendar = new System.Windows.Forms.DataGridView();
             this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
             this.tabPageCustomers = new System.Windows.Forms.TabPage();
-            this.chkboxHideInactiveUsers = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.labelEditWarning = new System.Windows.Forms.Label();
             this.gbStatus = new System.Windows.Forms.GroupBox();
@@ -249,7 +248,6 @@ namespace C969_ncarrel
             // 
             // tabPageCustomers
             // 
-            this.tabPageCustomers.Controls.Add(this.chkboxHideInactiveUsers);
             this.tabPageCustomers.Controls.Add(this.btnCancel);
             this.tabPageCustomers.Controls.Add(this.labelEditWarning);
             this.tabPageCustomers.Controls.Add(this.gbStatus);
@@ -278,17 +276,6 @@ namespace C969_ncarrel
             this.tabPageCustomers.TabIndex = 1;
             this.tabPageCustomers.Text = "Manage Customers";
             this.tabPageCustomers.UseVisualStyleBackColor = true;
-            // 
-            // chkboxHideInactiveUsers
-            // 
-            this.chkboxHideInactiveUsers.AutoSize = true;
-            this.chkboxHideInactiveUsers.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkboxHideInactiveUsers.Location = new System.Drawing.Point(131, 261);
-            this.chkboxHideInactiveUsers.Name = "chkboxHideInactiveUsers";
-            this.chkboxHideInactiveUsers.Size = new System.Drawing.Size(119, 17);
-            this.chkboxHideInactiveUsers.TabIndex = 27;
-            this.chkboxHideInactiveUsers.Text = "Hide Inactive Users";
-            this.chkboxHideInactiveUsers.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
@@ -817,7 +804,6 @@ namespace C969_ncarrel
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnCancel2;
         private System.Windows.Forms.Label labelEditWarning2;
-        private System.Windows.Forms.CheckBox chkboxHideInactiveUsers;
         private System.Windows.Forms.Button btnGenReports;
         private System.Windows.Forms.Label reportsInfoLabel;
     }

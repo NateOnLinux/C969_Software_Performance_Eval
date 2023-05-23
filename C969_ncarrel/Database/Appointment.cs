@@ -98,8 +98,8 @@ namespace C969_ncarrel.Database
                 + $"VALUES ({newAppointment.customerId},{newAppointment.userId},'{MySqlHelper.EscapeString(newAppointment.title)}',"
                 + $"'{MySqlHelper.EscapeString(newAppointment.description)}','{MySqlHelper.EscapeString(newAppointment.location)}',"
                 + $"'{MySqlHelper.EscapeString(newAppointment.contact)}','{MySqlHelper.EscapeString(newAppointment.type)}',"
-                + $"'{MySqlHelper.EscapeString(newAppointment.url)}','{newAppointment.start:yyyy-MM-dd HH:mm:ss}',"
-                + $"'{newAppointment.end:yyyy-MM-dd HH:mm:ss}',now(),'{userName}',now(),'{userName}');";
+                + $"'{MySqlHelper.EscapeString(newAppointment.url)}','{newAppointment.start:yyyy-MM-dd HH:mm:ss}'," //newAppointment.start and newAppointment.end have already been converted to Utc,
+                + $"'{newAppointment.end:yyyy-MM-dd HH:mm:ss}',now(),'{userName}',now(),'{userName}');";            //all times writen to the database must be Utc
             ApptConnection = new QueryDB();
             try
             {
@@ -154,7 +154,7 @@ namespace C969_ncarrel.Database
                     + MySqlHelper.EscapeString(appointment.type)
                     + "',url='"
                     + MySqlHelper.EscapeString(appointment.url)
-                    + $"',start='{appointment.start:yyyy-MM-dd HH:mm:ss}',end='{appointment.end:yyyy-MM-dd HH:mm:ss}',lastUpdate=now(),lastUpdateBy='{userName}' "
+                    + $"',start='{appointment.start:yyyy-MM-dd HH:mm:ss}',end='{appointment.end:yyyy-MM-dd HH:mm:ss}',lastUpdate=now(),lastUpdateBy='{userName}' " //The start/end times here are already Utc
                     + $"WHERE appointmentId={appointmentId};";
                 if (ConflictCheck(appointmentId, appointment.start, appointment.end))
                     return false;

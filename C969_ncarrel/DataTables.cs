@@ -42,7 +42,7 @@ namespace C969_ncarrel
             dtAppointments.Columns.Add("Customer");
             dtAppointments.Columns.Add("Date");
             dtAppointments.Columns.Add("Start");
-            dtAppointments.Columns.Add("End");
+            dtAppointments.Columns.Add("End"); 
             dtAppointments.Columns.Add("Title");
             dtAppointments.Columns.Add("Type");
             foreach (var entry in AllAppointments)
@@ -54,9 +54,7 @@ namespace C969_ncarrel
                 {
                     reader.Read();
                     var customerName = reader.GetString(0);
-                    entry.start = DateTime.SpecifyKind(entry.start, DateTimeKind.Utc);
-                    entry.end = DateTime.SpecifyKind(entry.end, DateTimeKind.Utc);
-                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToString("MM/dd/yyyy"), entry.start.ToLocalTime().TimeOfDay, entry.end.ToLocalTime().TimeOfDay, entry.title, entry.type);
+                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToString("MM/dd/yyyy"), entry.start.TimeOfDay,/*<= GetAppointments(); converts these to local time so no logic is needed here=>*/ entry.end.TimeOfDay, entry.title, entry.type);
                 }
                 reader.Close();
             }

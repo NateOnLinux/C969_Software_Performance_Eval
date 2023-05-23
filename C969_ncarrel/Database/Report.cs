@@ -14,7 +14,7 @@ namespace C969_ncarrel.Database
         private readonly Customer Customers = new Customer();
         private BindingList<Appointment> ListAppointments;
         private BindingList<Customer> ListCustomers;
-        public void GenerateReport(int userId)
+        public void GenerateReport()
         {
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\ ");
             var FileName = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".report";

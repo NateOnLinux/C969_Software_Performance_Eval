@@ -48,7 +48,6 @@ namespace C969_ncarrel
             this.rbInactive = new System.Windows.Forms.RadioButton();
             this.rbActive = new System.Windows.Forms.RadioButton();
             this.btnCustDelete = new System.Windows.Forms.Button();
-            this.btnCustEdit = new System.Windows.Forms.Button();
             this.btnCustNew = new System.Windows.Forms.Button();
             this.labelCustCountry = new System.Windows.Forms.Label();
             this.labelCustCity = new System.Windows.Forms.Label();
@@ -252,7 +251,6 @@ namespace C969_ncarrel
             this.tabPageCustomers.Controls.Add(this.labelEditWarning);
             this.tabPageCustomers.Controls.Add(this.gbStatus);
             this.tabPageCustomers.Controls.Add(this.btnCustDelete);
-            this.tabPageCustomers.Controls.Add(this.btnCustEdit);
             this.tabPageCustomers.Controls.Add(this.btnCustNew);
             this.tabPageCustomers.Controls.Add(this.labelCustCountry);
             this.tabPageCustomers.Controls.Add(this.labelCustCity);
@@ -334,7 +332,7 @@ namespace C969_ncarrel
             // 
             // btnCustDelete
             // 
-            this.btnCustDelete.Location = new System.Drawing.Point(836, 264);
+            this.btnCustDelete.Location = new System.Drawing.Point(836, 235);
             this.btnCustDelete.Name = "btnCustDelete";
             this.btnCustDelete.Size = new System.Drawing.Size(87, 23);
             this.btnCustDelete.TabIndex = 23;
@@ -342,23 +340,13 @@ namespace C969_ncarrel
             this.btnCustDelete.UseVisualStyleBackColor = true;
             this.btnCustDelete.Click += new System.EventHandler(this.btnCustDelete_Click);
             // 
-            // btnCustEdit
-            // 
-            this.btnCustEdit.Location = new System.Drawing.Point(836, 235);
-            this.btnCustEdit.Name = "btnCustEdit";
-            this.btnCustEdit.Size = new System.Drawing.Size(87, 23);
-            this.btnCustEdit.TabIndex = 22;
-            this.btnCustEdit.Text = "Edit";
-            this.btnCustEdit.UseVisualStyleBackColor = true;
-            this.btnCustEdit.Click += new System.EventHandler(this.btnCustEdit_Click);
-            // 
             // btnCustNew
             // 
             this.btnCustNew.Location = new System.Drawing.Point(836, 204);
             this.btnCustNew.Name = "btnCustNew";
             this.btnCustNew.Size = new System.Drawing.Size(87, 23);
             this.btnCustNew.TabIndex = 21;
-            this.btnCustNew.Text = "Add New";
+            this.btnCustNew.Text = "Save";
             this.btnCustNew.UseVisualStyleBackColor = true;
             this.btnCustNew.Click += new System.EventHandler(this.btnCustNew_Click);
             // 
@@ -755,7 +743,6 @@ namespace C969_ncarrel
 		private System.Windows.Forms.DataGridView dgvCustomersAppt;
 		internal System.Windows.Forms.DataGridView dgvCustomers;
         private System.Windows.Forms.Button btnCustDelete;
-        private System.Windows.Forms.Button btnCustEdit;
         private System.Windows.Forms.Button btnCustNew;
         private System.Windows.Forms.Label labelCustCountry;
         private System.Windows.Forms.Label labelCustCity;

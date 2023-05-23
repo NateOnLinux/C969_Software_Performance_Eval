@@ -246,14 +246,17 @@ namespace C969_ncarrel
                 {
                     if(currentState.Editing)
                     {
-                        Customer.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
-                        UpdateDataGrids();
-                        currentState = new EditingState(-1, false);
-                        ClearFields();
-                        labelEditWarning.Visible = false;
-                        labelEditWarning2.Visible = false;
-                        btnCancel.Visible = false;
-                        btnCancel2.Visible = false;
+                        if (MessageBox.Show($"Are you sure you want to edit Customer ID {currentState.Id}?", "Confirm changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            Customer.Update(currentState.Id, tbCustName.Text, rbActive.Checked, tbCustAddress.Text, tbCustAddress2.Text, tbCustZIP.Text, tbCustPhone.Text, tbCustCity.Text, cbCustCountry.Text);
+                            UpdateDataGrids();
+                            currentState = new EditingState(-1, false);
+                            ClearFields();
+                            labelEditWarning.Visible = false;
+                            labelEditWarning2.Visible = false;
+                            btnCancel.Visible = false;
+                            btnCancel2.Visible = false;
+                        }
                     }
                     else
                     {

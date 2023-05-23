@@ -54,7 +54,7 @@ namespace C969_ncarrel
                 {
                     reader.Read();
                     var customerName = reader.GetString(0);
-                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToString("MM/dd/yyyy"), entry.start.TimeOfDay,/*<= GetAppointments(); converts these to local time so no logic is needed here=>*/ entry.end.TimeOfDay, entry.title, entry.type);
+                    dtAppointments.Rows.Add(entry.appointmentId, customerName, entry.start.ToString("MM/dd/yyyy"), entry.start.ToString("HH:mm"),/*<= GetAppointments(); converts these to local time so no logic is needed here=>*/ entry.end.ToString("HH:mm"), entry.title, entry.type);
                 }
                 reader.Close();
             }

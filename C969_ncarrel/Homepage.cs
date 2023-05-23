@@ -11,7 +11,7 @@ namespace C969_ncarrel
     {
         private DataTables _DataTables = new DataTables();
         private readonly Customer Customer = new Customer();
-        private Appointment Appointment;
+        private Appointment Appointment = new Appointment();
         private EditingState currentState;
         public int UserId { get; set; }
 
@@ -31,8 +31,9 @@ namespace C969_ncarrel
 
         private void Homepage_Load(object sender, EventArgs e)
         {
-            _ = new Appointment().CheckNext15();
+            Appointment = new Appointment() { userId = UserId };
             UpdateDataGrids();
+            _ = Appointment.CheckNext15();
         }
 
         private void btnCustNew_Click(object sender, EventArgs e)
@@ -92,24 +93,6 @@ namespace C969_ncarrel
             btnCancel.Visible = true;
             labelEditWarning.Text = $"Currently editing UID {id}";
         }
-
-        private void btnCustEdit_Click(object sender, EventArgs e)
-        {
-            if (!currentState.Editing)
-            {
-                MessageBox.Show("You are not currently editing a customer. Double click a customer to start editing");
-                return;
-            }
-            else
-            {
-                var result = MessageBox.Show($"Are you sure you want to edit {dgvCustomers.CurrentRow.Cells[1].Value} (UID {Convert.ToInt32(dgvCustomers.CurrentRow.Cells[0].Value)})?", "Confirm changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if(result == DialogResult.Yes)
-                {
-                    SubmitCustomer();
-                }
-            }
-        }
-
         private void dgvCustomersAppt_CellClick(object sender, DataGridViewCellEventArgs e) => tbApptsCustomer.Text = dgvCustomersAppt.CurrentRow.Cells[1].Value.ToString();
 
         private void btnApptSave_Click(object sender, EventArgs e)
@@ -123,6 +106,7 @@ namespace C969_ncarrel
             Appointment = new Appointment();
             var appointmentId = Convert.ToInt32(dgvCalendar.CurrentRow.Cells[0].Value);
             Appointment.Delete(appointmentId);
+            UpdateDataGrids();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -340,6 +324,11 @@ namespace C969_ncarrel
                     if (success)
                     {
                         ClearFields();
+                        currentState = new EditingState(-1, false);
+                        labelEditWarning.Visible = false;
+                        labelEditWarning2.Visible = false;
+                        btnCancel.Visible = false;
+                        btnCancel2.Visible = false;
                     }
                     currentState = new EditingState(-1, false);
                 }

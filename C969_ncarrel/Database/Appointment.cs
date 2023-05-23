@@ -72,14 +72,14 @@ namespace C969_ncarrel.Database
                 + $"FROM customer a "
                 + $"LEFT JOIN appointment b on a.customerId = b.customerId "
                 + $"WHERE userId={userId} "
-                + $"AND (start<'{TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now.AddMinutes(15)):yyyy-MM-dd HH:mm:ss}' "
-                + $"AND start>'{TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Now):yyyy-MM-dd HH:mm:ss}')";
+                + $"AND (start<'{DateTime.Now.AddMinutes(15).ToUniversalTime():yyyy-MM-dd HH:mm:ss}' "
+                + $"AND start>'{DateTime.Now.ToUniversalTime():yyyy-MM-dd HH:mm:ss}')";
             cmd = new MySqlCommand(sqlString, connection);
             reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
                 reader.Read();
-                MessageBox.Show($"You have an appointment with {reader.GetValue(0)} at {reader.GetValue(3)}");
+                MessageBox.Show($"You have an appointment with {reader.GetValue(0)} at {DateTime.Parse(reader.GetValue(3).ToString()).ToLocalTime():HH:mm} today");
                 reader.Close();
                 return true;
             }

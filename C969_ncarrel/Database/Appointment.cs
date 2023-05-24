@@ -25,8 +25,10 @@ namespace C969_ncarrel.Database
         BindingList<Appointment> blAppointments;
         public bool ConflictCheck(int appointmentId, DateTime start, DateTime end) //NOTE `start` & `end` are both already in Universal Time. DO NOT convert them to Universal time a second time!! 
         {
-            var startBusinessHours = TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Parse("08:00:00"));
-            var endBusinessHours = TimeZone.CurrentTimeZone.ToUniversalTime(DateTime.Parse("18:00:00"));
+            TimeSpan startHours = new TimeSpan(7, 59, 59);
+            TimeSpan endHours = new TimeSpan(18, 0, 1);
+            TimeSpan apptStart = start.ToLocalTime().TimeOfDay; //THIS IS UTC => LOCAL
+            TimeSpan apptEnd = end.ToLocalTime().TimeOfDay; //THIS IS UTC => LOCAL
             var userId = C969_ncarrel.Login.mainScreen.UserId;
             var sqlString =
                 $"SELECT appointmentId FROM appointment WHERE NOT appointmentId = '{appointmentId}' AND userId = {userId} AND start <= '{end:yyyy-MM-dd HH:mm:ss}' AND end >= '{start:yyyy-MM-dd HH:mm:ss}'";
@@ -42,16 +44,19 @@ namespace C969_ncarrel.Database
                 reader.Close();
                 return true;
             }
-            else if (end < start)
+            else if (apptEnd < apptStart)
             {
-                MessageBox.Show($"Start time cannot be after End time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (end.Day != start.Day)
+                {
+                    MessageBox.Show("Appointments must start and end on the same day.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                }
+                else
+                    MessageBox.Show($"Start time cannot be after End time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 reader.Close();
                 return true;
             }
-            //I use two lambda expressions here with the "All" extension provided by System.Linq. Both Lambda expressions compare the Start and End TimeOfDay values to the business hours to confirm that no appointments start or end outside the pre-determined range
-            else 
-            if (new[] { start.TimeOfDay, end.TimeOfDay }.All(d => d < startBusinessHours.TimeOfDay || 
-                new[] { start.TimeOfDay, end.TimeOfDay }.All(dt => dt > endBusinessHours.TimeOfDay)))
+            else
+            if (apptStart < startHours || apptStart > endHours || apptEnd < startHours || apptEnd > endHours)
             {
                 MessageBox.Show($"Your appointment is outside the normal business hours of 8:00 - 18:00");
                 reader.Close();

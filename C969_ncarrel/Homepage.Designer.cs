@@ -565,6 +565,7 @@ namespace C969_ncarrel
             this.dtpApptEnd.Name = "dtpApptEnd";
             this.dtpApptEnd.Size = new System.Drawing.Size(200, 20);
             this.dtpApptEnd.TabIndex = 38;
+            this.dtpApptEnd.Value = new System.DateTime(2023, 5, 24, 0, 0, 0, 0);
             // 
             // dtpApptStart
             // 
@@ -575,7 +576,7 @@ namespace C969_ncarrel
             this.dtpApptStart.Name = "dtpApptStart";
             this.dtpApptStart.Size = new System.Drawing.Size(200, 20);
             this.dtpApptStart.TabIndex = 37;
-            this.dtpApptStart.Value = new System.DateTime(2023, 4, 23, 0, 0, 0, 0);
+            this.dtpApptStart.Value = new System.DateTime(2023, 5, 24, 0, 0, 0, 0);
             // 
             // labelApptEnd
             // 

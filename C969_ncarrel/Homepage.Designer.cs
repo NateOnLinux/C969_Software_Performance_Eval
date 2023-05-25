@@ -577,6 +577,7 @@ namespace C969_ncarrel
             this.dtpApptStart.Size = new System.Drawing.Size(200, 20);
             this.dtpApptStart.TabIndex = 37;
             this.dtpApptStart.Value = new System.DateTime(2023, 5, 24, 0, 0, 0, 0);
+            this.dtpApptStart.ValueChanged += new System.EventHandler(this.dtpApptStart_ValueChanged);
             // 
             // labelApptEnd
             // 

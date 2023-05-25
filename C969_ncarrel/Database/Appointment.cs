@@ -23,13 +23,12 @@ namespace C969_ncarrel.Database
 
         QueryDB ApptConnection;
         BindingList<Appointment> blAppointments;
-        public bool ConflictCheck(int appointmentId, DateTime start, DateTime end) //NOTE `start` & `end` are both Utc. 
+        public bool ConflictCheck(int appointmentId, DateTime start, DateTime end) //NOTE `start` & `end` are both already in Universal Time. DO NOT convert them to Universal time a second time!! 
         {
-            TimeSpan startHours = new TimeSpan(8, 0, 0); //THIS IS LOCAL
-            TimeSpan endHours = new TimeSpan(18, 0, 0); //THIS IS LOCAL
-            //start.Second and end.Second should == 0 here but type 'TimeSpan' is easier to work with in this context anyways
-            TimeSpan apptStart = new TimeSpan(start.ToLocalTime().Hour,start.ToLocalTime().Minute,0);
-            TimeSpan apptEnd = new TimeSpan(end.ToLocalTime().Hour,end.ToLocalTime().Minute,0);
+            TimeSpan startHours = new TimeSpan(7, 59, 59);
+            TimeSpan endHours = new TimeSpan(18, 0, 1);
+            TimeSpan apptStart = start.ToLocalTime().TimeOfDay; //THIS IS UTC => LOCAL
+            TimeSpan apptEnd = end.ToLocalTime().TimeOfDay; //THIS IS UTC => LOCAL
             var userId = C969_ncarrel.Login.mainScreen.UserId;
             var sqlString =
                 $"SELECT appointmentId FROM appointment WHERE NOT appointmentId = '{appointmentId}' AND userId = {userId} AND start <= '{end:yyyy-MM-dd HH:mm:ss}' AND end >= '{start:yyyy-MM-dd HH:mm:ss}'";
@@ -45,44 +44,40 @@ namespace C969_ncarrel.Database
                 reader.Close();
                 return true;
             }
-            else 
-            if (apptEnd < apptStart)
+            else if (apptEnd < apptStart)
             {
-                MessageBox.Show($"Start time cannot be after End time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (end.Day != start.Day)
+                {
+                    MessageBox.Show("Appointments must start and end on the same day.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
+                }
+                else
+                    MessageBox.Show($"Start time cannot be after End time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 reader.Close();
                 return true;
             }
             else
             if (apptStart < startHours || apptStart > endHours || apptEnd < startHours || apptEnd > endHours)
             {
-                MessageBox.Show($"The time range {apptStart:g} - {apptEnd:g} does not fall within the set business hours of 8:00 - 18:00");
+                MessageBox.Show($"Your appointment is outside the normal business hours of 8:00 - 18:00");
                 reader.Close();
                 return true;
             }
             else
             {
-                if (end.Date != start.Date) //Appointments spanning multiple days aren't mentioned in the requirements, so I'm not allowing them.
-                {
-                    MessageBox.Show("Appointments must start and end on the same day.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return true;
-                }
-                else
-                {
-                    reader.Close();
-                    return false;
-                }
+                reader.Close();
+                return false;
             }
         }
 
         public bool CheckNext15()
-        {
+        {//Need to account for this machine's date/time when testing
             var userId = C969_ncarrel.Login.mainScreen.UserId;
             var sqlString = 
                 $"SELECT a.customerName,a.customerId,b.userId,b.start "
                 + $"FROM customer a "
                 + $"LEFT JOIN appointment b on a.customerId = b.customerId "
                 + $"WHERE userId={userId} "
-                + $"AND (start<'{DateTime.Now.AddMinutes(15).ToUniversalTime():yyyy-MM-dd HH:mm:ss}' " //Add 15 minutes to DateTime.Now then convert the time to Utc
+                + $"AND (start<'{DateTime.Now.AddMinutes(15).ToUniversalTime():yyyy-MM-dd HH:mm:ss}' "
                 + $"AND start>'{DateTime.Now.ToUniversalTime():yyyy-MM-dd HH:mm:ss}')";
             cmd = new MySqlCommand(sqlString, connection);
             reader = cmd.ExecuteReader();

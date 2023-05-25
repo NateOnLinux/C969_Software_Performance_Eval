@@ -34,24 +34,6 @@ namespace C969_ncarrel
             Appointment = new Appointment() { userId = UserId };
             UpdateDataGrids();
             _ = Appointment.CheckNext15();
-            dtpApptStart.MinDate = new DateTime //Note that appointments CANNOT be scheduled for past dates, only future. This includes editing past appointments
-                (
-                DateTime.Now.Year,
-                DateTime.Now.Month,
-                DateTime.Now.Day,
-                DateTime.Now.Hour,
-                DateTime.Now.Minute,
-                0, //Force second and ms to be 0
-                0);
-            dtpApptEnd.MinDate = new DateTime
-                (
-                DateTime.Now.Year,
-                DateTime.Now.Month,
-                DateTime.Now.Day,
-                DateTime.Now.Hour,
-                DateTime.Now.Minute,
-                0, 
-                0);
         }
 
         private void btnCustNew_Click(object sender, EventArgs e)
@@ -364,11 +346,6 @@ namespace C969_ncarrel
                 }
                 MessageBox.Show(errorString, "There was an error in your submission", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void dtpApptStart_ValueChanged(object sender, EventArgs e)
-        {
-            dtpApptEnd.MinDate = dtpApptStart.Value; //Time doesn't move backward so minimum End date is always == Start date
         }
     }
 }

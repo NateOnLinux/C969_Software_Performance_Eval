@@ -25,9 +25,9 @@ namespace C969_ncarrel.Database
         BindingList<Appointment> blAppointments;
         public bool ConflictCheck(int appointmentId, DateTime start, DateTime end) //NOTE `start` & `end` are both Utc. 
         {
+            //TimeSpan is more readable than "start.ToLocalTime().TimeOfDay.ToString(HH:mm)"
             TimeSpan startHours = new TimeSpan(8, 0, 0); //THIS IS LOCAL
             TimeSpan endHours = new TimeSpan(18, 0, 0); //THIS IS LOCAL
-            //start.Second and end.Second should == 0 here but type 'TimeSpan' is easier to work with in this context anyways
             TimeSpan apptStart = new TimeSpan(start.ToLocalTime().Hour,start.ToLocalTime().Minute,0);
             TimeSpan apptEnd = new TimeSpan(end.ToLocalTime().Hour,end.ToLocalTime().Minute,0);
             var userId = C969_ncarrel.Login.mainScreen.UserId;
@@ -45,15 +45,17 @@ namespace C969_ncarrel.Database
                 reader.Close();
                 return true;
             }
-            else 
+            else
+            if (end.ToLocalTime().Date != start.ToLocalTime().Date) //Appointments must be on the same date
+            {
+                MessageBox.Show("Appointments must start and end on the same day.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                reader.Close();
+                return true;
+            }
+            else
             if (apptEnd < apptStart)
             {
-                if (end.Date != start.Date) //Appointments spanning multiple days aren't mentioned in the requirements, so I'm not allowing them.
-                {
-                    MessageBox.Show("Appointments must start and end on the same day.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-                else
-                    MessageBox.Show($"Start time cannot be after End time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show($"Start time cannot be after End time.\nYour appointment was not saved.", "New Appointment", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 reader.Close();
                 return true;
             }

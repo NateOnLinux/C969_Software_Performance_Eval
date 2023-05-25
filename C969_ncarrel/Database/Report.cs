@@ -11,16 +11,13 @@ namespace C969_ncarrel.Database
         //private string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".report");
         private QueryDB ReportConnecton;
         private readonly Appointment Appointments = new Appointment();
-        private readonly Customer Customers = new Customer();
         private BindingList<Appointment> ListAppointments;
-        private BindingList<Customer> ListCustomers;
         public void GenerateReport()
         {
             Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\ ");
             var FileName = DateTime.UtcNow.ToString("yyyyMMdd-HHmmss") + ".report";
             var FileLocation = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\reports\";
             ListAppointments = Appointments.GetAppointments();
-            ListCustomers = Customers.GetCustomers();
             //I tried sharing a single FileStream for all 3 methods however the object gets disposed within the StreamWriter
             GetAppointmentsMonthly(new FileStream(Path.Combine(FileLocation, FileName),FileMode.Append, FileAccess.Write));
             GetConsultantSchedules(new FileStream(Path.Combine(FileLocation, FileName), FileMode.Append, FileAccess.Write));
@@ -47,8 +44,8 @@ namespace C969_ncarrel.Database
         }
         public void GetConsultantSchedules(FileStream Path)
         {
-            var consultantSchedules = new Dictionary<string, List<Appointment>>();
             ReportConnecton = new QueryDB();
+            var consultantSchedules = new Dictionary<string, List<Appointment>>();
             var sqlString = "SELECT userId,userName FROM user";
             var consultantList = ReportConnecton.Query(sqlString);
             var users = new List<User>();
